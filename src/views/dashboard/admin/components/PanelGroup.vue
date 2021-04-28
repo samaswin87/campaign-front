@@ -21,7 +21,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            Contacts
           </div>
           <count-to
             :start-val="0"
@@ -72,14 +72,11 @@
         @click="handleSetLineChartData('purchases')"
       >
         <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon
-            name="money"
-            class="card-panel-icon"
-          />
+          <i class="el-icon-phone-outline card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Purchases
+            Campaigns
           </div>
           <count-to
             :start-val="0"
@@ -102,13 +99,13 @@
       >
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon
-            name="shopping"
+            name="list"
             class="card-panel-icon"
           />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            Shoppings
+            Workflows
           </div>
           <count-to
             :start-val="0"

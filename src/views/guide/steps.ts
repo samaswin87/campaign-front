@@ -24,22 +24,6 @@ const steps = [
     }
   },
   {
-    element: '#screenfull',
-    popover: {
-      title: 'Screenfull',
-      description: 'Set the page into fullscreen',
-      position: 'left'
-    }
-  },
-  {
-    element: '#size-select',
-    popover: {
-      title: 'Switch Size',
-      description: 'Switch the system size',
-      position: 'left'
-    }
-  },
-  {
     element: '#tags-view-container',
     popover: {
       title: 'Tags view',

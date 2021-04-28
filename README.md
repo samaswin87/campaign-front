@@ -2,21 +2,6 @@
   <img width="120" src="public/img/icons/android-chrome-512x512.png">
 </p>
 
-<p align="center">
-  <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
-  </a>
-  <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.12.0-brightgreen.svg" alt="element-ui">
-  </a>
-  <a href="https://circleci.com/gh/Armour/vue-typescript-admin-template/tree/master">
-    <img src="https://circleci.com/gh/Armour/vue-typescript-admin-template/tree/master.svg?style=shield" alt="CircleCI">
-  </a>
-  <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat" alt="PRs Welcome">
-  </a>
-</p>
-
 ## Features
 
 ```txt
@@ -40,7 +25,6 @@
   - Clipboard
   - Svg icons
   - Search
-  - Screenfull
   - Settings
   - Mock data / Mock server
   - PWA support

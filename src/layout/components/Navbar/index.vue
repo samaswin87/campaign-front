@@ -14,15 +14,6 @@
       <template v-if="device!=='mobile'">
         <header-search class="right-menu-item" />
         <error-log class="errLog-container right-menu-item hover-effect" />
-        <screenfull class="right-menu-item hover-effect" />
-        <el-tooltip
-          :content="$t('navbar.size')"
-          effect="dark"
-          placement="bottom"
-        >
-          <size-select class="right-menu-item hover-effect" />
-        </el-tooltip>
-        <lang-select class="right-menu-item hover-effect" />
       </template>
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
@@ -30,7 +21,7 @@
       >
         <div class="avatar-wrapper">
           <img
-            :src="avatar+'?imageView2/1/w/80/h/80'"
+            :src="avatar"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />
@@ -48,7 +39,7 @@
           </router-link>
           <a
             target="_blank"
-            href="https://github.com/armour/vue-typescript-admin-template/"
+            href="https://github.com/"
           >
             <el-dropdown-item>
               {{ $t('navbar.github') }}
@@ -56,7 +47,7 @@
           </a>
           <a
             target="_blank"
-            href="https://armour.github.io/vue-typescript-admin-docs/"
+            href="https://armour.github.io/"
           >
             <el-dropdown-item>Docs</el-dropdown-item>
           </a>
@@ -82,9 +73,6 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import ErrorLog from '@/components/ErrorLog/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 import HeaderSearch from '@/components/HeaderSearch/index.vue'
-import LangSelect from '@/components/LangSelect/index.vue'
-import Screenfull from '@/components/Screenfull/index.vue'
-import SizeSelect from '@/components/SizeSelect/index.vue'
 
 @Component({
   name: 'Navbar',
@@ -92,10 +80,7 @@ import SizeSelect from '@/components/SizeSelect/index.vue'
     Breadcrumb,
     ErrorLog,
     Hamburger,
-    HeaderSearch,
-    LangSelect,
-    Screenfull,
-    SizeSelect
+    HeaderSearch
   }
 })
 export default class extends Vue {
