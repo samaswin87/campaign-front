@@ -20,21 +20,13 @@
         :xs="{span: 24}"
         :sm="{span: 12}"
         :md="{span: 12}"
-        :lg="{span: 6}"
-        :xl="{span: 6}"
+        :lg="{span: 12}"
+        :xl="{span: 12}"
         style="margin-bottom:30px;"
       >
-        <todo-list />
-      </el-col>
-      <el-col
-        :xs="{span: 24}"
-        :sm="{span: 12}"
-        :md="{span: 12}"
-        :lg="{span: 6}"
-        :xl="{span: 6}"
-        style="margin-bottom:30px;"
-      >
-        <box-card />
+        <div style="margin:0 0 5px 20px">Workflows
+        </div>
+        <workflows-table />
       </el-col>
     </el-row>
   </div>
@@ -51,6 +43,7 @@ import PieChart from './components/PieChart.vue'
 import RadarChart from './components/RadarChart.vue'
 import TodoList from './components/TodoList/index.vue'
 import CampaignsTable from './components/campaigns-table.vue'
+import WorkflowsTable from './components/workflows-table.vue'
 
 const lineChartData: { [type: string]: ILineChartData } = {
   newVisitis: {
@@ -81,7 +74,8 @@ const lineChartData: { [type: string]: ILineChartData } = {
     PieChart,
     RadarChart,
     TodoList,
-    CampaignsTable
+    CampaignsTable,
+    WorkflowsTable
   }
 })
 export default class extends Vue {

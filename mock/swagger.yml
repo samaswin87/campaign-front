@@ -20,6 +20,68 @@ tags:
   - name: users
     description: Users related api.
 paths:
+  /workflows:
+    get:
+      tags:
+        - workflows
+      summary: Get Workflow List
+      description: Return a list of workflows.
+      operationId: getWorkflows
+      parameters:
+        - name: title
+          in: query
+          description: Used to filter workflows by matched title substring.
+          schema:
+            $ref: '#/components/schemas/Wokflow/properties/title'
+        - name: company
+          in: query
+          description: Used to filter workflows by company.
+          schema:
+            $ref: '#/components/schemas/Workflow/properties/company'
+        - name: page
+          in: query
+          description: The wanted page number (one page).
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: limit
+          in: query
+          description: The maximum number of workflows returned for one page.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+        - name: sort
+          in: query
+          description: Optional sorting order for workflows.
+          schema:
+            type: string
+            enum:
+              - +id
+              - -id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Campaign'
   /campaigns:
     get:
       tags:
@@ -881,6 +943,32 @@ components:
        - importance
        - author
     Campaign:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+            - deleted
+        title:
+          type: string
+          example: IG Won World Championship
+        company:
+          type: string
+          example: Company name
+        date:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+       - id
+       - status
+       - title
+       - company
+       - date
+    Workflow:
       type: object
       properties:
         id:

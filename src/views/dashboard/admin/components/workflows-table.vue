@@ -65,18 +65,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getCampaigns } from '@/api/campaigns'
-import { ICampaignData } from '@/api/types'
+import { getWorkflows } from '@/api/workflows'
+import { IWorkflowData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
-  name: 'CampaignTable',
+  name: 'WorkflowTable',
   components: {
     Pagination
   }
 })
 export default class extends Vue {
-  private list: ICampaignData[] = []
+  private list: IWorkflowData[] = []
   private tableKey = 0
   private total = 0
   private listLoading = true
@@ -94,7 +94,7 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getCampaigns(this.listQuery)
+    const { data } = await getWorkflows(this.listQuery)
     this.list = data.items
     this.total = data.total
     // Just to simulate the time of the request
