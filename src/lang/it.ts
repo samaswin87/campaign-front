@@ -132,7 +132,8 @@ export default {
     draft: 'Bozza',
     delete: 'Elimina',
     cancel: 'Annulla',
-    confirm: 'Conferma'
+    confirm: 'Conferma',
+    company: 'Company'
   },
   example: {
     warning: 'Creare e modificare pagine non può essere tenuto in cache da keep-alive, perchè l\'include di keep-alive attualmente non supporta la cache basata sugli indirizzi, per questo ora viene utilizzata la cache basandosi sul nome del componente. Se vuoi utilizzare uno schema di caching basato sul browser come localStorage. O non usare l\'include di keep-alive per mettere le pagine in cache direttamente. Vedi dettagli'

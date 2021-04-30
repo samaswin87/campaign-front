@@ -1,3 +1,4 @@
+export * from './campaigns'
 export * from './articles'
 export * from './role'
 export * from './transactions'

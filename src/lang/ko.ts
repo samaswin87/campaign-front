@@ -132,7 +132,8 @@ export default {
     draft: 'Draft',
     delete: '삭제',
     cancel: '취소',
-    confirm: '확인'
+    confirm: '확인',
+    company: 'Company'
   },
   example: {
     warning: 'keep-alive의 \'include \'는 (는) 현재 경로 기반 캐싱을 지원하지 않으므로 구성 요소 이름을 기반으로 캐시되기 때문에 keep-alive로 페이지를 만들고 편집 할 수 없습니다. 비슷한 캐싱 효과를 얻으려면 localStorage와 같은 브라우저 캐싱 구성표를 사용할 수 있습니다. 또는 keep-alive \' include \'를 사용하여 모든 페이지를 직접 캐시하지 마십시오. 자세히보다'

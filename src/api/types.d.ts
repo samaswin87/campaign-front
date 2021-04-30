@@ -1,3 +1,11 @@
+export interface ICampaignData {
+  id: number
+  status: string
+  title: string
+  date: string | number
+  company: string
+}
+
 export interface IArticleData {
   id: number
   status: string

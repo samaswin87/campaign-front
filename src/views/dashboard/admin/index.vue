@@ -3,40 +3,6 @@
 
     <panel-group @handle-set-line-chart-data="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row>
-
-    <el-row :gutter="32">
-      <el-col
-        :xs="24"
-        :sm="24"
-        :lg="8"
-      >
-        <div class="chart-wrapper">
-          <radar-chart />
-        </div>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :lg="8"
-      >
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="24"
-        :lg="8"
-      >
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
-      </el-col>
-    </el-row>
-
     <el-row :gutter="8">
       <el-col
         :xs="{span: 24}"
@@ -46,7 +12,9 @@
         :xl="{span: 12}"
         style="padding-right:8px;margin-bottom:30px;"
       >
-        <transaction-table />
+        <div style="margin:0 0 5px 20px">Campaigns
+        </div>
+        <campaigns-table />
       </el-col>
       <el-col
         :xs="{span: 24}"
@@ -82,7 +50,7 @@ import PanelGroup from './components/PanelGroup.vue'
 import PieChart from './components/PieChart.vue'
 import RadarChart from './components/RadarChart.vue'
 import TodoList from './components/TodoList/index.vue'
-import TransactionTable from './components/TransactionTable.vue'
+import CampaignsTable from './components/campaigns-table.vue'
 
 const lineChartData: { [type: string]: ILineChartData } = {
   newVisitis: {
@@ -113,7 +81,7 @@ const lineChartData: { [type: string]: ILineChartData } = {
     PieChart,
     RadarChart,
     TodoList,
-    TransactionTable
+    CampaignsTable
   }
 })
 export default class extends Vue {
