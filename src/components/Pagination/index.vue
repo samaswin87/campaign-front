@@ -10,6 +10,7 @@
       :layout="layout"
       :page-sizes="pageSizes"
       :total="total"
+      :hide-on-single-page="true"
       v-bind="$attrs"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -29,7 +30,7 @@ export default class extends Vue {
   @Prop({ default: 1 }) private page!: number
   @Prop({ default: 20 }) private limit!: number
   @Prop({ default: () => [10, 20, 30, 50] }) private pageSizes!: number[]
-  @Prop({ default: 'total, sizes, prev, pager, next, jumper' }) private layout!: string
+  @Prop({ default: 'total, sizes, prev, pager, next, ->' }) private layout!: string
   @Prop({ default: true }) private background!: boolean
   @Prop({ default: true }) private autoScroll!: boolean
   @Prop({ default: false }) private hidden!: boolean

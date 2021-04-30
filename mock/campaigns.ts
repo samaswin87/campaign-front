@@ -3,7 +3,7 @@ import { Response, Request } from 'express'
 import { ICampaignData } from '../src/api/types'
 
 const campaignList: ICampaignData[] = []
-const campaignCount = 100
+const campaignCount = 10
 
 for (let i = 0; i < campaignCount; i++) {
   campaignList.push({

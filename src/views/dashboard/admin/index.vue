@@ -42,8 +42,8 @@ import PanelGroup from './components/PanelGroup.vue'
 import PieChart from './components/PieChart.vue'
 import RadarChart from './components/RadarChart.vue'
 import TodoList from './components/TodoList/index.vue'
-import CampaignsTable from './components/campaigns-table.vue'
-import WorkflowsTable from './components/workflows-table.vue'
+import CampaignsTable from './components/CampaignsTable.vue'
+import WorkflowsTable from './components/WorkflowsTable.vue'
 
 const lineChartData: { [type: string]: ILineChartData } = {
   newVisitis: {

@@ -3,7 +3,7 @@ import { Response, Request } from 'express'
 import { IWorkflowData } from '../src/api/types'
 
 const workflowList: IWorkflowData[] = []
-const workflowCount = 100
+const workflowCount = 30
 
 for (let i = 0; i < workflowCount; i++) {
   workflowList.push({
