@@ -20,6 +20,63 @@ tags:
   - name: users
     description: Users related api.
 paths:
+  /contacts:
+    get:
+      tags:
+        - contacts
+      summary: Get Contact List
+      description: Return a list of contacts.
+      operationId: getContacts
+      parameters:
+        - name: company
+          in: query
+          description: Used to filter contacts by company.
+          schema:
+            $ref: '#/components/schemas/Contact/properties/company'
+        - name: page
+          in: query
+          description: The wanted page number (one page).
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: limit
+          in: query
+          description: The maximum number of contacts returned for one page.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+        - name: sort
+          in: query
+          description: Optional sorting order for contacts.
+          schema:
+            type: string
+            enum:
+              - +id
+              - -id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Contact'
   /workflows:
     get:
       tags:
@@ -81,7 +138,7 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Campaign'
+                          $ref: '#/components/schemas/Workflow'
   /campaigns:
     get:
       tags:
@@ -870,6 +927,52 @@ components:
       required:
         - code
         - message
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+            - deleted
+        firstName:
+          type: string
+          example: First Name
+        lastName:
+          type: string
+          example: Last Name
+        middleName:
+          type: string
+          example: Middle Name
+        email:
+          type: string
+          example: test@email.com
+        phone:
+          type: string
+          example: +9190000909
+        tags:
+          type: array
+        noOfCampaigns:
+          type: integer
+          format: int64
+        keywords:
+          type: array
+        notes:
+          type: string
+          example: Chong Guo
+        gender:
+          type: string
+          example: Male / Female
+        company:
+          type: string
+          example: Company name
+      required:
+       - id
+       - status
     Article:
       type: object
       properties:

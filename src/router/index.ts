@@ -86,6 +86,23 @@ export const constantRoutes: RouteConfig[] = [
     ]
   },
   {
+    path: '/contacts',
+    component: Layout,
+    redirect: '/contacts/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/contacts/index.vue'),
+        name: 'Contacts',
+        meta: {
+          title: 'contacts',
+          icon: 'user',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',

@@ -1,3 +1,19 @@
+export interface IContactData {
+  id: number
+  status: string
+  firstName: string
+  lastName: string
+  middleName: string
+  email: string
+  tags: string[]
+  noOfCampaigns: number
+  keywords: string[]
+  phone: string
+  notes: string
+  gender: string
+  company: string
+}
+
 export interface IWorkflowData {
   id: number
   status: string

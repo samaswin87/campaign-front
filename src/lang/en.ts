@@ -3,6 +3,7 @@ export default {
     dashboard: 'Dashboard',
     documentation: 'Documentation',
     guide: 'Guide',
+    contacts: 'Contacts',
     permission: 'Permission',
     pagePermission: 'Page Permission',
     rolePermission: 'Role Permission',
@@ -133,7 +134,19 @@ export default {
     delete: 'Delete',
     cancel: 'Cancel',
     confirm: 'Confirm',
-    company: 'Company'
+    company: 'Company',
+    contact: {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      middleName: 'Middle Name',
+      email: 'Email',
+      tags: 'Tags',
+      noOfCampaigns: '# of Campaign',
+      keywords: 'Keywords',
+      phone: 'Phone Number',
+      notes: 'Notes',
+      gender: 'Gender'
+    }
   },
   example: {
     warning: 'Creating and editing pages cannot be cached by keep-alive because keep-alive\'s \'include\' currently does not support caching based on routes, so now it\'s cached based on component name. If you want to achieve a similar caching effect, you can use a browser caching scheme such as localStorage. Or don\'t use keep-alive\'s \'include\' to cache all pages directly. See details'
