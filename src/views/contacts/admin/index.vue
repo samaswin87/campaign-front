@@ -19,6 +19,15 @@
       >
         {{ $t('table.export') }}
       </el-button>
+      <el-button
+        class="filter-item"
+        style="margin-left: 10px;"
+        type="primary"
+        icon="el-icon-upload"
+        @click="handleCreate"
+      >
+        {{ $t('table.import') }}
+      </el-button>
       <el-checkbox
         label="selectAll"
         style="margin-left: 10px;"
@@ -40,7 +49,7 @@
           class="filter-item"
           type="primary"
           icon="el-icon-search"
-          @click="handleFilter"
+          @click="handleSearch"
         >
         </el-button>
 
@@ -48,7 +57,9 @@
           v-waves
           type="primary"
           class="filter-item"
-          circle>
+          circle
+          @click="handleFilter"
+          >
           <svg-icon name="filter-solid" />
         </el-button>
       </div>
@@ -179,6 +190,10 @@
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
+
+    <ContactTableFilters
+      :visible.sync="filterLoading"
+    />
   </div>
 </template>
 
@@ -188,6 +203,7 @@ import { Form } from 'element-ui'
 import { cloneDeep } from 'lodash'
 import { getContacts, createContact, updateContact, defaultContactData } from '@/api/contacts'
 import ContactDialog from './components/ContactDialog.vue'
+import ContactTableFilters from './components/ContactTableFilters.vue'
 import { IContactData } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
@@ -197,7 +213,8 @@ import Pagination from '@/components/Pagination/index.vue'
   name: 'ContactTable',
   components: {
     Pagination,
-    ContactDialog
+    ContactDialog,
+    ContactTableFilters
   }
 })
 
@@ -207,6 +224,7 @@ export default class extends Vue {
   private list: IContactData[] = []
   private total = 0
   private listLoading = true
+  private filterLoading = false
   private listQuery = {
     page: 1,
     limit: 20,
@@ -232,6 +250,10 @@ export default class extends Vue {
     this.getList()
   }
 
+  private dialogVisiblity() {
+    return this.filterLoading
+  }
+
   private handleSelectionChange(val: string[]) {
     this.multipleSelection = val
   }
@@ -248,8 +270,11 @@ export default class extends Vue {
   }
 
   private handleFilter() {
-    this.listQuery.page = 1
-    this.getList()
+    this.filterLoading = true
+  }
+
+  private handleSearch() {
+    this.filterLoading = true
   }
 
   private handleModifyStatus(row: any, status: string) {

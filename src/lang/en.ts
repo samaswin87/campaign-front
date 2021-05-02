@@ -135,6 +135,8 @@ export default {
     cancel: 'Cancel',
     confirm: 'Confirm',
     company: 'Company',
+    import: 'Import',
+    apply: 'Apply',
     contact: {
       firstName: 'First Name',
       lastName: 'Last Name',
