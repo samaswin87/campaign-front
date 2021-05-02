@@ -66,6 +66,7 @@
     </div>
 
     <el-table
+      ref="contactTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -193,6 +194,7 @@
 
     <ContactTableFilters
       :visible.sync="filterLoading"
+      @contactFiltered="contactFiltered"
     />
   </div>
 </template>
@@ -248,6 +250,10 @@ export default class extends Vue {
 
   created() {
     this.getList()
+  }
+
+  private contactFiltered(data) {
+    console.log(data)
   }
 
   private dialogVisiblity() {

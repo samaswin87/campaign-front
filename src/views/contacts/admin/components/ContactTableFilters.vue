@@ -4,7 +4,7 @@
       :visible.sync="visible"
     >
       <el-form
-        ref="dataForm"
+        ref="contactFilterForm"
         :model="filterRecord"
         label-position="left"
         label-width="30%"
@@ -35,7 +35,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="disableDialog"
+          @click="filterContact"
         >
           {{ $t('table.apply') }}
         </el-button>
@@ -58,6 +58,15 @@ export default class extends Vue {
       keywords: '',
       campaigns: '',
       schduledOn: ''
+    }
+
+    private filterContact() {
+      (this.$refs.contactFilterForm as Form).validate(async(valid) => {
+        if (valid) {
+          this.$emit('contactFiltered', this.filterRecord)
+        }
+      })
+      this.$emit('update:visible', false)
     }
 
     private disableDialog() {
