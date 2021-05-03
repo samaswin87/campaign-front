@@ -137,6 +137,7 @@ export default {
     company: 'Company',
     import: 'Import',
     apply: 'Apply',
+    close: 'Close',
     contact: {
       firstName: 'First Name',
       lastName: 'Last Name',

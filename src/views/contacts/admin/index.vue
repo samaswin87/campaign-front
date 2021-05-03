@@ -162,7 +162,7 @@
       >
         <template slot-scope="{row, $index}">
           <el-button
-            @click="handleUpdate(row)"
+            @click="viewContact(row)"
             icon="el-icon-view"
             circle
           >
@@ -196,6 +196,10 @@
       :visible.sync="filterLoading"
       @contactFiltered="contactFiltered"
     />
+
+    <ContactDialog
+      :visible.sync="dialogLoading"
+    />
   </div>
 </template>
 
@@ -221,12 +225,13 @@ import Pagination from '@/components/Pagination/index.vue'
 })
 
 export default class extends Vue {
-  private multipleSelection: []
+  private multipleSelection = []
   private tableKey = 0
   private list: IContactData[] = []
   private total = 0
   private listLoading = true
   private filterLoading = false
+  private dialogLoading = false
   private listQuery = {
     page: 1,
     limit: 20,
@@ -252,7 +257,7 @@ export default class extends Vue {
     this.getList()
   }
 
-  private contactFiltered(data) {
+  private contactFiltered(data: any) {
     console.log(data)
   }
 
@@ -260,7 +265,11 @@ export default class extends Vue {
     return this.filterLoading
   }
 
-  private handleSelectionChange(val: string[]) {
+  private viewContact() {
+    this.dialogLoading = true
+  }
+
+  private handleSelectionChange(val: any) {
     this.multipleSelection = val
   }
 

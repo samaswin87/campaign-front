@@ -30,7 +30,7 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="disableDialog">
+        <el-button @click="close">
           {{ $t('table.cancel') }}
         </el-button>
         <el-button
@@ -69,7 +69,7 @@ export default class extends Vue {
       this.$emit('update:visible', false)
     }
 
-    private disableDialog() {
+    private close() {
       this.$emit('update:visible', false)
     }
 }
