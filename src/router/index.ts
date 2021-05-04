@@ -99,6 +99,17 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'user',
           noCache: true
         }
+      },
+      {
+        path: '/contacts/:id/show',
+        component: () => import('@/views/contacts/show.vue'),
+        name: 'ContactView',
+        meta: {
+          noCache: true,
+          title: 'contact',
+          icon: 'user',
+          hidden: true
+        }
       }
     ]
   },

@@ -161,12 +161,13 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
-          <el-button
-            @click="viewContact(row)"
-            icon="el-icon-view"
-            circle
-          >
-          </el-button>
+          <router-link :to="{name: 'ContactView', params: {id: row.id}}">
+            <el-button
+              icon="el-icon-view"
+              circle
+            >
+            </el-button>
+          </router-link>
           <el-button
             icon="el-icon-edit-outline"
             @click="handleUpdate(row)"

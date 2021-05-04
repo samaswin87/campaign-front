@@ -1,9 +1,6 @@
 <template>
-    <el-dialog
-      title="Contact"
-      width="60%"
-      :visible.sync="visible"
-    >
+  <div class="app-container">
+    <div class="contact-container">
         <el-row class="form-group">
             <el-col :span="12"><div class="grid-content"><label class="label-space">{{$t('table.status')}}:</label></div></el-col>
             <el-col :span="12"><div class="grid-content"><span>{{contactData.status}}</span></div></el-col>
@@ -62,41 +59,20 @@
             <el-col :span="12"><div class="grid-content"><label class="label-space">{{$t('table.contact.notes')}}: </label></div></el-col>
             <el-col :span="12"><div class="grid-content"><span>{{contactData.notes}}</span></div></el-col>
         </el-row>
-        <div
-            slot="footer"
-            class="dialog-footer"
-        >
-            <el-button @click="close">
-            {{ $t('table.close') }}
-            </el-button>
-        </div>
-    </el-dialog>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { defaultContactData } from '@/api/contacts'
 
 @Component({
-  name: 'ContactDialog',
-  components: {
-  }
+  name: 'ContactView'
 })
 export default class extends Vue {
-  @Prop({ required: true }) private visible!: Boolean
-  @Prop({ required: false }) private record!: any
   private contactData = defaultContactData
-
-  private close() {
-    this.$emit('update:visible', false)
-  }
-
-  @Watch('record')
-  onDialogOpon() {
-    this.contactData = this.record
-  }
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -105,6 +81,6 @@ export default class extends Vue {
  }
 
  .form-group {
-    margin-bottom: 3%
+    margin-bottom: 1%
  }
 </style>
