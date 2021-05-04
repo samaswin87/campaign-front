@@ -74,8 +74,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { defaultContactData } from '@/api/contacts'
+import { isEmpty } from 'lodash'
 
 @Component({
   name: 'ContactDialog',
@@ -83,11 +84,17 @@ import { defaultContactData } from '@/api/contacts'
   }
 })
 export default class extends Vue {
-  @Prop({ required: true }) private visible!: boolean
+  @Prop({ required: true }) private visible!: Boolean
+  @Prop({ required: false }) private record!: Object
   private contactData = defaultContactData
 
   private close() {
     this.$emit('update:visible', false)
+  }
+
+  @Watch('record')
+  onDialogOpon() {
+    this.contactData = this.record
   }
 }
 

@@ -199,12 +199,13 @@
 
     <ContactDialog
       :visible.sync="dialogLoading"
+      :record.sync="contactRow"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Emit } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import { cloneDeep } from 'lodash'
 import { getContacts, createContact, updateContact, defaultContactData } from '@/api/contacts'
@@ -242,6 +243,7 @@ export default class extends Vue {
   private showReviewer = false
   private dialogFormVisible = false
   private dialogStatus = ''
+  private contactRow = defaultContactData
   private textMap = {
     update: 'Edit',
     create: 'Create'
@@ -265,7 +267,8 @@ export default class extends Vue {
     return this.filterLoading
   }
 
-  private viewContact() {
+  private viewContact(row: any) {
+    this.contactRow = Object.assign({}, row)
     this.dialogLoading = true
   }
 
