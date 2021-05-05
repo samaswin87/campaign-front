@@ -168,12 +168,13 @@
             >
             </el-button>
           </router-link>
-          <el-button
-            icon="el-icon-edit-outline"
-            @click="handleUpdate(row)"
-            circle
-          >
-          </el-button>
+          <router-link :to="{name: 'ContactEdit', params: {id: row.id}}">
+            <el-button
+              icon="el-icon-edit-outline"
+              circle
+            >
+            </el-button>
+          </router-link>
           <el-button
             v-if="row.status!=='deleted'"
             icon="el-icon-delete"
@@ -361,15 +362,6 @@ export default class extends Vue {
           duration: 2000
         })
       }
-    })
-  }
-
-  private handleUpdate(row: any) {
-    this.tempContactData = Object.assign({}, row)
-    this.dialogStatus = 'update'
-    this.dialogFormVisible = true
-    this.$nextTick(() => {
-      (this.$refs.dataForm as Form).clearValidate()
     })
   }
 

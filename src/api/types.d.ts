@@ -1,3 +1,11 @@
+export interface ICompanyData {
+  id: number
+  status: string
+  email: string
+  phone: string
+  name: string
+}
+
 export interface IContactData {
   id: number
   status: string

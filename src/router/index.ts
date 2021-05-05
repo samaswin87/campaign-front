@@ -110,6 +110,17 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'user',
           hidden: true
         }
+      },
+      {
+        path: '/contacts/:id/edit',
+        component: () => import('@/views/contacts/edit.vue'),
+        name: 'ContactEdit',
+        meta: {
+          noCache: true,
+          title: 'contact',
+          icon: 'user',
+          hidden: true
+        }
       }
     ]
   },
