@@ -42,3 +42,21 @@ export const getContacts = (req: Request, res: Response) => {
     }
   })
 }
+
+export const getContact = (req: Request, res: Response) => {
+  const { id } = req.params
+  for (const contact of contactList) {
+    if (contact.id.toString() === id) {
+      return res.json({
+        code: 20000,
+        data: {
+          contact
+        }
+      })
+    }
+  }
+  return res.json({
+    code: 70001,
+    message: 'Contact not found'
+  })
+}

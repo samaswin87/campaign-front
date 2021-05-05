@@ -134,13 +134,27 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultContactData } from '@/api/contacts'
+import { defaultContactData, getContact } from '@/api/contacts'
 
 @Component({
   name: 'ContactView'
 })
 export default class extends Vue {
     private contactData = defaultContactData
+
+    created() {
+      const id = this.$route.params && this.$route.params.id
+      this.fetchData(parseInt(id))
+    }
+
+    private async fetchData(id: number) {
+      try {
+        const { data } = await getContact(id, { /* Your params here */ })
+        this.contactData = data.contact
+      } catch (err) {
+        console.error(err)
+      }
+    }
 }
 </script>
 

@@ -77,6 +77,43 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Contact'
+  /contacts/{id}:
+    get:
+      tags:
+        - contacts
+      summary: Get Contact Detail
+      description: Get contact detail by ID.
+      operationId: getContact
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Contact id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/Contact'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /workflows:
     get:
       tags:

@@ -210,7 +210,6 @@ import { IContactData } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import Pagination from '@/components/Pagination/index.vue'
-import { log } from 'console'
 
 @Component({
   name: 'ContactTable',
