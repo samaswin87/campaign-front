@@ -12,7 +12,7 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.status')}}:</label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.status}}</span></div>
+                                <div class="grid-content"><span><el-tag type="success">{{contactData.status}}</el-tag></span></div>
                             </el-col>
                         </el-row>
                         <el-row class="content-row">
@@ -29,7 +29,7 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.firstName')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.first}}</span></div>
+                                <div class="grid-content"><span>{{contactData.firstName}}</span></div>
                             </el-col>
                         </el-row>
 
@@ -38,7 +38,7 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.lastName')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.last}}</span></div>
+                                <div class="grid-content"><span>{{contactData.lastName}}</span></div>
                             </el-col>
                         </el-row>
 
@@ -47,7 +47,7 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.middleName')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.middle}}</span></div>
+                                <div class="grid-content"><span>{{contactData.middleName}}</span></div>
                             </el-col>
                         </el-row>
 
@@ -74,7 +74,17 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.tags')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.tags}}</span></div>
+                                <div class="grid-content">
+                                    <span>
+                                        <el-tag
+                                        v-for="item in contactData.tags"
+                                        class="tags"
+                                        :key="item"
+                                        >
+                                            {{ item }}
+                                        </el-tag>
+                                    </span>
+                                </div>
                             </el-col>
                         </el-row>
 
@@ -83,7 +93,7 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.noOfCampaigns')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.no}}</span></div>
+                                <div class="grid-content"><span>{{contactData.noOfCampaigns}}</span></div>
                             </el-col>
                         </el-row>
 
@@ -92,7 +102,17 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.keywords')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.keywords}}</span></div>
+                                <div class="grid-content">
+                                    <span>
+                                        <el-tag
+                                        v-for="item in contactData.keywords"
+                                        class="tags"
+                                        :key="item"
+                                        >
+                                            {{ item }}
+                                        </el-tag>
+                                    </span>
+                                </div>
                             </el-col>
                         </el-row>
 
@@ -169,5 +189,9 @@ export default class extends Vue {
 
 .content-row {
     margin-bottom: 1%;
+}
+
+.tags {
+  margin-left: 6px;
 }
 </style>
