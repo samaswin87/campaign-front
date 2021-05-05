@@ -28,13 +28,13 @@
       >
         {{ $t('table.import') }}
       </el-button>
-      <el-checkbox
-        label="selectAll"
+      <el-switch
         style="margin-left: 10px;"
+        v-model="selectAll"
         class="filter-item"
-      >
-          Select All
-        </el-checkbox>
+        @change="handleSelectAll"
+        active-text="Select All">
+      </el-switch>
       <div class="float-right">
         <el-input
           v-model="listQuery.title"
@@ -197,36 +197,32 @@
       :visible.sync="filterLoading"
       @contactFiltered="contactFiltered"
     />
-
-    <ContactDialog
-      :visible.sync="dialogLoading"
-      :record.sync="contactRow"
-    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from 'vue-property-decorator'
+import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import { cloneDeep } from 'lodash'
 import { getContacts, createContact, updateContact, defaultContactData } from '@/api/contacts'
-import ContactDialog from './components/ContactDialog.vue'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import { IContactData } from '@/api/types'
 import { exportJson2Excel } from '@/utils/excel'
 import { formatJson } from '@/utils'
 import Pagination from '@/components/Pagination/index.vue'
+import { log } from 'console'
 
 @Component({
   name: 'ContactTable',
   components: {
     Pagination,
-    ContactDialog,
     ContactTableFilters
   }
 })
 
 export default class extends Vue {
+  @Ref('contactTable') readonly contactTable!: any;
+
   private multipleSelection = []
   private tableKey = 0
   private list: IContactData[] = []
@@ -249,6 +245,8 @@ export default class extends Vue {
     update: 'Edit',
     create: 'Create'
   }
+
+  private selectAll = false
 
   private dialogPageviewsVisible = false
   private pageviewsData = []
@@ -277,6 +275,10 @@ export default class extends Vue {
     this.multipleSelection = val
   }
 
+  private handleSelectAll() {
+    this.contactTable.toggleAllSelection()
+  }
+
   private async getList() {
     this.listLoading = true
     const { data } = await getContacts(this.listQuery)
@@ -286,6 +288,13 @@ export default class extends Vue {
     setTimeout(() => {
       this.listLoading = false
     }, 0.5 * 1000)
+  }
+
+  @Watch('listLoading')
+  watchLoading() {
+    if (!this.listLoading && this.selectAll) {
+      this.contactTable.toggleAllSelection()
+    }
   }
 
   private handleFilter() {

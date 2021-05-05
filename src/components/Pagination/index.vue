@@ -19,8 +19,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { scrollTo } from '@/utils/scroll-to'
+import { watch } from 'fs'
 
 @Component({
   name: 'Pagination'
