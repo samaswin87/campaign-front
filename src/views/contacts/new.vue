@@ -4,7 +4,7 @@
             <el-row>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>Edit Contact</span>
+                        <span>New ontact</span>
                     </div>
                     <el-form
                     ref="contactForm"
@@ -200,7 +200,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultContactData, getContact } from '@/api/contacts'
+import { defaultContactData } from '@/api/contacts'
 import { getCompanies } from '@/api/companies'
 import { getTags } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
@@ -216,19 +216,8 @@ export default class extends Vue {
     private tags :string[] = []
 
     created() {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(parseInt(id))
       this.fetchCompanies()
       this.fetchTags()
-    }
-
-    private async fetchData(id: number) {
-      try {
-        const { data } = await getContact(id, { /* Your params here */ })
-        this.contactData = data.contact
-      } catch (err) {
-        console.error(err)
-      }
     }
 
     private async fetchCompanies() {

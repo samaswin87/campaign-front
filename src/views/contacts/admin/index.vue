@@ -1,15 +1,16 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-circle-plus-outline"
-        @click="handleCreate"
-      >
-        {{ $t('table.add') }}
-      </el-button>
+      <router-link :to="{name: 'ContactCreate'}">
+        <el-button
+          class="filter-item"
+          style="margin-left: 10px;"
+          type="primary"
+          icon="el-icon-circle-plus-outline"
+        >
+          {{ $t('table.add') }}
+        </el-button>
+      </router-link>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"

@@ -8,7 +8,7 @@ export const defaultContactData: IContactData = {
   lastName: '',
   middleName: '',
   email: '',
-  tags: [''],
+  tags: [],
   noOfCampaigns: 0,
   keywords: [''],
   phone: '',

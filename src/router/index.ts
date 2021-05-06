@@ -121,6 +121,17 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'user',
           hidden: true
         }
+      },
+      {
+        path: '/contacts/new',
+        component: () => import('@/views/contacts/new.vue'),
+        name: 'ContactCreate',
+        meta: {
+          noCache: true,
+          title: 'contact',
+          icon: 'user',
+          hidden: true
+        }
       }
     ]
   },

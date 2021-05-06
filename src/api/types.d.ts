@@ -1,3 +1,9 @@
+export interface ITagData {
+  id: number
+  status: string
+  name: string
+}
+
 export interface ICompanyData {
   id: number
   status: string

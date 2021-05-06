@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { ICompanyData } from './types'
 
-export const defaultContactData: ICompanyData = {
+export const defaultCompanyData: ICompanyData = {
   id: 0,
   status: 'active',
   name: '',
