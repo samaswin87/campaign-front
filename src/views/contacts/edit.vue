@@ -17,7 +17,7 @@
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
                                 <div class="grid-content">
-                                    <el-select v-model="contactData.company" clearable filterable placeholder="Select Company">
+                                    <el-select v-model="contactData.company" placeholder="Select Company">
                                         <el-option
                                         v-for="item in companies"
                                         :key="item.id"
@@ -85,7 +85,17 @@
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.gender')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.gender}}</span></div>
+                                <div class="grid-content">
+                                    <span>
+                                        <el-switch
+                                        v-model="contactData.gender"
+                                        active-text="Male"
+                                        active-color="#13ce66"
+                                        inactive-color="#ff4949"
+                                        inactive-text="Female">
+                                        </el-switch>
+                                    </span>
+                                </div>
                             </el-col>
                         </el-row>
 
@@ -110,16 +120,21 @@
                             <el-col :span="10" class="content-label">
                                 <div class="grid-content"><label class="label-space">{{$t('table.contact.tags')}}: </label></div>
                             </el-col>
-                            <el-col :span="10" class="content-vlaue">
+                            <el-col :span="5" class="content-vlaue">
                                 <div class="grid-content">
                                     <span>
-                                        <el-tag
-                                        v-for="item in contactData.tags"
-                                        class="tags"
-                                        :key="item"
+                                        <multiselect
+                                        v-model="contactData.tags"
+                                        tag-placeholder="Add this as new tag"
+                                        placeholder="Search or add a tag"
+                                        :options="contactData.tags"
+                                        :multiple="true"
+                                        :clear-on-select="false"
+                                        :close-on-select="false"
+                                        :taggable="true"
+                                        @tag="addTag"
                                         >
-                                            {{ item }}
-                                        </el-tag>
+                                        </multiselect>
                                     </span>
                                 </div>
                             </el-col>
@@ -182,9 +197,11 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultContactData, getContact } from '@/api/contacts'
 import { getCompanies } from '@/api/companies'
+import Multiselect from 'vue-multiselect'
 
 @Component({
-  name: 'ContactView'
+  name: 'ContactView',
+  components: { Multiselect }
 })
 export default class extends Vue {
     private contactData = defaultContactData
@@ -212,6 +229,11 @@ export default class extends Vue {
       } catch (err) {
         console.error(err)
       }
+    }
+
+    addTag(newTag: string) {
+      this.contactData.tags.push(newTag)
+      this.contactData.tags.push(newTag)
     }
 }
 </script>
