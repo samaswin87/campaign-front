@@ -16,7 +16,6 @@
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-download"
-        @click="handleCreate"
       >
         {{ $t('table.export') }}
       </el-button>
@@ -25,7 +24,6 @@
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-upload"
-        @click="handleCreate"
       >
         {{ $t('table.import') }}
       </el-button>
@@ -204,13 +202,9 @@
 
 <script lang="ts">
 import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
-import { Form } from 'element-ui'
-import { cloneDeep } from 'lodash'
-import { getContacts, createContact, updateContact, defaultContactData } from '@/api/contacts'
+import { getContacts, defaultContactData } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import { IContactData } from '@/api/types'
-import { exportJson2Excel } from '@/utils/excel'
-import { formatJson } from '@/utils'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
@@ -237,7 +231,7 @@ export default class extends Vue {
     sort: '+id'
   }
 
-  private statusOptions = ['published', 'draft', 'deleted']
+  private statusOptions = ['active', 'inactive']
   private showReviewer = false
   private dialogFormVisible = false
   private dialogStatus = ''
@@ -335,76 +329,23 @@ export default class extends Vue {
     return sort === `+${key}` ? 'ascending' : 'descending'
   }
 
-  private resetTempContactData() {
-    this.tempContactData = cloneDeep(defaultContactData)
-  }
-
-  private handleCreate() {
-    this.resetTempContactData()
-    this.dialogStatus = 'create'
-    this.dialogFormVisible = true
-    this.$nextTick(() => {
-      (this.$refs.dataForm as Form).clearValidate()
-    })
-  }
-
-  private createData() {
-    (this.$refs.dataForm as Form).validate(async(valid) => {
-      if (valid) {
-        const contactData = this.tempContactData
-        contactData.id = Math.round(Math.random() * 100) + 1024 // mock a id
-        const { data } = await createContact({ contact: contactData })
-        this.list.unshift(data.contact)
-        this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
-        })
-      }
-    })
-  }
-
-  private updateData() {
-    (this.$refs.dataForm as Form).validate(async(valid) => {
-      if (valid) {
-        const tempData = Object.assign({}, this.tempContactData)
-        const { data } = await updateContact(tempData.id, { contact: tempData })
-        const index = this.list.findIndex(v => v.id === data.contact.id)
-        this.list.splice(index, 1, data.contact)
-        this.dialogFormVisible = false
-        this.$notify({
-          title: '成功',
-          message: '更新成功',
-          type: 'success',
-          duration: 2000
-        })
-      }
-    })
-  }
-
   private handleDelete(row: any, index: number) {
-    this.$notify({
-      title: 'Success',
-      message: 'Delete Successfully',
-      type: 'success',
-      duration: 2000
+    this.$confirm('This will permanently delete the contact. Continue?', 'Warning', {
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      type: 'warning'
+    }).then(() => {
+      this.list.splice(index, 1)
+      this.$message({
+        type: 'success',
+        message: 'Delete completed'
+      })
+    }).catch(() => {
+      this.$message({
+        type: 'info',
+        message: 'Delete canceled'
+      })
     })
-    this.list.splice(index, 1)
-  }
-
-  private async handleGetPageviews() {
-    this.dialogPageviewsVisible = true
-  }
-
-  private handleDownload() {
-    this.downloadLoading = true
-    const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-    const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-    const data = formatJson(filterVal, this.list)
-    exportJson2Excel(tHeader, data, 'table-list')
-    this.downloadLoading = false
   }
 }
 </script>
