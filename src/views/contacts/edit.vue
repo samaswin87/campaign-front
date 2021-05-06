@@ -15,16 +15,16 @@
                             <el-col :span="10" class="content-label">
                                 <div class="grid-content"><label class="label-space">{{$t('table.company')}}:</label></div>
                             </el-col>
-                            <el-col :span="10" class="content-vlaue">
+                            <el-col :span="5" class="content-vlaue">
                                 <div class="grid-content">
-                                    <el-select v-model="contactData.company" placeholder="Select Company">
-                                        <el-option
-                                        v-for="item in companies"
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.id">
-                                        </el-option>
-                                    </el-select>
+                                    <multiselect
+                                    v-model="contactData.company"
+                                    placeholder="Search one company"
+                                    :options="companies"
+                                    :clear-on-select="false"
+                                    :close-on-select="false"
+                                    >
+                                    </multiselect>
                                 </div>
                             </el-col>
                         </el-row>
@@ -174,19 +174,24 @@
                                 </div>
                             </el-col>
                         </el-row>
-                    </el-form>
 
-                    <el-row class="content-row">
-                        <el-col :span="12"  class="content-label">
-                            <div class="grid-content">
-                                <router-link :to="'/contacts'">
-                                    <el-button type="primary" icon="el-icon-caret-left">
-                                        Back
-                                    </el-button>
-                                </router-link>
-                            </div>
-                        </el-col>
-                    </el-row>
+                        <el-row class="content-row">
+                            <el-col :span="14"  class="content-label">
+                                <div class="grid-content">
+                                    <router-link :to="'/contacts'">
+                                        <el-button>
+                                            Cancel
+                                        </el-button>
+                                    </router-link>
+                                </div>
+                            </el-col>
+                            <el-col :span="2"  class="content-button">
+                                <el-button type="primary">
+                                    Submit
+                                </el-button>
+                            </el-col>
+                        </el-row>
+                    </el-form>
                 </el-card>
             </el-row>
         </div>
@@ -198,6 +203,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultContactData, getContact } from '@/api/contacts'
 import { getCompanies } from '@/api/companies'
 import Multiselect from 'vue-multiselect'
+import { map } from 'lodash'
 
 @Component({
   name: 'ContactView',
@@ -205,7 +211,7 @@ import Multiselect from 'vue-multiselect'
 })
 export default class extends Vue {
     private contactData = defaultContactData
-    private companies = null;
+    private companies :string[] = []
 
     created() {
       const id = this.$route.params && this.$route.params.id
@@ -225,7 +231,7 @@ export default class extends Vue {
     private async fetchCompany() {
       try {
         const { data } = await getCompanies({ /* Your params here */ })
-        this.companies = data.items
+        this.companies = map(data.items, 'name')
       } catch (err) {
         console.error(err)
       }
@@ -253,5 +259,9 @@ export default class extends Vue {
 
 .tags {
   margin-left: 6px;
+}
+
+.content-button {
+    margin-left: 28px;
 }
 </style>
