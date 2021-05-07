@@ -64,7 +64,8 @@ export default {
     i18n: 'I18n',
     externalLink: 'External Link',
     profile: 'Profile',
-    contact: 'Contact'
+    contact: 'Contact',
+    campaigns: 'Campaigns'
   },
   navbar: {
     logOut: 'Log Out',
@@ -139,6 +140,8 @@ export default {
     import: 'Import',
     apply: 'Apply',
     close: 'Close',
+    name: 'Name',
+    createdOn: 'Created On',
     contact: {
       firstName: 'First Name',
       lastName: 'Last Name',
@@ -150,6 +153,11 @@ export default {
       phone: 'Phone Number',
       notes: 'Notes',
       gender: 'Gender'
+    },
+    compaign: {
+      body: 'Message',
+      delivery: 'Type',
+      scheduledOn: 'Scheduled On'
     }
   },
   example: {

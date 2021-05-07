@@ -4,9 +4,12 @@ import { ICampaignData } from './types'
 export const defaultCampaignData: ICampaignData = {
   id: 0,
   status: 'draft',
-  title: '',
-  date: '',
-  company: ''
+  name: '',
+  scheduledOn: '',
+  createdOn: '',
+  company: '',
+  body: '',
+  type: 'scheduled'
 }
 
 export const getCampaigns = (params: any) =>

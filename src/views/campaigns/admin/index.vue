@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <router-link :to="{name: 'ContactCreate'}">
+      <router-link :to="{name: 'CampaignCreate'}">
         <el-button
           class="filter-item"
           style="margin-left: 10px;"
@@ -65,7 +65,7 @@
     </div>
 
     <el-table
-      ref="contactTable"
+      ref="campaignTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -93,21 +93,22 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.contact.firstName')"
+        :label="$t('table.name')"
         min-width="150px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.firstName }}</span>
+          >{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.contact.lastName')"
+        :label="$t('table.type')"
         min-width="150px"
       >
         <template slot-scope="{row}">
-          <span
-          >{{ row.lastName }}</span>
+          <el-tag effect="dark" :type="row.type | campaignTypeFilter">
+            {{ row.type }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -120,37 +121,31 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.contact.phone')"
+        :label="$t('table.compaign.scheduledOn')"
         min-width="150px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.phone }}</span>
+          >{{ row.scheduledOn | parseTime }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.contact.noOfCampaigns')"
+        :label="$t('table.createdOn')"
         min-width="150px"
       >
         <template slot-scope="{row}">
-          <span>{{ row.noOfCampaigns }}</span>
+          <span
+          >{{ row.createdOn | parseDate }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.contact.keywords')"
+        :label="$t('table.status')"
         min-width="150px"
       >
         <template slot-scope="{row}">
-
-          <span>
-            <el-tag
-              v-for="item in row.keywords"
-              class="tags"
-              :key="item"
-            >
-              {{ item }}
-            </el-tag>
-          </span>
+          <el-tag effect="dark" :type="row.status | statusFilter">
+            {{ row.status }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -160,14 +155,14 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
-          <router-link :to="{name: 'ContactView', params: {id: row.id}}">
+          <router-link :to="{name: 'CampaignView', params: {id: row.id}}">
             <el-button
               icon="el-icon-view"
               circle
             >
             </el-button>
           </router-link>
-          <router-link :to="{name: 'ContactEdit', params: {id: row.id}}">
+          <router-link :to="{name: 'CampaignEdit', params: {id: row.id}}">
             <el-button
               icon="el-icon-edit-outline"
               circle
@@ -192,35 +187,28 @@
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
-
-    <ContactTableFilters
-      :visible.sync="filterLoading"
-      @contactFiltered="contactFiltered"
-    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
-import { getContacts, defaultContactData } from '@/api/contacts'
-import ContactTableFilters from './components/ContactTableFilters.vue'
-import { IContactData } from '@/api/types'
+import { getCampaigns, defaultCampaignData } from '@/api/campaigns'
+import { ICampaignData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
-  name: 'ContactTable',
+  name: 'CampaignTable',
   components: {
-    Pagination,
-    ContactTableFilters
+    Pagination
   }
 })
 
 export default class extends Vue {
-  @Ref('contactTable') readonly contactTable!: any;
+  @Ref('campaignTable') readonly campaignTable!: any;
 
   private multipleSelection = []
   private tableKey = 0
-  private list: IContactData[] = []
+  private list: ICampaignData[] = []
   private total = 0
   private listLoading = true
   private filterLoading = false
@@ -235,7 +223,7 @@ export default class extends Vue {
   private showReviewer = false
   private dialogFormVisible = false
   private dialogStatus = ''
-  private contactRow = defaultContactData
+  private campaignRow = defaultCampaignData
   private textMap = {
     update: 'Edit',
     create: 'Create'
@@ -247,13 +235,13 @@ export default class extends Vue {
   private pageviewsData = []
 
   private downloadLoading = false
-  private tempContactData = defaultContactData
+  private tempCampaignData = defaultCampaignData
 
   created() {
     this.getList()
   }
 
-  private contactFiltered(data: any) {
+  private campaignFiltered(data: any) {
     console.log(data)
   }
 
@@ -261,8 +249,8 @@ export default class extends Vue {
     return this.filterLoading
   }
 
-  private viewContact(row: any) {
-    this.contactRow = Object.assign({}, row)
+  private viewCampaign(row: any) {
+    this.campaignRow = Object.assign({}, row)
     this.dialogLoading = true
   }
 
@@ -271,12 +259,12 @@ export default class extends Vue {
   }
 
   private handleSelectAll() {
-    this.contactTable.toggleAllSelection()
+    this.campaignTable.toggleAllSelection()
   }
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getContacts(this.listQuery)
+    const { data } = await getCampaigns(this.listQuery)
     this.list = data.items
     this.total = data.total
     // Just to simulate the time of the request
@@ -288,7 +276,7 @@ export default class extends Vue {
   @Watch('listLoading')
   watchLoading() {
     if (!this.listLoading && this.selectAll) {
-      this.contactTable.toggleAllSelection()
+      this.campaignTable.toggleAllSelection()
     }
   }
 

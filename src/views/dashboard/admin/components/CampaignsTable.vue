@@ -23,22 +23,22 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.date')"
+        :label="$t('table.createdOn')"
         width="180px"
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.date | parseTime }}</span>
+          <span>{{ row.createdOn | parseDate }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.title')"
+        :label="$t('table.name')"
         min-width="150px"
       >
         <template slot-scope="{row}">
           <span
             class="link-type"
-          >{{ row.title }}</span>
+          >{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column

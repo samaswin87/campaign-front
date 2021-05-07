@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-editor-container">
+  <div class="campaign-editor-campaign">
 
     <el-row :gutter="8">
       <el-col
@@ -10,9 +10,9 @@
         :xl="{span: 12}"
         style="padding-right:8px;margin-bottom:30px;"
       >
-        <div style="margin:0 0 5px 20px">Campaigns
+        <div style="margin:0 0 5px 20px">Campaigns Editor
         </div>
-        <campaigns-table />
+
       </el-col>
       <el-col
         :xs="{span: 24}"
@@ -24,7 +24,7 @@
       >
         <div style="margin:0 0 5px 20px">Workflows
         </div>
-        <workflows-table />
+
       </el-col>
     </el-row>
   </div>
@@ -33,21 +33,19 @@
 <script lang="ts">
 import 'echarts/theme/macarons.js' // Theme used in BarChart, LineChart, PieChart and RadarChart
 import { Component, Vue } from 'vue-property-decorator'
-import CampaignsTable from './components/CampaignsTable.vue'
-import WorkflowsTable from './components/WorkflowsTable.vue'
 
 @Component({
-  name: 'DashboardAdmin',
+  name: 'CampaignEditor',
   components: {
-    CampaignsTable,
-    WorkflowsTable
   }
 })
-export default class extends Vue {}
+export default class extends Vue {
+
+}
 </script>
 
 <style lang="scss" scoped>
-.dashboard-editor-container {
+.campaign-editor-campaign {
   padding: 32px;
   background-color: rgb(240, 242, 245);
   position: relative;

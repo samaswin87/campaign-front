@@ -8,15 +8,18 @@ const campaignCount = 10
 for (let i = 0; i < campaignCount; i++) {
   campaignList.push({
     id: i,
-    status: faker.random.arrayElement(['published', 'draft']),
-    title: faker.lorem.sentence(6, 10),
-    date: faker.date.past().getTime(),
-    company: faker.company.companyName()
+    status: faker.random.arrayElement(['published', 'draft', 'scheduled']),
+    name: faker.lorem.sentence(1, 2),
+    scheduledOn: faker.date.past().getTime(),
+    company: faker.company.companyName(),
+    createdOn: faker.date.past().getTime(),
+    body: faker.lorem.sentence(10, 20),
+    type: faker.random.arrayElement(['scheduled', 'immediate', 'recurring'])
   })
 }
 
 export const getCampaigns = (req: Request, res: Response) => {
-  const { company, title, page = 1, limit = 20, sort } = req.query
+  const { page = 1, limit = 20, sort } = req.query
 
   let mockList = campaignList
 

@@ -2,6 +2,7 @@
 import './404'
 import './back-top'
 import './bug'
+import './campaign'
 import './chart'
 import './clipboard'
 import './component'

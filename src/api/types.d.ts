@@ -31,17 +31,20 @@ export interface IContactData {
 export interface IWorkflowData {
   id: number
   status: string
+  company: string
   title: string
   date: string | number
-  company: string
 }
 
 export interface ICampaignData {
   id: number
   status: string
-  title: string
-  date: string | number
   company: string
+  name: string
+  body: string
+  createdOn: string | number
+  type: string
+  scheduledOn: string | number
 }
 
 export interface IArticleData {
