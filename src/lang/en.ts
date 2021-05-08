@@ -159,7 +159,9 @@ export default {
       body: 'Message',
       delivery: 'Type',
       scheduledOn: 'Scheduled On',
-      noOfContacts: '# of Contacts'
+      noOfContacts: '# of Contacts',
+      recurringDays: 'Recurring Days',
+      recurringAt: 'Recurring Time'
     }
   },
   example: {

@@ -10,7 +10,9 @@ export const defaultCampaignData: ICampaignData = {
   company: '',
   body: '',
   noOfContacts: 1,
-  type: 'scheduled'
+  type: 'scheduled',
+  recurringDays: [],
+  recurringAt: ''
 }
 
 export const getCampaigns = (params: any) =>

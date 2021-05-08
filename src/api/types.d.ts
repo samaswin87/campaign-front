@@ -46,6 +46,8 @@ export interface ICampaignData {
   type: string
   scheduledOn: string | number
   noOfContacts: number
+  recurringAt: string | number
+  recurringDays: string[]
 }
 
 export interface IArticleData {
