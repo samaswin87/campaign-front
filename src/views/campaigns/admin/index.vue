@@ -187,19 +187,26 @@
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
+
+    <CampaignTableFilters
+      :visible.sync="filterLoading"
+      @campaignFiltered="campaignFiltered"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
 import { getCampaigns, defaultCampaignData } from '@/api/campaigns'
+import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
   name: 'CampaignTable',
   components: {
-    Pagination
+    Pagination,
+    CampaignTableFilters
   }
 })
 
