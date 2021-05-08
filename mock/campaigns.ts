@@ -14,7 +14,8 @@ for (let i = 0; i < campaignCount; i++) {
     company: faker.company.companyName(),
     createdOn: faker.date.past().getTime(),
     body: faker.lorem.sentence(10, 20),
-    type: faker.random.arrayElement(['scheduled', 'immediate', 'recurring'])
+    type: faker.random.arrayElement(['scheduled', 'immediate', 'recurring']),
+    noOfContacts: faker.datatype.number()
   })
 }
 
@@ -35,5 +36,23 @@ export const getCampaigns = (req: Request, res: Response) => {
       total: mockList.length,
       items: pageList
     }
+  })
+}
+
+export const getCampaign = (req: Request, res: Response) => {
+  const { id } = req.params
+  for (const campaign of campaignList) {
+    if (campaign.id.toString() === id) {
+      return res.json({
+        code: 20000,
+        data: {
+          campaign
+        }
+      })
+    }
+  }
+  return res.json({
+    code: 70001,
+    message: 'Contact not found'
   })
 }

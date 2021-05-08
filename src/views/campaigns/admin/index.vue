@@ -121,7 +121,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.compaign.scheduledOn')"
+        :label="$t('table.campaign.scheduledOn')"
         min-width="150px"
       >
         <template slot-scope="{row}">

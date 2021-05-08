@@ -342,6 +342,43 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Campaign'
+  /campaigns/{id}:
+    get:
+      tags:
+        - campaigns
+      summary: Get Campaign Detail
+      description: Get campaign detail by ID.
+      operationId: getCampaign
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Campaign id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/Campaign'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /articles:
     get:
       tags:
@@ -1198,13 +1235,13 @@ components:
             - draft
             - published
             - deleted
-        title:
+        name:
           type: string
           example: IG Won World Championship
         company:
           type: string
           example: Company name
-        date:
+        createdOn:
           $ref: '#/components/schemas/Timestamp'
       required:
        - id

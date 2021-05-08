@@ -65,7 +65,8 @@ export default {
     externalLink: 'External Link',
     profile: 'Profile',
     contact: 'Contact',
-    campaigns: 'Campaigns'
+    campaigns: 'Campaigns',
+    campaign: 'Campaign'
   },
   navbar: {
     logOut: 'Log Out',
@@ -154,10 +155,11 @@ export default {
       notes: 'Notes',
       gender: 'Gender'
     },
-    compaign: {
+    campaign: {
       body: 'Message',
       delivery: 'Type',
-      scheduledOn: 'Scheduled On'
+      scheduledOn: 'Scheduled On',
+      noOfContacts: '# of Contacts'
     }
   },
   example: {

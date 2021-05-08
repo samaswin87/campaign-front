@@ -45,6 +45,7 @@ export interface ICampaignData {
   createdOn: string | number
   type: string
   scheduledOn: string | number
+  noOfContacts: number
 }
 
 export interface IArticleData {

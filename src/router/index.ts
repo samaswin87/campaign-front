@@ -138,16 +138,48 @@ export const constantRoutes: RouteConfig[] = [
   {
     path: '/campaigns',
     component: Layout,
-    redirect: '/campaigns',
+    redirect: '/campaigns/index',
     children: [
       {
-        path: 'campaigns',
-        component: () => import(/* webpackChunkName: "campaigns" */ '@/views/campaigns/index.vue'),
-        name: 'Campagins',
+        path: 'index',
+        component: () => import('@/views/campaigns/index.vue'),
+        name: 'Campaigns',
         meta: {
           title: 'campaigns',
+          icon: 'campaign'
+        }
+      },
+      {
+        path: '/campaigns/:id/show',
+        component: () => import('@/views/campaigns/show.vue'),
+        name: 'CampaignView',
+        meta: {
+          noCache: true,
+          title: 'campaign',
           icon: 'campaign',
-          affix: true
+          hidden: true
+        }
+      },
+      {
+        path: '/campaigns/:id/edit',
+        component: () => import('@/views/campaigns/edit.vue'),
+        name: 'CampaignEdit',
+        meta: {
+          noCache: true,
+          title: 'campaign',
+          icon: 'campaign',
+          hidden: true
+        }
+      },
+      {
+        path: '/campaigns/new',
+        component: () => import('@/views/campaigns/new.vue'),
+        name: 'CampaignCreate',
+        meta: {
+          noCache: true,
+          title: 'campaign',
+          icon: 'campaign',
+          hidden: true
         }
       }
     ]
