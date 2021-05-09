@@ -251,7 +251,6 @@ export default class extends Vue {
 
     addTag(newTag: string) {
       this.contactData.tags.push(newTag)
-      this.contactData.tags.push(newTag)
     }
 }
 </script>

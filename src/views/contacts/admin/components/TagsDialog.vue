@@ -2,7 +2,20 @@
     <el-dialog
       title="Tags Dialog"
       :visible.sync="visible"
+       width="30%"
     >
+      <multiselect
+        v-model="tags"
+        tag-placeholder="Add this as new tag"
+        placeholder="Search or add a tag"
+        :options="tags"
+        :multiple="true"
+        :clear-on-select="false"
+        :close-on-select="false"
+        :taggable="true"
+        @tag="addTag"
+        >
+      </multiselect>
       <div
         slot="footer"
         class="dialog-footer"
@@ -30,8 +43,14 @@ import Multiselect from 'vue-multiselect'
 export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
 
+    private tags: string[] = []
+
     private close() {
       this.$emit('update:visible', false)
+    }
+
+    addTag(newTag: string) {
+      this.tags.push(newTag)
     }
 }
 </script>
