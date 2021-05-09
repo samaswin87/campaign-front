@@ -36,6 +36,15 @@ export interface IWorkflowData {
   date: string | number
 }
 
+export interface ICampaignRecipientData {
+  id: number
+  status: string
+  addedOn: string | number
+  campaignId: number
+  contactId: number
+  data: {}
+}
+
 export interface ICampaignData {
   id: number
   status: string
@@ -48,6 +57,7 @@ export interface ICampaignData {
   noOfContacts: number
   recurringAt: string | number
   recurringDays: string[]
+  phone: string
 }
 
 export interface IArticleData {

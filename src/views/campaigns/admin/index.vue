@@ -121,6 +121,15 @@
         </template>
       </el-table-column>
       <el-table-column
+        :label="$t('table.phone')"
+        min-width="150px"
+      >
+        <template slot-scope="{row}">
+          <span
+          >{{ row.phone }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         :label="$t('table.campaign.scheduledOn')"
         min-width="150px"
       >

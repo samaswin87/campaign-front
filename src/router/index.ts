@@ -181,6 +181,16 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'campaign',
           hidden: true
         }
+      },
+      {
+        path: '/recipients/index',
+        component: () => import('@/views/campaigns/index.vue'),
+        name: 'CampaignRecipients',
+        meta: {
+          noCache: true,
+          title: 'recipients',
+          hidden: true
+        }
       }
     ]
   },

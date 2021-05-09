@@ -141,6 +141,7 @@ export default {
     import: 'Import',
     apply: 'Apply',
     close: 'Close',
+    phone: 'Phone Number',
     name: 'Name',
     createdOn: 'Created On',
     contact: {
@@ -151,7 +152,6 @@ export default {
       tags: 'Tags',
       noOfCampaigns: '# of Campaign',
       keywords: 'Keywords',
-      phone: 'Phone Number',
       notes: 'Notes',
       gender: 'Gender'
     },

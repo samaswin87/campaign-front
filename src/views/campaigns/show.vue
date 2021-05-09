@@ -7,89 +7,28 @@
                         <span>Campaign</span>
                     </div>
                     <div>
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.status')}}:</label></div>
+                        <el-row>
+                            <el-col :span="6">
+                                <el-row>
+                                    <el-card class="box-card campaign-details">
+                                        <div slot="header" class="clearfix">
+                                            <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
+                                            <el-button size="mini" class="right-button">Edit</el-button>
+                                            <el-button type="success" size="mini" class="right-button">Start</el-button>
+                                        </div>
+                                        <div>
+                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.company}}</span></div>
+                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.type}}</span></div>
+                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.createdOn | parseDate}}</span></div>
+                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.createdOn | parseDate}}</span></div>
+                                        </div>
+                                    </el-card>
+                                </el-row>
                             </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign">
-                                    <span>
-                                        <el-tag effect="dark" :type="campaignData.status | statusFilter">
-                                            {{ campaignData.status }}
-                                        </el-tag>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.company')}}:</label></div>
-                            </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign"><span>{{campaignData.company}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.name')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign"><span>{{campaignData.name}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.campaign.noOfContacts')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign"><span>{{campaignData.noOfContacts}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.type')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign">
-                                    <span>
-                                        <el-tag effect="dark" :type="campaignData.type | campaignTypeFilter">
-                                            {{ campaignData.type }}
-                                        </el-tag>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.createdOn')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign"><span>{{campaignData.createdOn | parseDate}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="campaign-row">
-                            <el-col :span="10" class="campaign-label">
-                                <div class="grid-campaign"><label class="label-space">{{$t('table.campaign.scheduledOn')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="campaign-vlaue">
-                                <div class="grid-campaign"><span>{{campaignData.scheduledOn | parseTime}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="campaign-row">
-                            <el-col :span="12"  class="campaign-label">
-                                <div class="grid-campaign">
-                                    <router-link :to="'/campaigns'">
-                                        <el-button type="primary" icon="el-icon-caret-left">
-                                            Back
-                                        </el-button>
-                                    </router-link>
-                                </div>
+                            <el-col :span="18">
+                                <el-card class="box-card campaign-recipients">
+                                    <RecipientsTable />
+                                </el-card>
                             </el-col>
                         </el-row>
                     </div>
@@ -102,9 +41,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultCampaignData, getCampaign } from '@/api/campaigns'
+import RecipientsTable from '@/views/campaign-recipients/index.vue'
 
 @Component({
-  name: 'CampaignView'
+  name: 'CampaignView',
+  components: {
+    RecipientsTable
+  }
 })
 export default class extends Vue {
     private campaignData = defaultCampaignData
@@ -126,19 +69,24 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.campaign-label {
-    text-align: end;
-}
-
-.campaign-vlaue {
-    margin-left: 3%;
-}
-
-.campaign-row {
-    margin-bottom: 1%;
-}
-
 .tags {
   margin-left: 6px;
+}
+
+.right-button {
+    float: right;
+    margin-right: 2px;
+}
+
+.campaign-details {
+    margin-right: 1%;
+}
+
+.icon-padding {
+    padding-right: 10px
+}
+
+.grid-campaign {
+    margin-bottom: 10px;
 }
 </style>
