@@ -12,9 +12,9 @@
                                 <el-row>
                                     <el-card class="box-card campaign-details">
                                         <div slot="header" class="clearfix">
-                                            <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-                                            <el-button size="mini" class="right-button">Edit</el-button>
-                                            <el-button type="success" size="mini" class="right-button">Start</el-button>
+                                            <el-button type="success" size="mini">Start</el-button>
+                                            <el-button type="primary" size="mini">Edit</el-button>
+                                            <el-button type="danger" size="mini" icon="el-icon-delete" class="right-button"></el-button>
                                         </div>
                                         <div>
                                             <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.company}}</span></div>
@@ -75,7 +75,6 @@ export default class extends Vue {
 
 .right-button {
     float: right;
-    margin-right: 2px;
 }
 
 .campaign-details {

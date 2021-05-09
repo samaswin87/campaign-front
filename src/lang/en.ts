@@ -145,6 +145,7 @@ export default {
     name: 'Name',
     createdOn: 'Created On',
     contact: {
+      optOut: 'Opted Out',
       firstName: 'First Name',
       lastName: 'Last Name',
       middleName: 'Middle Name',
@@ -153,7 +154,8 @@ export default {
       noOfCampaigns: '# of Campaign',
       keywords: 'Keywords',
       notes: 'Notes',
-      gender: 'Gender'
+      gender: 'Gender',
+      moveContacts: 'Move Contacts to workflow / campaigns'
     },
     campaign: {
       body: 'Message',

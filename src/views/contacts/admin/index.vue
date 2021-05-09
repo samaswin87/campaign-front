@@ -1,189 +1,221 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <router-link :to="{name: 'ContactCreate'}">
-        <el-button
-          class="filter-item"
-          style="margin-left: 10px;"
-          type="primary"
-          icon="el-icon-circle-plus-outline"
-        >
-          {{ $t('table.add') }}
-        </el-button>
-      </router-link>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-download"
-      >
-        {{ $t('table.export') }}
-      </el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-upload"
-      >
-        {{ $t('table.import') }}
-      </el-button>
-      <el-switch
-        style="margin-left: 10px;"
-        v-model="selectAll"
-        class="filter-item"
-        @change="handleSelectAll"
-        active-text="Select All">
-      </el-switch>
-      <div class="float-right">
-        <el-input
-          v-model="listQuery.title"
-          :placeholder="$t('table.search')"
-          style="width: 300px;"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleSearch"
-        >
-        </el-button>
-
-        <el-button
-          v-waves
-          type="primary"
-          class="filter-item"
-          circle
-          @click="handleFilter"
-          >
-          <svg-icon name="filter-solid" />
-        </el-button>
-      </div>
-    </div>
-
-    <el-table
-      ref="contactTable"
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      @selection-change="handleSelectionChange"
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.id')"
-        prop="id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.contact.firstName')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span
-          >{{ row.firstName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.contact.lastName')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span
-          >{{ row.lastName }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.company')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span
-          >{{ row.company }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.phone')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span
-          >{{ row.phone }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.contact.noOfCampaigns')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.noOfCampaigns }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.contact.keywords')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-
-          <span>
-            <el-tag
-              v-for="item in row.keywords"
-              class="tags"
-              :key="item"
-            >
-              {{ item }}
-            </el-tag>
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.actions')"
-        align="center"
-        width="230"
-        class-name="fixed-width"
-      >
-        <template slot-scope="{row, $index}">
-          <router-link :to="{name: 'ContactView', params: {id: row.id}}">
-            <el-button
-              icon="el-icon-view"
-              circle
-            >
-            </el-button>
-          </router-link>
-          <router-link :to="{name: 'ContactEdit', params: {id: row.id}}">
-            <el-button
-              icon="el-icon-edit-outline"
-              circle
-            >
-            </el-button>
-          </router-link>
+      <el-row>
+        <el-col :span="8">
+          <router-link :to="{name: 'ContactCreate'}">
+            <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="bottom">
+              <el-button
+                style="margin-left: 10px;"
+                type="primary"
+                icon="el-icon-circle-plus-outline"
+              >
+              </el-button>
+          </el-tooltip>
+        </router-link>
+        <el-tooltip class="item" effect="dark" :content="$t('table.export')" placement="bottom">
           <el-button
-            v-if="row.status!=='deleted'"
-            icon="el-icon-delete"
-            @click="handleDelete(row, $index)"
-            circle
+            style="margin-left: 10px;"
+            type="primary"
+            icon="el-icon-download"
           >
           </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" :content="$t('table.import')" placement="bottom">
+          <el-button
+            style="margin-left: 10px;"
+            type="primary"
+            icon="el-icon-upload"
+          >
+          </el-button>
+        </el-tooltip>
+        </el-col>
+        <el-col :span="8">
+          <el-switch
+            v-model="selectAll"
+            @change="handleSelectAll"
+            active-text="Select All">
+          </el-switch>
+          <el-tooltip class="item" effect="dark" :content="$t('table.contact.optOut')" placement="bottom">
+            <el-button
+              style="margin-left: 10px;"
+              type="danger"
+              icon="el-icon-turn-off"
+              :disabled="(this.multipleSelection.length === 0)"
+            >
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="$t('table.contact.tags')" placement="bottom">
+            <el-button
+              style="margin-left: 10px;"
+              type="primary"
+              icon="el-icon-price-tag"
+              @click="toggleTags"
+              :disabled="(this.multipleSelection.length === 0)"
+            >
+            </el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" :content="$t('table.contact.moveContacts')" placement="bottom">
+            <el-button
+              style="margin-left: 10px;"
+              type="primary"
+              icon="el-icon-copy-document"
+              :disabled="(this.multipleSelection.length === 0)"
+            >
+            </el-button>
+          </el-tooltip>
+        </el-col>
+        <el-col :span="8" class="float-right">
+            <el-input
+              v-model="listQuery.title"
+              :placeholder="$t('table.search')"
+              style="width: 300px;"
+              @keyup.enter.native="handleFilter"
+            />
+
+            <el-button
+              v-waves
+              type="primary"
+              icon="el-icon-search"
+              @click="handleSearch"
+            >
+            </el-button>
+
+            <el-button
+              v-waves
+              type="primary"
+              circle
+              @click="handleFilter"
+              >
+              <svg-icon name="filter-solid" />
+            </el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <el-row>
+      <el-col>
+        <el-table
+        ref="contactTable"
+        :key="tableKey"
+        v-loading="listLoading"
+        :data="list"
+        border
+        fit
+        highlight-current-row
+        @selection-change="handleSelectionChange"
+        style="width: 100%;"
+        @sort-change="sortChange"
+      >
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.id')"
+          prop="id"
+          sortable="custom"
+          align="center"
+          width="80"
+          :class-name="getSortClass('id')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.contact.firstName')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.firstName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.contact.lastName')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.lastName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.company')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.company }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.phone')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.phone }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.contact.noOfCampaigns')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.noOfCampaigns }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.contact.keywords')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+
+            <span>
+              <el-tag
+                v-for="item in row.keywords"
+                class="tags"
+                :key="item"
+              >
+                {{ item }}
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.actions')"
+          align="center"
+          width="230"
+          class-name="fixed-width"
+        >
+          <template slot-scope="{row}">
+            <router-link :to="{name: 'ContactView', params: {id: row.id}}">
+              <el-button
+                icon="el-icon-view"
+                circle
+              >
+              </el-button>
+            </router-link>
+            <router-link :to="{name: 'ContactEdit', params: {id: row.id}}">
+              <el-button
+                icon="el-icon-edit-outline"
+                circle
+              >
+              </el-button>
+            </router-link>
+            <el-button
+              v-if="row.status!=='deleted'"
+              icon="el-icon-turn-off"
+              @click="handleDelete(row)"
+              circle
+            >
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      </el-col>
+    </el-row>
 
     <pagination
       v-show="total>0"
@@ -197,13 +229,18 @@
       :visible.sync="filterLoading"
       @contactFiltered="contactFiltered"
     />
+
+    <TagsDialog
+      :visible.sync="dialogLoading"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
-import { getContacts, defaultContactData } from '@/api/contacts'
+import { getContacts, updateContact, defaultContactData } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
+import TagsDialog from './components/TagsDialog.vue'
 import { IContactData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 
@@ -211,7 +248,8 @@ import Pagination from '@/components/Pagination/index.vue'
   name: 'ContactTable',
   components: {
     Pagination,
-    ContactTableFilters
+    ContactTableFilters,
+    TagsDialog
   }
 })
 
@@ -257,13 +295,12 @@ export default class extends Vue {
     console.log(data)
   }
 
-  private dialogVisiblity() {
-    return this.filterLoading
+  private toggleTags() {
+    this.dialogLoading = true
   }
 
   private viewContact(row: any) {
     this.contactRow = Object.assign({}, row)
-    this.dialogLoading = true
   }
 
   private handleSelectionChange(val: any) {
@@ -329,21 +366,21 @@ export default class extends Vue {
     return sort === `+${key}` ? 'ascending' : 'descending'
   }
 
-  private handleDelete(row: any, index: number) {
+  private handleDelete(row: any) {
     this.$confirm('Are you sure?', 'Warning', {
       confirmButtonText: 'OK',
       cancelButtonText: 'Cancel',
       type: 'warning'
     }).then(() => {
-      this.list.splice(index, 1)
+      updateContact(row.id, { status: 'inactive' })
       this.$message({
         type: 'success',
-        message: 'Delete completed'
+        message: 'Contact opted out'
       })
     }).catch(() => {
       this.$message({
         type: 'info',
-        message: 'Delete canceled'
+        message: 'Contact not opted out'
       })
     })
   }
@@ -352,7 +389,7 @@ export default class extends Vue {
 
 <style lang="scss" scoped>
 .float-right {
-  float: right;
+  text-align: right
 }
 
 .tags {
