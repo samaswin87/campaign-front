@@ -1,32 +1,17 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <router-link :to="{name: 'CampaignCreate'}">
-        <el-button
-          class="filter-item"
-          style="margin-left: 10px;"
-          type="primary"
-          icon="el-icon-circle-plus-outline"
-        >
-          {{ $t('table.add') }}
-        </el-button>
-      </router-link>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-download"
-      >
-        {{ $t('table.export') }}
-      </el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-upload"
-      >
-        {{ $t('table.import') }}
-      </el-button>
+      <el-row>
+        <el-col :span="8">
+          <TableDefaultActions
+            :createRoute="createRoute"
+          />
+        </el-col>
+        <el-col :span="8">
+        </el-col>
+        <el-col :span="8">
+        </el-col>
+      </el-row>
       <div class="float-right">
         <el-input
           v-model="listQuery.title"
@@ -198,12 +183,14 @@ import { getCampaigns, defaultCampaignData } from '@/api/campaigns'
 import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
+import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 
 @Component({
   name: 'CampaignTable',
   components: {
     Pagination,
-    CampaignTableFilters
+    CampaignTableFilters,
+    TableDefaultActions
   }
 })
 
@@ -221,6 +208,7 @@ export default class extends Vue {
     sort: '+id'
   }
 
+  private createRoute = 'CampaignCreate'
   private statusOptions = ['active', 'inactive']
   private showReviewer = false
   private dialogFormVisible = false
