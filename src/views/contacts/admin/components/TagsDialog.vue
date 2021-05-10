@@ -2,14 +2,14 @@
     <el-dialog
       title="Tags Dialog"
       :visible.sync="visible"
-      width="30%"
+      width="40%"
       :before-close="handleClose"
     >
       <multiselect
         v-model="tags"
         tag-placeholder="Add this as new tag"
         placeholder="Search or add a tag"
-        :options="tags"
+        :options="tagsAvailable"
         :multiple="true"
         :clear-on-select="false"
         :close-on-select="false"
@@ -34,8 +34,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import Multiselect from 'vue-multiselect'
+import { map } from 'lodash'
+import { getTags } from '@/api/tags'
 
 @Component({
   name: 'TagsDialog',
@@ -43,8 +45,10 @@ import Multiselect from 'vue-multiselect'
 })
 export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
+    @Prop() private tagList!: string[]
 
     private tags: string[] = []
+    private tagsAvailable: string[] = []
 
     private close() {
       this.$emit('update:visible', false)
@@ -54,8 +58,26 @@ export default class extends Vue {
       this.$emit('update:visible', false)
     }
 
+    @Watch('tagList')
+    setTagList() {
+      this.tags = [...new Set(this.tagList.flat())]
+    }
+
     addTag(newTag: string) {
       this.tags.push(newTag)
+    }
+
+    created() {
+      this.fetchTags()
+    }
+
+    private async fetchTags() {
+      try {
+        const { data } = await getTags({})
+        this.tagsAvailable = map(data.items, 'name')
+      } catch (err) {
+        console.error(err)
+      }
     }
 }
 </script>

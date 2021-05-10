@@ -219,12 +219,13 @@
 
     <TagsDialog
       :visible.sync="dialogLoading"
+      :tagList.sync="tagList"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
+import { Component, Vue, Ref } from 'vue-property-decorator'
 import { getContacts, updateContact, defaultContactData } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import TagsDialog from './components/TagsDialog.vue'
@@ -266,7 +267,7 @@ export default class extends Vue {
 
   private dialogPageviewsVisible = false
   private pageviewsData = []
-
+  private tagList:string[][] = []
   private downloadLoading = false
   private tempContactData = defaultContactData
 
@@ -280,6 +281,7 @@ export default class extends Vue {
 
   private toggleTags() {
     this.dialogLoading = true
+    this.tagList = [...new Set(this.list.map((result) => result.tags))]
   }
 
   private viewContact(row: any) {
