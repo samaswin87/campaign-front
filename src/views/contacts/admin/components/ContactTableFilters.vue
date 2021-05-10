@@ -2,6 +2,7 @@
     <el-dialog
       title="Contact Filter"
       :visible.sync="visible"
+      :before-close="handleClose"
     >
       <el-form
         ref="contactFilterForm"
@@ -54,8 +55,10 @@
             <el-radio-group v-model="filterRecord.phoneOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
+              <el-radio label="Strat With"></el-radio>
+              <el-radio label="End With"></el-radio>
             </el-radio-group>
-            <el-input type="text" v-model="filterRecord.phoneNumber"></el-input>
+            <el-input type="textarea" v-model="filterRecord.phoneNumber"></el-input>
         </el-form-item>
       </el-form>
       <div
@@ -112,6 +115,10 @@ export default class extends Vue {
     }
 
     private close() {
+      this.$emit('update:visible', false)
+    }
+
+    handleClose() {
       this.$emit('update:visible', false)
     }
 }

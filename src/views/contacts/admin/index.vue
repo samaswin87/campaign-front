@@ -31,17 +31,11 @@
         </el-tooltip>
         </el-col>
         <el-col :span="8">
-          <el-switch
-            v-model="selectAll"
-            @change="handleSelectAll"
-            active-text="Select All">
-          </el-switch>
           <el-tooltip class="item" effect="dark" :content="$t('table.contact.optOut')" placement="bottom">
             <el-button
               style="margin-left: 10px;"
               type="danger"
               icon="el-icon-turn-off"
-              :disabled="(this.multipleSelection.length === 0)"
             >
             </el-button>
           </el-tooltip>
@@ -51,7 +45,6 @@
               type="primary"
               icon="el-icon-price-tag"
               @click="toggleTags"
-              :disabled="(this.multipleSelection.length === 0)"
             >
             </el-button>
           </el-tooltip>
@@ -60,7 +53,6 @@
               style="margin-left: 10px;"
               type="primary"
               icon="el-icon-copy-document"
-              :disabled="(this.multipleSelection.length === 0)"
             >
             </el-button>
           </el-tooltip>
@@ -102,14 +94,9 @@
         border
         fit
         highlight-current-row
-        @selection-change="handleSelectionChange"
         style="width: 100%;"
         @sort-change="sortChange"
       >
-        <el-table-column
-          type="selection"
-          width="55">
-        </el-table-column>
         <el-table-column
           :label="$t('table.id')"
           prop="id"
@@ -255,8 +242,6 @@ import Pagination from '@/components/Pagination/index.vue'
 
 export default class extends Vue {
   @Ref('contactTable') readonly contactTable!: any;
-
-  private multipleSelection = []
   private tableKey = 0
   private list: IContactData[] = []
   private total = 0
@@ -278,8 +263,6 @@ export default class extends Vue {
     update: 'Edit',
     create: 'Create'
   }
-
-  private selectAll = false
 
   private dialogPageviewsVisible = false
   private pageviewsData = []
@@ -303,14 +286,6 @@ export default class extends Vue {
     this.contactRow = Object.assign({}, row)
   }
 
-  private handleSelectionChange(val: any) {
-    this.multipleSelection = val
-  }
-
-  private handleSelectAll() {
-    this.contactTable.toggleAllSelection()
-  }
-
   private async getList() {
     this.listLoading = true
     const { data } = await getContacts(this.listQuery)
@@ -320,13 +295,6 @@ export default class extends Vue {
     setTimeout(() => {
       this.listLoading = false
     }, 0.5 * 1000)
-  }
-
-  @Watch('listLoading')
-  watchLoading() {
-    if (!this.listLoading && this.selectAll) {
-      this.contactTable.toggleAllSelection()
-    }
   }
 
   private handleFilter() {

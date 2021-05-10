@@ -2,7 +2,8 @@
     <el-dialog
       title="Tags Dialog"
       :visible.sync="visible"
-       width="30%"
+      width="30%"
+      :before-close="handleClose"
     >
       <multiselect
         v-model="tags"
@@ -46,6 +47,10 @@ export default class extends Vue {
     private tags: string[] = []
 
     private close() {
+      this.$emit('update:visible', false)
+    }
+
+    handleClose() {
       this.$emit('update:visible', false)
     }
 
