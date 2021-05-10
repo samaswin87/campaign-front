@@ -27,13 +27,6 @@
       >
         {{ $t('table.import') }}
       </el-button>
-      <el-switch
-        style="margin-left: 10px;"
-        v-model="selectAll"
-        class="filter-item"
-        @change="handleSelectAll"
-        active-text="Select All">
-      </el-switch>
       <div class="float-right">
         <el-input
           v-model="listQuery.title"
@@ -72,14 +65,9 @@
       border
       fit
       highlight-current-row
-      @selection-change="handleSelectionChange"
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
       <el-table-column
         :label="$t('table.id')"
         prop="id"
@@ -205,7 +193,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
+import { Component, Vue, Ref } from 'vue-property-decorator'
 import { getCampaigns, defaultCampaignData } from '@/api/campaigns'
 import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
@@ -221,8 +209,6 @@ import Pagination from '@/components/Pagination/index.vue'
 
 export default class extends Vue {
   @Ref('campaignTable') readonly campaignTable!: any;
-
-  private multipleSelection = []
   private tableKey = 0
   private list: ICampaignData[] = []
   private total = 0
@@ -244,8 +230,6 @@ export default class extends Vue {
     update: 'Edit',
     create: 'Create'
   }
-
-  private selectAll = false
 
   private dialogPageviewsVisible = false
   private pageviewsData = []
@@ -270,14 +254,6 @@ export default class extends Vue {
     this.dialogLoading = true
   }
 
-  private handleSelectionChange(val: any) {
-    this.multipleSelection = val
-  }
-
-  private handleSelectAll() {
-    this.campaignTable.toggleAllSelection()
-  }
-
   private async getList() {
     this.listLoading = true
     const { data } = await getCampaigns(this.listQuery)
@@ -287,13 +263,6 @@ export default class extends Vue {
     setTimeout(() => {
       this.listLoading = false
     }, 0.5 * 1000)
-  }
-
-  @Watch('listLoading')
-  watchLoading() {
-    if (!this.listLoading && this.selectAll) {
-      this.campaignTable.toggleAllSelection()
-    }
   }
 
   private handleFilter() {
