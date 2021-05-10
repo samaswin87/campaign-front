@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-      title="Tags Dialog"
+      title="Update Tags"
       :visible.sync="visible"
       width="40%"
       :before-close="handleClose"

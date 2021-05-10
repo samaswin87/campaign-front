@@ -53,6 +53,7 @@
               style="margin-left: 10px;"
               type="primary"
               icon="el-icon-copy-document"
+              @click="toggleMove"
             >
             </el-button>
           </el-tooltip>
@@ -218,8 +219,12 @@
     />
 
     <TagsDialog
-      :visible.sync="dialogLoading"
+      :visible.sync="tagsLoading"
       :tagList.sync="tagList"
+    />
+
+    <MoveDialog
+      :visible.sync="moveLoading"
     />
   </div>
 </template>
@@ -229,6 +234,7 @@ import { Component, Vue, Ref } from 'vue-property-decorator'
 import { getContacts, updateContact, defaultContactData } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import TagsDialog from './components/TagsDialog.vue'
+import MoveDialog from './components/MoveDialog.vue'
 import { IContactData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 
@@ -237,7 +243,8 @@ import Pagination from '@/components/Pagination/index.vue'
   components: {
     Pagination,
     ContactTableFilters,
-    TagsDialog
+    TagsDialog,
+    MoveDialog
   }
 })
 
@@ -248,7 +255,8 @@ export default class extends Vue {
   private total = 0
   private listLoading = true
   private filterLoading = false
-  private dialogLoading = false
+  private tagsLoading = false
+  private moveLoading = false
   private listQuery = {
     page: 1,
     limit: 20,
@@ -280,8 +288,12 @@ export default class extends Vue {
   }
 
   private toggleTags() {
-    this.dialogLoading = true
+    this.tagsLoading = true
     this.tagList = [...new Set(this.list.map((result) => result.tags))]
+  }
+
+  private toggleMove() {
+    this.moveLoading = true
   }
 
   private viewContact(row: any) {
