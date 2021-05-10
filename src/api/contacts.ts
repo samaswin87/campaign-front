@@ -3,7 +3,7 @@ import { IContactData } from './types'
 
 export const defaultContactData: IContactData = {
   id: 0,
-  status: 'draft',
+  status: 'active',
   firstName: '',
   lastName: '',
   middleName: '',

@@ -172,6 +172,16 @@
           </template>
         </el-table-column>
         <el-table-column
+        :label="$t('table.status')"
+        min-width="150px"
+      >
+        <template slot-scope="{row}">
+          <el-tag effect="dark" :type="row.status | statusFilter">
+            {{ row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
+        <el-table-column
           :label="$t('table.actions')"
           align="center"
           width="230"
@@ -194,7 +204,7 @@
             </router-link>
             <el-button
               v-if="row.status!=='deleted'"
-              icon="el-icon-turn-off"
+              :icon="iconStatus(row.status)"
               @click="handleDelete(row)"
               circle
             >
@@ -317,6 +327,14 @@ export default class extends Vue {
 
   private handleSearch() {
     this.filterLoading = true
+  }
+
+  private iconStatus(status: string) {
+    if (status === 'active') {
+      return 'el-icon-open'
+    }
+
+    return 'el-icon-turn-off'
   }
 
   private handleModifyStatus(row: any, status: string) {

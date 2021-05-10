@@ -8,7 +8,7 @@ const contactCount = 100
 for (let i = 0; i < contactCount; i++) {
   contactList.push({
     id: i,
-    status: faker.random.arrayElement(['published', 'draft']),
+    status: faker.random.arrayElement(['active', 'inactive']),
     company: faker.company.companyName(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
