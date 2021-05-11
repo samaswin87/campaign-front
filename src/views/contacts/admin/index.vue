@@ -3,32 +3,9 @@
     <div class="filter-container">
       <el-row>
         <el-col :span="8">
-          <router-link :to="{name: 'ContactCreate'}">
-            <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="bottom">
-              <el-button
-                style="margin-left: 10px;"
-                type="primary"
-                icon="el-icon-circle-plus-outline"
-              >
-              </el-button>
-          </el-tooltip>
-        </router-link>
-        <el-tooltip class="item" effect="dark" :content="$t('table.export')" placement="bottom">
-          <el-button
-            style="margin-left: 10px;"
-            type="primary"
-            icon="el-icon-download"
-          >
-          </el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" :content="$t('table.import')" placement="bottom">
-          <el-button
-            style="margin-left: 10px;"
-            type="primary"
-            icon="el-icon-upload"
-          >
-          </el-button>
-        </el-tooltip>
+          <TableDefaultActions
+            :createRoute="createRoute"
+          />
         </el-col>
         <el-col :span="8">
           <el-tooltip class="item" effect="dark" :content="$t('table.contact.optOut')" placement="bottom">
@@ -59,29 +36,7 @@
           </el-tooltip>
         </el-col>
         <el-col :span="8" class="float-right">
-            <el-input
-              v-model="listQuery.title"
-              :placeholder="$t('table.search')"
-              style="width: 300px;"
-              @keyup.enter.native="handleFilter"
-            />
-
-            <el-button
-              v-waves
-              type="primary"
-              icon="el-icon-search"
-              @click="handleSearch"
-            >
-            </el-button>
-
-            <el-button
-              v-waves
-              type="primary"
-              circle
-              @click="handleFilter"
-              >
-              <svg-icon name="filter-solid" />
-            </el-button>
+            <TableSearchWithFilters />
         </el-col>
       </el-row>
     </div>
@@ -247,6 +202,8 @@ import TagsDialog from './components/TagsDialog.vue'
 import MoveDialog from './components/MoveDialog.vue'
 import { IContactData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
+import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
+import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 
 @Component({
   name: 'ContactTable',
@@ -254,7 +211,9 @@ import Pagination from '@/components/Pagination/index.vue'
     Pagination,
     ContactTableFilters,
     TagsDialog,
-    MoveDialog
+    MoveDialog,
+    TableDefaultActions,
+    TableSearchWithFilters
   }
 })
 
@@ -267,6 +226,7 @@ export default class extends Vue {
   private filterLoading = false
   private tagsLoading = false
   private moveLoading = false
+  private createRoute = 'ContactCreate'
   private listQuery = {
     page: 1,
     limit: 20,
