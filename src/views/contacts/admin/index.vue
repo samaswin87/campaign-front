@@ -36,7 +36,7 @@
           </el-tooltip>
         </el-col>
         <el-col :span="8" class="float-right">
-            <TableSearchWithFilters />
+            <TableSearchWithFilters @handleFilter="handleFilter" />
         </el-col>
       </el-row>
     </div>
@@ -285,10 +285,6 @@ export default class extends Vue {
     this.filterLoading = true
   }
 
-  private handleSearch() {
-    this.filterLoading = true
-  }
-
   private iconStatus(status: string) {
     if (status === 'active') {
       return 'el-icon-open'
@@ -318,7 +314,6 @@ export default class extends Vue {
     } else {
       this.listQuery.sort = '-id'
     }
-    this.handleFilter()
   }
 
   private getSortClass(key: string) {

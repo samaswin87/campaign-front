@@ -34,11 +34,9 @@ import { Component, Vue } from 'vue-property-decorator'
 })
 
 export default class extends Vue {
-    private filterLoading = false
-
-    private handleFilter() {
-      this.filterLoading = true
-    }
+  private handleFilter() {
+    this.$emit('handleFilter')
+  }
 }
 </script>
 

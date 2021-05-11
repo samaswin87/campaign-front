@@ -2,6 +2,7 @@
     <el-dialog
       title="Campaign Filter"
       :visible.sync="visible"
+      :before-close="handleClose"
     >
       <el-form
         ref="campaignFilterForm"
@@ -94,6 +95,10 @@ export default class extends Vue {
     }
 
     private close() {
+      this.$emit('update:visible', false)
+    }
+
+    handleClose() {
       this.$emit('update:visible', false)
     }
 }
