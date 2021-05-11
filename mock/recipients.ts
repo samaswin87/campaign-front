@@ -2,24 +2,25 @@ import faker from 'faker'
 import { Response, Request } from 'express'
 import { ICampaignRecipientData } from '../src/api/types'
 
-const campaignList: ICampaignRecipientData[] = []
-const campaignCount = 10
+const recipientList: ICampaignRecipientData[] = []
+const recipientCount = 100
 
-for (let i = 0; i < campaignCount; i++) {
-  campaignList.push({
+for (let i = 0; i < recipientCount; i++) {
+  recipientList.push({
     id: i,
     status: faker.random.arrayElement(['published', 'draft', 'replied']),
     addedOn: faker.date.past().getTime(),
-    campaignId: i,
-    contactId: i,
-    data: { last_name: faker.name.lastName(), first_name: faker.name.firstName() }
+    phone: faker.phone.phoneNumber(),
+    data: { last_name: faker.name.lastName(), first_name: faker.name.firstName() },
+    tags: [faker.internet.domainName(), faker.internet.domainName()],
+    lastReplyAt: faker.date.past().getTime()
   })
 }
 
-export const getCampaignRecipients = (req: Request, res: Response) => {
+export const getRecipients = (req: Request, res: Response) => {
   const { page = 1, limit = 20, sort } = req.query
 
-  let mockList = campaignList
+  let mockList = recipientList
 
   if (sort === '-id') {
     mockList = mockList.reverse()
@@ -36,9 +37,9 @@ export const getCampaignRecipients = (req: Request, res: Response) => {
   })
 }
 
-export const getCampaignRecipient = (req: Request, res: Response) => {
+export const getRecipient = (req: Request, res: Response) => {
   const { id } = req.params
-  for (const campaign of campaignList) {
+  for (const campaign of recipientList) {
     if (campaign.id.toString() === id) {
       return res.json({
         code: 20000,

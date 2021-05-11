@@ -144,13 +144,13 @@ export default {
     phone: 'Phone Number',
     name: 'Name',
     createdOn: 'Created On',
+    tags: 'Tags',
     contact: {
       optOut: 'Opted Out',
       firstName: 'First Name',
       lastName: 'Last Name',
       middleName: 'Middle Name',
       email: 'Email',
-      tags: 'Tags',
       noOfCampaigns: '# of Campaign',
       keywords: 'Keywords',
       notes: 'Notes',
@@ -164,6 +164,11 @@ export default {
       noOfContacts: '# of Contacts',
       recurringDays: 'Recurring Days',
       recurringAt: 'Recurring Time'
+    },
+    recipient: {
+      data: 'Message Templates',
+      addedOn: 'Added On',
+      lastReplyAt: 'Last Reply At'
     }
   },
   example: {

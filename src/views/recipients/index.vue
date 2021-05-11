@@ -1,52 +1,16 @@
 <template>
   <div>
     <div class="filter-container">
-      <router-link :to="{name: 'CampaignCreate'}">
-        <el-button
-          class="filter-item"
-          style="margin-left: 10px;"
-          type="primary"
-          icon="el-icon-circle-plus-outline"
-        >
-          {{ $t('table.add') }}
-        </el-button>
-      </router-link>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-upload"
-      >
-        {{ $t('table.import') }}
-      </el-button>
-      <div class="float-right">
-        <el-input
-          v-model="listQuery.title"
-          :placeholder="$t('table.search')"
-          style="width: 300px;"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleSearch"
-        >
-        </el-button>
-
-        <el-button
-          v-waves
-          type="primary"
-          class="filter-item"
-          circle
-          @click="handleFilter"
-          >
-          <svg-icon name="filter-solid" />
-        </el-button>
-      </div>
+      <el-row>
+        <el-col :span="14">
+          <TableDefaultActions
+            :createRoute="createRoute"
+          />
+        </el-col>
+        <el-col :span="10" class="float-right">
+          <TableSearchWithFilters @handleFilter="handleFilter" />
+        </el-col>
+      </el-row>
     </div>
 
     <el-table
@@ -73,57 +37,65 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.name')"
-        min-width="150px"
+        :label="$t('table.recipient.data')"
+        min-width="170px"
       >
         <template slot-scope="{row}">
-          <span
-          >{{ row.name }}</span>
+          <span v-html="formatMustache(row.data)"
+          ></span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.type')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <el-tag effect="dark" :type="row.type | campaignTypeFilter">
-            {{ row.type }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.company')"
-        min-width="150px"
+        :label="$t('table.phone')"
+        min-width="140px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.company }}</span>
+          >{{ row.phone }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.campaign.scheduledOn')"
-        min-width="150px"
+        :label="$t('table.recipient.addedOn')"
+        min-width="140px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.scheduledOn | parseTime }}</span>
+          >{{ row.addedOn | parseTime }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.createdOn')"
-        min-width="150px"
+        :label="$t('table.recipient.lastReplyAt')"
+        min-width="140px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.createdOn | parseDate }}</span>
+          >{{ row.lastReplyAt | parseTime }}</span>
         </template>
       </el-table-column>
+      <el-table-column
+          :label="$t('table.tags')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+
+            <span>
+              <el-tag
+                v-for="item in row.tags"
+                class="tags"
+                size="mini"
+                :key="item"
+              >
+                {{ item }}
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
       <el-table-column
         :label="$t('table.status')"
-        min-width="150px"
+        min-width="80px"
       >
         <template slot-scope="{row}">
-          <el-tag effect="dark" :type="row.status | statusFilter">
+          <el-tag size="mini" effect="dark" :type="row.status | statusFilter">
             {{ row.status }}
           </el-tag>
         </template>
@@ -131,24 +103,15 @@
       <el-table-column
         :label="$t('table.actions')"
         align="center"
-        width="230"
+        width="130"
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
-          <router-link :to="{name: 'CampaignView', params: {id: row.id}}">
-            <el-button
-              icon="el-icon-view"
-              circle
-            >
-            </el-button>
-          </router-link>
-          <router-link :to="{name: 'CampaignEdit', params: {id: row.id}}">
-            <el-button
-              icon="el-icon-edit-outline"
-              circle
-            >
-            </el-button>
-          </router-link>
+          <el-button
+            icon="el-icon-chat-round"
+            circle
+          >
+          </el-button>
           <el-button
             v-if="row.status!=='deleted'"
             icon="el-icon-delete"
@@ -171,15 +134,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
-import { getRecipients, defaultRecipientData } from '@/api/campaign-recipients'
+import { Component, Vue } from 'vue-property-decorator'
+import { getRecipients, defaultRecipientData } from '@/api/recipients'
 import { ICampaignRecipientData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
+import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
+import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 
 @Component({
   name: 'RecipientsTable',
   components: {
-    Pagination
+    Pagination,
+    TableDefaultActions,
+    TableSearchWithFilters
   }
 })
 
@@ -191,6 +158,7 @@ export default class extends Vue {
   private listLoading = true
   private filterLoading = false
   private dialogLoading = false
+  private createRoute = 'RecipientCreate'
   private listQuery = {
     page: 1,
     limit: 20,
@@ -230,6 +198,14 @@ export default class extends Vue {
     this.dialogLoading = true
   }
 
+  formatMustache = (jsonData: any) => {
+    let formatedMustache = ''
+    Object.keys(jsonData).map((key) => {
+      formatedMustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span> - ' + jsonData[key] + ' </br>'
+    })
+    return formatedMustache
+  }
+
   private async getList() {
     this.listLoading = true
     const { data } = await getRecipients(this.listQuery)
@@ -242,10 +218,6 @@ export default class extends Vue {
   }
 
   private handleFilter() {
-    this.filterLoading = true
-  }
-
-  private handleSearch() {
     this.filterLoading = true
   }
 

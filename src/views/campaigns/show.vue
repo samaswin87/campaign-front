@@ -41,7 +41,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultCampaignData, getCampaign } from '@/api/campaigns'
-import RecipientsTable from '@/views/campaign-recipients/index.vue'
+import RecipientsTable from '@/views/recipients/index.vue'
 
 @Component({
   name: 'CampaignView',

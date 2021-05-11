@@ -6,8 +6,9 @@ export const defaultRecipientData: ICampaignRecipientData = {
   status: 'draft',
   addedOn: '',
   data: '',
-  campaignId: 1,
-  contactId: 1
+  phone: '',
+  tags: [],
+  lastReplyAt: ''
 }
 
 export const getRecipients = (params: any) =>

@@ -1,5 +1,6 @@
 export * from './tags'
 export * from './companies'
+export * from './recipients'
 export * from './contacts'
 export * from './campaigns'
 export * from './workflows'

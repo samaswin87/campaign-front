@@ -181,14 +181,31 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'campaign',
           hidden: true
         }
-      },
+      }
+    ]
+  },
+  {
+    path: '/campaign/recipients',
+    component: Layout,
+    redirect: 'campaign/recipients/index',
+    children: [
       {
-        path: '/recipients/index',
-        component: () => import('@/views/campaigns/index.vue'),
-        name: 'CampaignRecipients',
+        path: '/campaign/recipients/index',
+        component: () => import('@/views/recipients/index.vue'),
+        name: 'Recipients',
         meta: {
           noCache: true,
           title: 'recipients',
+          hidden: true
+        }
+      },
+      {
+        path: '/campaign/recipients/new',
+        component: () => import('@/views/recipients/new.vue'),
+        name: 'RecipientCreate',
+        meta: {
+          noCache: true,
+          title: 'recipient',
           hidden: true
         }
       }

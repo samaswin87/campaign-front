@@ -40,9 +40,10 @@ export interface ICampaignRecipientData {
   id: number
   status: string
   addedOn: string | number
-  campaignId: number
-  contactId: number
+  phone: string
   data: {}
+  tags: string[]
+  lastReplyAt: string | number
 }
 
 export interface ICampaignData {

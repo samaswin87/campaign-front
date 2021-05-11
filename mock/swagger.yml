@@ -323,7 +323,7 @@ paths:
         - recipients
       summary: Get Recipient List
       description: Return a list of recipients.
-      operationId: getCampaigns
+      operationId: getRecipients
       parameters:
         - name: page
           in: query
@@ -1436,15 +1436,6 @@ components:
           enum:
             - active
             - inactive
-        name:
-          type: string
-          example: IG Won World Championship
-        phone:
-          type: string
-          example: Company phone
-        email:
-          type: string
-          example: Company email
       required:
        - id
        - status
