@@ -12,7 +12,7 @@ for (let i = 0; i < recipientCount; i++) {
     addedOn: faker.date.past().getTime(),
     phone: faker.phone.phoneNumber(),
     data: { last_name: faker.name.lastName(), first_name: faker.name.firstName() },
-    tags: [faker.internet.domainName(), faker.internet.domainName()],
+    tags: [faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName()],
     lastReplyAt: faker.date.past().getTime()
   })
 }

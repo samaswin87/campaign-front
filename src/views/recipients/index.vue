@@ -80,12 +80,12 @@
 
             <span>
               <el-tag
-                v-for="item in row.tags"
+                v-for="(item, index) in restrictedTags(row.tags)"
                 class="tags"
                 size="mini"
                 :key="item"
               >
-                {{ item }}
+                {{ (index > 1) ? '...' : item }}
               </el-tag>
             </span>
           </template>
@@ -248,6 +248,10 @@ export default class extends Vue {
   private getSortClass(key: string) {
     const sort = this.listQuery.sort
     return sort === `+${key}` ? 'ascending' : 'descending'
+  }
+
+  private restrictedTags(tags: string[]) {
+    return tags.filter((tag, index) => index < 3)
   }
 
   private handleDelete(row: any, index: number) {
