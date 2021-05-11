@@ -2,44 +2,15 @@
   <div class="app-container">
     <div class="filter-container">
       <el-row>
-        <el-col :span="8">
+        <el-col :span="16">
           <TableDefaultActions
             :createRoute="createRoute"
           />
         </el-col>
-        <el-col :span="8">
-        </el-col>
-        <el-col :span="8">
+        <el-col :span="8" class="float-right">
+          <TableSearchWithFilters />
         </el-col>
       </el-row>
-      <div class="float-right">
-        <el-input
-          v-model="listQuery.title"
-          :placeholder="$t('table.search')"
-          style="width: 300px;"
-          class="filter-item"
-          @keyup.enter.native="handleFilter"
-        />
-
-        <el-button
-          v-waves
-          class="filter-item"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleSearch"
-        >
-        </el-button>
-
-        <el-button
-          v-waves
-          type="primary"
-          class="filter-item"
-          circle
-          @click="handleFilter"
-          >
-          <svg-icon name="filter-solid" />
-        </el-button>
-      </div>
     </div>
 
     <el-table
@@ -184,13 +155,15 @@ import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
+import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 
 @Component({
   name: 'CampaignTable',
   components: {
     Pagination,
     CampaignTableFilters,
-    TableDefaultActions
+    TableDefaultActions,
+    TableSearchWithFilters
   }
 })
 
