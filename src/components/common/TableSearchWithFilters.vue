@@ -1,8 +1,8 @@
 <template>
-    <div class="float-right">
+    <div>
         <el-input
           :placeholder="$t('table.search')"
-          style="width: 300px;"
+          style="width: 75%;"
           class="filter-item"
         />
 
@@ -17,7 +17,7 @@
         <el-button
           v-waves
           type="primary"
-          class="filter-item"
+          class="filter-item float-right"
           circle
           @click="handleFilter"
           >

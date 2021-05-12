@@ -25,29 +25,7 @@
       @sort-change="sortChange"
     >
       <el-table-column
-        :label="$t('table.id')"
-        prop="id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.recipient.data')"
-        min-width="170px"
-      >
-        <template slot-scope="{row}">
-          <span v-html="formatMustache(row.data)"
-          ></span>
-        </template>
-      </el-table-column>
-      <el-table-column
         :label="$t('table.phone')"
-        min-width="140px"
       >
         <template slot-scope="{row}">
           <span
@@ -55,17 +33,17 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.recipient.addedOn')"
-        min-width="140px"
+        :label="$t('table.recipient.data')"
+        min-width="130px"
       >
         <template slot-scope="{row}">
-          <span
-          >{{ row.addedOn | parseTime }}</span>
+          <span v-html="formatMustache(row.data)"
+          ></span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.recipient.lastReplyAt')"
-        min-width="140px"
+        min-width="80px"
       >
         <template slot-scope="{row}">
           <span
@@ -74,7 +52,7 @@
       </el-table-column>
       <el-table-column
           :label="$t('table.tags')"
-          min-width="150px"
+          min-width="100px"
         >
           <template slot-scope="{row}">
 
@@ -109,6 +87,7 @@
         <template slot-scope="{row, $index}">
           <el-button
             icon="el-icon-chat-round"
+            @click="openChat"
             circle
           >
           </el-button>
@@ -125,6 +104,10 @@
 
     <RecipientTableFilters
       :visible.sync="filterLoading"
+    />
+
+    <Chat
+    :visible.sync="chatLoading"
     />
 
     <pagination
@@ -145,6 +128,7 @@ import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import RecipientTableFilters from './components/RecipientTableFilters.vue'
+import Chat from './components/Chat.vue'
 
 @Component({
   name: 'RecipientsTable',
@@ -152,7 +136,8 @@ import RecipientTableFilters from './components/RecipientTableFilters.vue'
     Pagination,
     TableDefaultActions,
     TableSearchWithFilters,
-    RecipientTableFilters
+    RecipientTableFilters,
+    Chat
   }
 })
 
@@ -164,6 +149,7 @@ export default class extends Vue {
   private listLoading = true
   private filterLoading = false
   private dialogLoading = false
+  private chatLoading = false
   private createRoute = 'RecipientCreate'
   private listQuery = {
     page: 1,
@@ -204,6 +190,10 @@ export default class extends Vue {
     this.dialogLoading = true
   }
 
+  private openChat() {
+    this.chatLoading = true
+  }
+
   formatMustache = (jsonData: any) => {
     let formatedMustache = ''
     Object.keys(jsonData).map((key) => {
@@ -225,6 +215,10 @@ export default class extends Vue {
 
   private handleFilter() {
     this.filterLoading = true
+  }
+
+  private handleChat() {
+    this.chatLoading = true
   }
 
   private handleModifyStatus(row: any, status: string) {

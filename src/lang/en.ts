@@ -210,5 +210,10 @@ export default {
     showSidebarLogo: 'Sidebar Logo',
     fixedHeader: 'Fixed Header',
     sidebarTextTheme: 'Sidebar Text Theme'
+  },
+  common: {
+    next: 'Next',
+    previous: 'Previous',
+    close: 'Close'
   }
 }
