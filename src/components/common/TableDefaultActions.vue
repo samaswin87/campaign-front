@@ -14,7 +14,7 @@
         <el-button
             style="margin-left: 10px;"
             type="primary"
-            icon="el-icon-download"
+            icon="el-icon-upload"
         >
         </el-button>
         </el-tooltip>
@@ -22,7 +22,7 @@
         <el-button
             style="margin-left: 10px;"
             type="primary"
-            icon="el-icon-upload"
+            icon="el-icon-download"
         >
         </el-button>
         </el-tooltip>

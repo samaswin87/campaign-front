@@ -29,7 +29,8 @@ export const campaignTypeFilter = (status: string) => {
   const statusMap: { [key: string]: string } = {
     scheduled: 'warning',
     immediate: 'success',
-    recurring: 'danger'
+    recurring: 'danger',
+    one_by_one: 'info'
   }
   return statusMap[status]
 }

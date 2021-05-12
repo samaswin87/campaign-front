@@ -15,12 +15,46 @@
                                             <el-tooltip class="item" effect="dark" content="Start/Publish campaign" placement="bottom">
                                                 <el-button type="success" size="mini" icon="el-icon-video-play"></el-button>
                                             </el-tooltip>
+                                            <el-tooltip class="item" effect="dark" content="Edit" placement="bottom">
+                                                <el-button type="info" size="mini" icon="el-icon-edit-outline" class="right-button"></el-button>
+                                            </el-tooltip>
                                         </div>
                                         <div>
-                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.company}}</span></div>
-                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.type}}</span></div>
-                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.createdOn | parseDate}}</span></div>
-                                            <div class="grid-campaign"><i class="el-icon-office-building icon-padding"></i><span>{{campaignData.createdOn | parseDate}}</span></div>
+                                            <div class="grid-campaign">
+                                                <el-tooltip class="item" effect="dark" content="Company" placement="right">
+                                                    <i class="el-icon-office-building icon-padding"></i>
+                                                </el-tooltip>
+                                                <span>{{campaignData.company}}</span>
+                                            </div>
+                                            <div class="grid-campaign">
+                                                <el-tooltip class="item" effect="dark" content="Campaign Type" placement="right">
+                                                    <i :class="typeIcon(campaignData.type)"></i>
+                                                </el-tooltip>
+                                                <span>{{typeName(campaignData.type)}}</span>
+                                            </div>
+                                            <div class="grid-campaign">
+                                                <el-tooltip class="item" effect="dark" content="Contact count" placement="right">
+                                                    <i class="el-icon-s-data icon-padding"></i>
+                                                </el-tooltip>
+                                                <span>{{campaignData.noOfContacts}}</span>
+                                            </div>
+                                            <div class="grid-campaign">
+                                                <el-tooltip class="item" effect="dark" content="Phone" placement="right">
+                                                    <i class="el-icon-office-building icon-padding"></i>
+                                                </el-tooltip>
+                                                <span>{{campaignData.phone}}</span>
+                                            </div>
+                                        </div>
+                                    </el-card>
+                                </el-row>
+                                <el-row>
+                                    <el-card class="box-card campaign-details">
+                                        <div slot="header" class="clearfix">
+                                            <i class="el-icon-message icon-padding"></i>
+                                            <span>Message</span>
+                                        </div>
+                                        <div>
+                                            {{campaignData.body}}
                                         </div>
                                     </el-card>
                                 </el-row>
@@ -65,6 +99,26 @@ export default class extends Vue {
         console.error(err)
       }
     }
+
+    private typeIcon(type: string) {
+      const typeMap: { [key: string]: string } = {
+        scheduled: 'el-icon-time icon-padding',
+        immediate: 'el-icon-s-promotion icon-padding',
+        recurring: 'el-icon-date icon-padding',
+        one_by_one: 'el-icon-s-comment icon-padding'
+      }
+      return typeMap[type]
+    }
+
+    private typeName(type: string) {
+      const typeMap: { [key: string]: string } = {
+        scheduled: 'Schedule: Pick a date and time to send',
+        immediate: 'Immediate: Send all messages now',
+        recurring: 'Recurring: Send a message over and over',
+        one_by_one: 'One-by-One: Send each message manually'
+      }
+      return typeMap[type]
+    }
 }
 </script>
 
@@ -79,6 +133,10 @@ export default class extends Vue {
 
 .icon-padding {
     padding-right: 10px
+}
+
+.right-button {
+    float: right;
 }
 
 .grid-campaign {

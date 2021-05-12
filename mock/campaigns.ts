@@ -14,7 +14,7 @@ for (let i = 0; i < campaignCount; i++) {
     company: faker.company.companyName(),
     createdOn: faker.date.past().getTime(),
     body: faker.lorem.sentence(10, 20),
-    type: faker.random.arrayElement(['scheduled', 'immediate', 'recurring']),
+    type: faker.random.arrayElement(['scheduled', 'immediate', 'recurring', 'one_by_one']),
     noOfContacts: faker.datatype.number(),
     recurringDays: ['Mon', 'Tue'],
     recurringAt: faker.date.future().getTime(),
