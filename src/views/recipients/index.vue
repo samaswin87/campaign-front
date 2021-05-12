@@ -123,6 +123,10 @@
       </el-table-column>
     </el-table>
 
+    <RecipientTableFilters
+      :visible.sync="filterLoading"
+    />
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -140,13 +144,15 @@ import { ICampaignRecipientData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
+import RecipientTableFilters from './components/RecipientTableFilters.vue'
 
 @Component({
   name: 'RecipientsTable',
   components: {
     Pagination,
     TableDefaultActions,
-    TableSearchWithFilters
+    TableSearchWithFilters,
+    RecipientTableFilters
   }
 })
 
