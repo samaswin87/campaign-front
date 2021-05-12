@@ -12,7 +12,7 @@ interface ISettings {
 
 // You can customize below settings :)
 const settings: ISettings = {
-  title: 'Companign',
+  title: 'Campaign',
   showSettings: true,
   showTagsView: true,
   fixedHeader: false,

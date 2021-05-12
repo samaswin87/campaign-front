@@ -1,6 +1,6 @@
 {
-    "name": "Companign",
-    "short_name": "Companign",
+    "name": "Campaign",
+    "short_name": "Campaign",
     "icons": [{
             "src": "./img/icons/logo.png",
             "sizes": "192x192",
