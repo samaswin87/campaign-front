@@ -66,7 +66,8 @@ export default {
     profile: 'Profile',
     contact: 'Contact',
     campaigns: 'Campaigns',
-    campaign: 'Campaign'
+    campaign: 'Campaign',
+    recipient: 'Recipient'
   },
   navbar: {
     logOut: 'Log Out',
