@@ -32,6 +32,26 @@
                                                 </el-tooltip>
                                                 <span>{{typeName(campaignData.type)}}</span>
                                             </div>
+                                            <div class="grid-campaign" v-if="campaignData.type === 'scheduled'">
+                                                <el-tooltip class="item" effect="dark" content="Scheduled On" placement="right">
+                                                    <i class="el-icon-timer icon-padding"></i>
+                                                </el-tooltip>
+                                                <span>{{campaignData.scheduledOn | parseTime }}</span>
+                                            </div>
+                                            <div class="grid-campaign" v-if="campaignData.type === 'recurring'">
+                                                <el-tooltip class="item" effect="dark" content="Recurring Days" placement="right">
+                                                    <i class="el-icon-date icon-padding"></i>
+                                                </el-tooltip>
+                                                <span class="svg-container" v-for="day in recurringDays" :key="day">
+                                                    <svg-icon :name="dayIcon(day)" :class="dayIconEnable(day, campaignData.recurringDays)"/>
+                                                </span>
+                                            </div>
+                                            <div class="grid-campaign" v-if="campaignData.type === 'recurring'">
+                                                <el-tooltip class="item" effect="dark" content="Recurring At" placement="right">
+                                                    <i class="el-icon-timer icon-padding"></i>
+                                                </el-tooltip>
+                                                <span>{{campaignData.recurringAt | parseTime('{h}:{i}:{s}') }}</span>
+                                            </div>
                                             <div class="grid-campaign">
                                                 <el-tooltip class="item" effect="dark" content="Contact count" placement="right">
                                                     <i class="el-icon-s-data icon-padding"></i>
@@ -39,8 +59,8 @@
                                                 <span>{{campaignData.noOfContacts}}</span>
                                             </div>
                                             <div class="grid-campaign">
-                                                <el-tooltip class="item" effect="dark" content="Phone" placement="right">
-                                                    <i class="el-icon-office-building icon-padding"></i>
+                                                <el-tooltip class="item" effect="dark" content="Platform Number" placement="right">
+                                                    <i class="el-icon-phone icon-padding"></i>
                                                 </el-tooltip>
                                                 <span>{{campaignData.phone}}</span>
                                             </div>
@@ -85,6 +105,7 @@ import RecipientsTable from '@/views/recipients/index.vue'
 })
 export default class extends Vue {
     private campaignData = defaultCampaignData
+    private recurringDays :string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
     created() {
       const id = this.$route.params && this.$route.params.id
@@ -119,6 +140,23 @@ export default class extends Vue {
       }
       return typeMap[type]
     }
+
+    private dayIcon(day: string) {
+      const dayMap: { [key: string]: string } = {
+        Mon: 'Monday',
+        Tue: 'Tuesday',
+        Wed: 'Wednesday',
+        Thu: 'Thursday',
+        Fri: 'Friday',
+        Sat: 'Saturday',
+        Sun: 'Sunday'
+      }
+      return dayMap[day]
+    }
+
+    private dayIconEnable(day: any, recurringDays: string[]) {
+      return recurringDays.includes(day) ? 'svg-padding svg-color' : 'svg-padding'
+    }
 }
 </script>
 
@@ -141,5 +179,21 @@ export default class extends Vue {
 
 .grid-campaign {
     margin-bottom: 10px;
+}
+
+.svg-container {
+    padding: 6px 5px 6px 0px;
+    vertical-align: middle;
+    width: 40px;
+    display: inline-block;
+  }
+
+.svg-color {
+    color: #42b983;
+}
+
+.svg-padding {
+    width: 2.5em !important;
+    height: 2.5em !important;
 }
 </style>
