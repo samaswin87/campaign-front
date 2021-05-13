@@ -317,6 +317,61 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Workflow'
+  /conversations:
+    get:
+      tags:
+        - conversations
+      summary: Get conversation List
+      description: Return a list of conversations.
+      operationId: getConversations
+      parameters:
+        - name: message
+          in: query
+          description: Used to filter conversations by matched message substring.
+        - name: page
+          in: query
+          description: The wanted page number (one page).
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: limit
+          in: query
+          description: The maximum number of conversations returned for one page.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+        - name: sort
+          in: query
+          description: Optional sorting order for conversations.
+          schema:
+            type: string
+            enum:
+              - +id
+              - -id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Conversation'
   /recipients:
     get:
       tags:
@@ -1518,6 +1573,20 @@ components:
         - key
         - name
         - routes
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - draft
+            - sent
+      required:
+        - id
+        - message
     User:
       type: object
       properties:

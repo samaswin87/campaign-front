@@ -62,6 +62,7 @@
               >
                 <span>Messages</span>
               </div>
+
             </el-card>
           </el-col>
         </el-card>
@@ -73,21 +74,30 @@
 <script lang="ts">
 import { Component, Watch, Vue, Ref } from 'vue-property-decorator'
 import faker from 'faker'
+import { getConversations } from '@/api/conversations'
+import { ICampaignConversationsData } from '@/api/types'
 
 @Component({
   name: 'Chat',
   components: { }
 })
 export default class extends Vue {
-  private currentItem = 1
+  private listItems: ICampaignConversationsData[] = []
+  private total = 0
   private status = false
   private searchContact = ''
   @Ref() readonly chatTable!: any
+  private listQuery = {
+    page: 1,
+    limit: 20,
+    sort: '+id'
+  }
 
   private tableData:any[] = []
 
   created() {
     this.list()
+    this.getList()
   }
 
   @Watch('tableData')
@@ -95,6 +105,12 @@ export default class extends Vue {
     this.$nextTick(function() {
       this.chatTable.setCurrentRow(this.tableData[0])
     })
+  }
+
+  private async getList() {
+    const { data } = await getConversations(this.listQuery)
+    this.listItems = data.items
+    this.total = data.total
   }
 
   private list() {

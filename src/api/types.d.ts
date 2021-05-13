@@ -36,6 +36,15 @@ export interface IWorkflowData {
   date: string | number
 }
 
+export interface ICampaignConversationsData {
+  id: number
+  status: string
+  contactId: number
+  message: string
+  campaignId: number
+  date: string | number
+}
+
 export interface ICampaignRecipientData {
   id: number
   status: string
