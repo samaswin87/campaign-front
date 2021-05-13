@@ -3,7 +3,7 @@ import { ICampaignConversationsData } from './types'
 
 export const defaultConversationData: ICampaignConversationsData = {
   id: 0,
-  status: 'draft',
+  type: 'draft',
   message: '',
   campaignId: 1,
   contactId: 1,

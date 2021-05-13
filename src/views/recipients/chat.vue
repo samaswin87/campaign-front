@@ -62,7 +62,20 @@
               >
                 <span>Messages</span>
               </div>
-
+              <el-timeline class="scroll" style="height: 650px">
+                <el-timeline-item
+                  v-for="(activity, index) in getMessages()"
+                  :key="index"
+                  placement="top"
+                  :icon="chatStyle(activity.type).icon"
+                  :type="chatStyle(activity.type).type"
+                  size="large"
+                  :timestamp="activity.date | parseTime">
+                  <el-card style="border-radius: 22px" :body-style="{'background-color': chatStyle(activity.type).color}">
+                    {{activity.message}}
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
             </el-card>
           </el-col>
         </el-card>
@@ -86,6 +99,8 @@ export default class extends Vue {
   private total = 0
   private status = false
   private searchContact = ''
+  private campaignId = 1
+  private contactId = 1
   @Ref() readonly chatTable!: any
   private listQuery = {
     page: 1,
@@ -113,6 +128,10 @@ export default class extends Vue {
     this.total = data.total
   }
 
+  private getMessages() {
+    return this.listItems.filter((record) => record.campaignId === this.campaignId && record.contactId === this.contactId)
+  }
+
   private list() {
     for (let i = 0; i < 100; i++) {
       this.tableData.push({
@@ -121,6 +140,15 @@ export default class extends Vue {
         lastReplyAt: faker.date.past().getTime()
       })
     }
+  }
+
+  private chatStyle(type: string) {
+    const styleMap: { [key: string]: any } = {
+      draft: { type: 'info', icon: 'el-icon-loading', color: '#c0c4cc' },
+      sent: { type: 'success', icon: 'el-icon-s-promotion', color: '#65a783' },
+      reply: { type: 'primary', icon: 'el-icon-message', color: '#80bcf5' }
+    }
+    return styleMap[type]
   }
 }
 </script>
@@ -141,6 +169,12 @@ export default class extends Vue {
 
 ::v-deep .el-table--enable-row-hover  .el-table__body tr:hover>td {
   background-color: rgb(206 237 245);
+}
+
+::v-deep .el-timeline-item__node--large {
+  left: -12px;
+  width: 33px;
+  height: 34px;
 }
 
 .contact-block {
