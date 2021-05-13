@@ -11,7 +11,7 @@ for (let i = 0; i < companyCount; i++) {
     status: faker.random.arrayElement(['active', 'inactive']),
     name: faker.company.companyName(),
     email: faker.internet.email(),
-    phone: faker.phone.phoneNumber()
+    phone: faker.phone.phoneNumberFormat(2)
   })
 }
 

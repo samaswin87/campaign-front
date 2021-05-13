@@ -207,6 +207,16 @@ export const constantRoutes: RouteConfig[] = [
           title: 'recipient',
           hidden: true
         }
+      },
+      {
+        path: '/campaign/:campaignId/recipients/chat',
+        component: () => import('@/views/recipients/chat.vue'),
+        name: 'RecipientChat',
+        meta: {
+          noCache: true,
+          title: 'conversations',
+          hidden: true
+        }
       }
     ]
   },

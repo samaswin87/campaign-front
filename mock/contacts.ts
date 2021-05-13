@@ -18,13 +18,13 @@ for (let i = 0; i < contactCount; i++) {
     tags: [faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName()],
     noOfCampaigns: faker.datatype.number(),
     keywords: [faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName()],
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.phoneNumberFormat(2),
     notes: faker.lorem.sentence(6, 10)
   })
 }
 
 export const getContacts = (req: Request, res: Response) => {
-  const { company, title, page = 1, limit = 20, sort } = req.query
+  const { page = 1, limit = 20, sort } = req.query
 
   let mockList = contactList
 

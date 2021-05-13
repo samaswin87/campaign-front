@@ -37,7 +37,7 @@ for (let i = 2; i < userCount; i++) {
     avatar: faker.image.imageUrl(),
     introduction: faker.lorem.sentence(20),
     email: faker.internet.email(),
-    phone: faker.phone.phoneNumber(),
+    phone: faker.phone.phoneNumberFormat(2),
     roles: ['visitor']
   })
 }

@@ -52,7 +52,7 @@
       </el-table-column>
       <el-table-column
           :label="$t('table.tags')"
-          min-width="100px"
+          min-width="110px"
         >
           <template slot-scope="{row}">
 
@@ -85,12 +85,13 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
-          <el-button
-            icon="el-icon-chat-round"
-            @click="openChat"
-            circle
-          >
-          </el-button>
+          <router-link :to="{name: 'RecipientChat', params: {campaignId: 1}, query: {recipientId: row.id}}">
+            <el-button
+              icon="el-icon-chat-round"
+              circle
+            >
+            </el-button>
+          </router-link>
           <el-button
             v-if="row.status!=='deleted'"
             icon="el-icon-delete"
@@ -104,10 +105,6 @@
 
     <RecipientTableFilters
       :visible.sync="filterLoading"
-    />
-
-    <Chat
-    :visible.sync="chatLoading"
     />
 
     <pagination
@@ -128,7 +125,6 @@ import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import RecipientTableFilters from './components/RecipientTableFilters.vue'
-import Chat from './components/Chat.vue'
 
 @Component({
   name: 'RecipientsTable',
@@ -136,8 +132,7 @@ import Chat from './components/Chat.vue'
     Pagination,
     TableDefaultActions,
     TableSearchWithFilters,
-    RecipientTableFilters,
-    Chat
+    RecipientTableFilters
   }
 })
 
@@ -149,7 +144,6 @@ export default class extends Vue {
   private listLoading = true
   private filterLoading = false
   private dialogLoading = false
-  private chatLoading = false
   private createRoute = 'RecipientCreate'
   private listQuery = {
     page: 1,
@@ -190,11 +184,7 @@ export default class extends Vue {
     this.dialogLoading = true
   }
 
-  private openChat() {
-    this.chatLoading = true
-  }
-
-  formatMustache = (jsonData: any) => {
+  private formatMustache(jsonData: any) {
     let formatedMustache = ''
     Object.keys(jsonData).map((key) => {
       formatedMustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span> - ' + jsonData[key] + ' </br>'
@@ -215,10 +205,6 @@ export default class extends Vue {
 
   private handleFilter() {
     this.filterLoading = true
-  }
-
-  private handleChat() {
-    this.chatLoading = true
   }
 
   private handleModifyStatus(row: any, status: string) {

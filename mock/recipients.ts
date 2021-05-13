@@ -5,14 +5,20 @@ import { ICampaignRecipientData } from '../src/api/types'
 const recipientList: ICampaignRecipientData[] = []
 const recipientCount = 100
 
+const properties = ['name', 'country', 'first_name', 'last_name', 'city', 'phone']
+
 for (let i = 0; i < recipientCount; i++) {
+  const dataJson:any = {}
+  properties.forEach(function(prop: any) {
+    dataJson[prop] = faker.random.word()
+  })
   recipientList.push({
     id: i,
     status: faker.random.arrayElement(['published', 'draft', 'replied']),
     addedOn: faker.date.past().getTime(),
     phone: faker.phone.phoneNumberFormat(2),
-    data: { last_name: faker.name.lastName(), first_name: faker.name.firstName() },
-    tags: [faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName()],
+    data: dataJson,
+    tags: faker.random.arrayElements([faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName()]),
     lastReplyAt: faker.date.past().getTime()
   })
 }

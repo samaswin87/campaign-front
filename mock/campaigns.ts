@@ -18,7 +18,7 @@ for (let i = 0; i < campaignCount; i++) {
     noOfContacts: faker.datatype.number(),
     recurringDays: ['Mon', 'Tue'],
     recurringAt: faker.date.future().getTime(),
-    phone: faker.phone.phoneNumber()
+    phone: faker.phone.phoneNumberFormat(2)
   })
 }
 

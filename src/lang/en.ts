@@ -67,7 +67,8 @@ export default {
     contact: 'Contact',
     campaigns: 'Campaigns',
     campaign: 'Campaign',
-    recipient: 'Recipient'
+    recipient: 'Recipient',
+    conversations: 'Conversations'
   },
   navbar: {
     logOut: 'Log Out',
@@ -214,6 +215,8 @@ export default {
   common: {
     next: 'Next',
     previous: 'Previous',
-    close: 'Close'
+    close: 'Close',
+    send: 'Send',
+    reply: 'Reply'
   }
 }
