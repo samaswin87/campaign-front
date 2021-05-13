@@ -15,14 +15,12 @@
                 slot="header"
                 class="clearfix"
               >
-                <span>
-                  <el-input
-                    placeholder="Search contact"
-                    v-model="searchContact"
-                    clearable>
-                    <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                  </el-input>
-                </span>
+                <el-input
+                  placeholder="Search contact"
+                  v-model="searchContact"
+                  clearable>
+                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                </el-input>
               </div>
               <el-table
                 ref="chatTable"
@@ -33,7 +31,7 @@
                 border
                 fit
                 highlight-current-row
-                :row-style="{'background-color': '#d0d2d4 !important', height: '100px'}"
+                :row-style="{'background-color': '#f5f7fa !important', height: '100px'}"
                 style="width: 100%;"
               >
                 <el-table-column
@@ -120,17 +118,13 @@ export default class extends Vue {
   overflow: auto
 }
 
-.active-item {
-  background-color: red;
-}
-
  /* is used to set the current page element global table. The background color when a line is selected*/
 ::v-deep .el-table__body tr.current-row>td{
-  background-color: #4ca9ff !important;
+  background-color: rgb(206 237 245) !important;
 }
 
 ::v-deep .el-table--enable-row-hover  .el-table__body tr:hover>td {
-  background-color: #4ca9ff;
+  background-color: rgb(206 237 245);
 }
 
 .contact-block {
