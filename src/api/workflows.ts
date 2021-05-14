@@ -4,14 +4,23 @@ import { IWorkflowData } from './types'
 export const defaultWorkflowData: IWorkflowData = {
   id: 0,
   status: 'draft',
-  title: '',
-  date: '',
-  company: ''
+  name: '',
+  createdOn: '',
+  company: '',
+  noOfContacts: 1,
+  phone: ''
 }
 
 export const getWorkflows = (params: any) =>
   request({
     url: '/workflows',
+    method: 'get',
+    params
+  })
+
+export const getWorkflow = (id: number, params: any) =>
+  request({
+    url: `/workflows/${id}`,
     method: 'get',
     params
   })

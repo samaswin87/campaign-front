@@ -147,6 +147,7 @@ export default {
     name: 'Name',
     createdOn: 'Created On',
     tags: 'Tags',
+    noOfContacts: '# of Contacts',
     contact: {
       optOut: 'Opted Out',
       firstName: 'First Name',
@@ -163,7 +164,6 @@ export default {
       body: 'Message',
       delivery: 'Type',
       scheduledOn: 'Scheduled On',
-      noOfContacts: '# of Contacts',
       recurringDays: 'Recurring Days',
       recurringAt: 'Recurring Time'
     },

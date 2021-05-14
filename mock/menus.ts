@@ -1,12 +1,12 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IWorkflowData } from '../src/api/types'
+import { IMenuData } from '../src/api/types'
 
-const workflowList: IWorkflowData[] = []
-const workflowCount = 30
+const menuList: IMenuData[] = []
+const menuCount = 30
 
-for (let i = 0; i < workflowCount; i++) {
-  workflowList.push({
+for (let i = 0; i < menuCount; i++) {
+  menuList.push({
     id: i,
     status: faker.random.arrayElement(['published', 'draft']),
     name: faker.lorem.sentence(6, 10),
@@ -17,10 +17,10 @@ for (let i = 0; i < workflowCount; i++) {
   })
 }
 
-export const getWorkflows = (req: Request, res: Response) => {
+export const getMenus = (req: Request, res: Response) => {
   const { page = 1, limit = 20, sort } = req.query
 
-  let mockList = workflowList
+  let mockList = menuList
 
   if (sort === '-id') {
     mockList = mockList.reverse()
@@ -37,20 +37,20 @@ export const getWorkflows = (req: Request, res: Response) => {
   })
 }
 
-export const getWorkflow = (req: Request, res: Response) => {
+export const getMenu = (req: Request, res: Response) => {
   const { id } = req.params
-  for (const workflow of workflowList) {
-    if (workflow.id.toString() === id) {
+  for (const menu of menuList) {
+    if (menu.id.toString() === id) {
       return res.json({
         code: 20000,
         data: {
-          workflow
+          menu
         }
       })
     }
   }
   return res.json({
     code: 70001,
-    message: 'Workflow not found'
+    message: 'Menu not found'
   })
 }
