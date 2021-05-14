@@ -186,6 +186,7 @@ export const constantRoutes: RouteConfig[] = [
   {
     path: '/campaign/recipients',
     component: Layout,
+    meta: { hidden: true },
     redirect: 'campaign/recipients/index',
     children: [
       {
@@ -216,6 +217,22 @@ export const constantRoutes: RouteConfig[] = [
           noCache: true,
           title: 'conversations',
           hidden: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/workflows',
+    component: Layout,
+    redirect: '/workflows/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/workflows/index.vue'),
+        name: 'Workflows',
+        meta: {
+          title: 'workflows',
+          icon: 'tree-table'
         }
       }
     ]

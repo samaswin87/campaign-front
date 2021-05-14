@@ -67,6 +67,8 @@ export default {
     contact: 'Contact',
     campaigns: 'Campaigns',
     campaign: 'Campaign',
+    workflows: 'Workflows',
+    workflow: 'Workflow',
     recipient: 'Recipient',
     conversations: 'Conversations'
   },
