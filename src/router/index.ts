@@ -234,6 +234,39 @@ export const constantRoutes: RouteConfig[] = [
           title: 'workflows',
           icon: 'workflow'
         }
+      },
+      {
+        path: '/workflows/:id/show',
+        component: () => import('@/views/workflows/show.vue'),
+        name: 'WorkflowView',
+        meta: {
+          noCache: true,
+          title: 'workflows',
+          icon: 'workflow',
+          hidden: true
+        }
+      },
+      {
+        path: '/workflows/:id/edit',
+        component: () => import('@/views/workflows/edit.vue'),
+        name: 'WorkflowEdit',
+        meta: {
+          noCache: true,
+          title: 'workflows',
+          icon: 'workflow',
+          hidden: true
+        }
+      },
+      {
+        path: '/workflows/new',
+        component: () => import('@/views/workflows/new.vue'),
+        name: 'WorkflowCreate',
+        meta: {
+          noCache: true,
+          title: 'workflows',
+          icon: 'workflow',
+          hidden: true
+        }
       }
     ]
   },
