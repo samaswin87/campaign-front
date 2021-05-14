@@ -232,7 +232,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'Workflows',
         meta: {
           title: 'workflows',
-          icon: 'tree-table'
+          icon: 'workflow'
         }
       }
     ]
