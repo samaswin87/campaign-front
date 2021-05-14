@@ -7,10 +7,10 @@
               <span>Conversations</span>
           </div>
           <el-col
-          :span="8"
+          :span="6"
           :xs="24"
           >
-            <el-card style="margin-bottom:20px;" :body-style="{padding: '10px'}">
+            <el-card class="margin-bottom" :body-style="{padding: '10px'}">
               <div
                 slot="header"
                 class="clearfix"
@@ -32,7 +32,6 @@
                 fit
                 highlight-current-row
                 :row-style="{'background-color': '#f5f7fa !important', height: '100px'}"
-                style="width: 100%;"
               >
                 <el-table-column
                   label="Contacts"
@@ -52,17 +51,17 @@
             </el-card>
           </el-col>
           <el-col
-            :span="14"
+            :span="12"
             :xs="24"
           >
-            <el-card style="margin-bottom:20px;">
+            <el-card class="margin-bottom">
               <div
                 slot="header"
                 class="clearfix"
               >
                 <span>Messages</span>
               </div>
-              <el-timeline class="scroll" style="height: 650px">
+              <el-timeline class="scroll fixed-height">
                 <el-timeline-item
                   v-for="(activity, index) in getMessages()"
                   :key="index"
@@ -71,11 +70,20 @@
                   :type="chatStyle(activity.type).type"
                   size="large"
                   :timestamp="activity.date | parseTime">
-                  <el-card style="border-radius: 22px" :body-style="{'background-color': chatStyle(activity.type).color}">
+                  <el-card class="border-radius" :body-style="{'background-color': chatStyle(activity.type).color}">
                     {{activity.message}}
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
+              <el-input
+                  placeholder="Type here"
+                  type="textarea"
+                  v-model="message"
+                  maxlength="300"
+                  show-word-limit
+                  clearable>
+                </el-input>
+                <el-button icon="el-icon-s-promotion" type="primary" @click="handleIconClick($event)" class="float-right margin-bottom-10">Send</el-button>
             </el-card>
           </el-col>
         </el-card>
@@ -101,6 +109,7 @@ export default class extends Vue {
   private searchContact = ''
   private campaignId = 1
   private contactId = 1
+  private message= ''
   @Ref() readonly chatTable!: any
   private listQuery = {
     page: 1,
@@ -149,6 +158,10 @@ export default class extends Vue {
       reply: { type: 'primary', icon: 'el-icon-message', color: '#80bcf5' }
     }
     return styleMap[type]
+  }
+
+  private handleIconClick() {
+    console.log('send')
   }
 }
 </script>
@@ -208,6 +221,29 @@ export default class extends Vue {
     font-weight: 500;
     font-size: 12px;
   }
+  }
+
+  .border-radius {
+    border-radius: 22px
+  }
+
+  .fixed-height {
+    height: 480px;
+  }
+
+  .margin-bottom {
+    margin-bottom: 20px
+  }
+
+  .margin-bottom-10 {
+    margin-bottom: 10px
+  }
+
+  ::v-deep textarea {
+    min-height: 33px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 111px;
   }
 
 </style>
