@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="120" src="public/img/icons/android-chrome-512x512.png">
+  <img width="120" src="public/img/icons/android-chrome-maskable-512x512.png">
 </p>
 
 ## Features
@@ -26,51 +26,6 @@
   - Svg icons
   - Search
   - Settings
-  - Mock data / Mock server
-  - PWA support
-
-- Components
-  - Editors
-    - Rich Text Editor
-    - Markdown Editor
-    - JSON Editor
-  - Avatar Upload
-  - Back To Top
-  - CountTo
-  - Dropzone
-  - Draggable Dialog
-  - Draggable Kanban
-  - Draggable List
-  - Draggable Select
-  - ECharts
-  - Mixin
-  - SplitPane
-  - Sticky
-
-- Table
-  - Dynamic Table
-  - Draggable Table
-  - Inline Edit Table
-  - Complex Table
-
-- Excel
-  - Export Excel
-  - Upload Excel
-  - Excel Visualization
-
-- Zip
-  - Export zip
-
-- PDF
-  - Download pdf
-
-- Dashboard
-- Guide Page
-- Advanced Example Page
-- Error Log
-- Error Page
-  - 401
-  - 404
 ```
 
 
