@@ -27,23 +27,25 @@
                 :key="0"
                 :data="tableData"
                 height="650"
-                :show-header="status"
                 border
                 fit
                 highlight-current-row
+                @row-click="handleRowClick"
                 :row-style="{'background-color': '#f5f7fa !important', height: '100px'}"
               >
                 <el-table-column
-                  label="Contacts"
+                  label="Recipients"
+                  header-align="center"
                   style="backgrond-color: green; height: 320px"
                   align="left"
                 >
                   <template slot-scope="scope">
                     <div class="contact-block">
                       <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" class="img-circle"></el-avatar>
-                      <span class="time">{{scope.row.lastReplyAt | parseTime }}</span>
+                      <span class="time"><i class="el-icon-time"></i>{{scope.row.lastReplyAt | parseTime }}</span>
                       <span class="name text-muted">{{scope.row.name}}</span>
-                      <span class="contact">{{scope.row.contact}}</span>
+                      <span class="contact"><i class="el-icon-phone"></i>{{scope.row.contact}}</span>
+                      <span v-if="showId" class="id">{{scope.row.id}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -59,7 +61,11 @@
                 slot="header"
                 class="clearfix"
               >
-                <span>Messages</span>
+                <span><i class="el-icon-chat-line-square"></i>Messages</span>
+                <span class="float-right">
+                  <el-button type="primary" icon="el-icon-caret-left"></el-button>
+                  <el-button type="primary" icon="el-icon-caret-right"></el-button>
+                </span>
               </div>
               <el-timeline class="scroll fixed-height">
                 <el-timeline-item
@@ -86,6 +92,39 @@
                 <el-button icon="el-icon-s-promotion" type="primary" @click="handleIconClick($event)" class="float-right margin-bottom-10">Send</el-button>
             </el-card>
           </el-col>
+          <el-col
+            :span="6"
+            :xs="24"
+          >
+            <el-card class="margin-bottom">
+              <div
+                slot="header"
+                class="clearfix"
+              >
+                <span><i class="el-icon-setting"></i>Settings</span>
+              </div>
+              <el-card class="margin-bottom">
+                <div
+                  slot="header"
+                  class="clearfix"
+                >
+                  <span class="moustache"><svg-icon name="moustache" class="moustache-icon" width="30" height="30"/><span class="moustache-title">Templates</span></span>
+                </div>
+                <span v-html="formatMoustache(selectedTemplate)"></span>
+              </el-card>
+              <el-input
+                placeholder="Tags"
+                v-model="searchContact"
+                clearable>
+              </el-input>
+              <el-input
+                placeholder="Notes"
+                v-model="searchContact"
+                type="textarea"
+                clearable>
+              </el-input>
+            </el-card>
+          </el-col>
         </el-card>
       </el-row>
     </div>
@@ -96,6 +135,7 @@
 import { Component, Watch, Vue, Ref } from 'vue-property-decorator'
 import faker from 'faker'
 import { getConversations } from '@/api/conversations'
+import { getContact } from '@/api/contacts'
 import { ICampaignConversationsData } from '@/api/types'
 
 @Component({
@@ -104,8 +144,10 @@ import { ICampaignConversationsData } from '@/api/types'
 })
 export default class extends Vue {
   private listItems: ICampaignConversationsData[] = []
-  private total = 0
+  private selectedContact = ''
+  private selectedTemplate = {}
   private status = false
+  private showId = false
   private searchContact = ''
   private campaignId = 1
   private contactId = 1
@@ -134,7 +176,6 @@ export default class extends Vue {
   private async getList() {
     const { data } = await getConversations(this.listQuery)
     this.listItems = data.items
-    this.total = data.total
   }
 
   private getMessages() {
@@ -146,7 +187,8 @@ export default class extends Vue {
       this.tableData.push({
         contact: faker.phone.phoneNumberFormat(2),
         name: faker.name.findName(),
-        lastReplyAt: faker.date.past().getTime()
+        lastReplyAt: faker.date.past().getTime(),
+        id: i
       })
     }
   }
@@ -162,6 +204,24 @@ export default class extends Vue {
 
   private handleIconClick() {
     console.log('send')
+  }
+
+  private async getContactDeatils(contactId: number) {
+    const { data } = await getContact(contactId, {})
+    this.selectedContact = data.contact
+  }
+
+  private handleRowClick(row:any) {
+    this.getContactDeatils(row.id)
+    this.selectedTemplate = { firstName: 'test' }
+  }
+
+  private formatMoustache(jsonData: any) {
+    let formatedMoustache = ''
+    Object.keys(jsonData).map((key) => {
+      formatedMoustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span> - ' + jsonData[key] + ' </br>'
+    })
+    return formatedMoustache
   }
 }
 </script>
@@ -190,6 +250,18 @@ export default class extends Vue {
   height: 34px;
 }
 
+.moustache {
+  display: flex;
+}
+
+.moustache-icon {
+  fill: #2C87F0
+}
+
+.moustache-title {
+  padding-top: 5px;
+}
+
 .contact-block {
   .contact,
   .name {
@@ -214,7 +286,7 @@ export default class extends Vue {
 
   .img-circle {
     float: left;
-    margin-right: 30px
+    margin-right: 10px
   }
 
   span {
@@ -228,7 +300,7 @@ export default class extends Vue {
   }
 
   .fixed-height {
-    height: 480px;
+    height: 490px;
   }
 
   .margin-bottom {
