@@ -32,10 +32,76 @@ export interface IWorkflowData {
   id: number
   status: string
   company: string
-  title: string
+  name: string
+  createdOn: string | number
+  noOfContacts: number
+  phone: string
+}
+
+export interface IWorkflowFinalResponseData {
+  id: number
+  workflowId: number
+  body: Text
+  destinationURL: string
+  createdOn: string | number
+  updatedOn: string | number
+}
+
+export interface IWorkflowPromtData {
+  id: number
+  body: JSON
+  name: string
+  default: string
+  order: number
+  workflowId: number
   date: string | number
 }
 
+export interface IWorkflowConversationsData {
+  id: number
+  type: string
+  contact: string
+  message: string
+  workflowId: number
+  date: string | number
+}
+export interface IMenuData {
+  id: number
+  status: string
+  company: string
+  name: string
+  createdOn: string | number
+  noOfContacts: number
+  phone: string
+}
+
+export interface IMenuFinalResponseData {
+  id: number
+  menuId: number
+  body: Text
+  destinationURL: string
+  createdOn: string | number
+  updatedOn: string | number
+}
+
+export interface IMenuPromtData {
+  id: number
+  body: JSON
+  name: string
+  default: string
+  order: number
+  menuId: number
+  date: string | number
+}
+
+export interface IMenuConversationsData {
+  id: number
+  type: string
+  contact: string
+  message: string
+  menuId: number
+  date: string | number
+}
 export interface ICampaignConversationsData {
   id: number
   type: string
