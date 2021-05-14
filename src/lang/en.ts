@@ -69,6 +69,8 @@ export default {
     campaign: 'Campaign',
     workflows: 'Workflows',
     workflow: 'Workflow',
+    menus: 'Menus',
+    menu: 'Menu',
     recipient: 'Recipient',
     conversations: 'Conversations'
   },

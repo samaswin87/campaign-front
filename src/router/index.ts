@@ -271,6 +271,55 @@ export const constantRoutes: RouteConfig[] = [
     ]
   },
   {
+    path: '/menus',
+    component: Layout,
+    redirect: '/menus/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/menus/index.vue'),
+        name: 'Menus',
+        meta: {
+          title: 'menus',
+          icon: 'menu'
+        }
+      },
+      {
+        path: '/menus/:id/show',
+        component: () => import('@/views/menus/show.vue'),
+        name: 'MenuView',
+        meta: {
+          noCache: true,
+          title: 'menus',
+          icon: 'menu',
+          hidden: true
+        }
+      },
+      {
+        path: '/menus/:id/edit',
+        component: () => import('@/views/menus/edit.vue'),
+        name: 'MenuEdit',
+        meta: {
+          noCache: true,
+          title: 'menus',
+          icon: 'menu',
+          hidden: true
+        }
+      },
+      {
+        path: '/menus/new',
+        component: () => import('@/views/menus/new.vue'),
+        name: 'MenuCreate',
+        meta: {
+          noCache: true,
+          title: 'menus',
+          icon: 'menu',
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
