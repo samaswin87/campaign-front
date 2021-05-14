@@ -219,7 +219,7 @@ export default class extends Vue {
   private formatMoustache(jsonData: any) {
     let formatedMoustache = ''
     Object.keys(jsonData).map((key) => {
-      formatedMoustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span> - ' + jsonData[key] + ' </br>'
+      formatedMoustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span>' + ' </br>'
     })
     return formatedMoustache
   }
