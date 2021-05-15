@@ -221,6 +221,7 @@ export default {
     previous: 'Previous',
     close: 'Close',
     send: 'Send',
-    reply: 'Reply'
+    reply: 'Reply',
+    add: 'Add'
   }
 }
