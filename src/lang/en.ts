@@ -152,6 +152,7 @@ export default {
     createdOn: 'Created On',
     tags: 'Tags',
     noOfContacts: '# of Contacts',
+    body: 'Message',
     contact: {
       optOut: 'Opted Out',
       firstName: 'First Name',
@@ -165,7 +166,6 @@ export default {
       moveContacts: 'Move Contacts to workflow / campaigns'
     },
     campaign: {
-      body: 'Message',
       delivery: 'Type',
       scheduledOn: 'Scheduled On',
       recurringDays: 'Recurring Days',

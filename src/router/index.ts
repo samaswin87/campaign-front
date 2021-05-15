@@ -241,7 +241,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'WorkflowView',
         meta: {
           noCache: true,
-          title: 'workflows',
+          title: 'workflow',
           icon: 'tree',
           hidden: true
         }
@@ -252,7 +252,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'WorkflowEdit',
         meta: {
           noCache: true,
-          title: 'workflows',
+          title: 'workflow',
           icon: 'tree',
           hidden: true
         }
@@ -263,7 +263,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'WorkflowCreate',
         meta: {
           noCache: true,
-          title: 'workflows',
+          title: 'workflow',
           icon: 'tree',
           hidden: true
         }
@@ -290,7 +290,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'MenuView',
         meta: {
           noCache: true,
-          title: 'menus',
+          title: 'menu',
           icon: 'menu',
           hidden: true
         }
@@ -301,7 +301,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'MenuEdit',
         meta: {
           noCache: true,
-          title: 'menus',
+          title: 'menu',
           icon: 'menu',
           hidden: true
         }
@@ -312,7 +312,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'MenuCreate',
         meta: {
           noCache: true,
-          title: 'menus',
+          title: 'menu',
           icon: 'menu',
           hidden: true
         }

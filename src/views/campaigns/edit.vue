@@ -13,10 +13,10 @@
                     >
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.company')}}:</label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.company')}}:</label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <multiselect
                                     v-model="campaignData.company"
                                     placeholder="Search one company"
@@ -31,10 +31,10 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.name')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.name')}}: </label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-input
                                         placeholder="Please add name"
@@ -48,10 +48,10 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.type')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.type')}}: </label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <span>
                                         <multiselect
                                         v-model="campaignData.type"
@@ -69,10 +69,10 @@
 
                         <el-row class="content-row" v-if="scheduled">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.campaign.scheduledOn')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.campaign.scheduledOn')}}: </label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-date-picker
                                         v-model="campaignData.scheduledOn"
@@ -89,10 +89,10 @@
 
                         <el-row class="content-row" v-if="recurring">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.campaign.recurringDays')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.campaign.recurringDays')}}: </label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-checkbox-group v-model="campaignData.recurringDays">
                                             <el-checkbox-button v-for="day in recurringDays" :label="day" :key="day">
@@ -106,10 +106,10 @@
 
                         <el-row class="content-row" v-if="recurring">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.campaign.recurringAt')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.campaign.recurringAt')}}: </label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-date-picker
                                         v-model="campaignData.recurringAt"
@@ -125,10 +125,10 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.campaign.body')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.body')}}: </label></div>
                             </el-col>
                             <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-input
                                         type="textarea"
@@ -143,7 +143,7 @@
 
                         <el-row class="content-row">
                             <el-col :span="17"  class="content-label">
-                                <div class="grid-content">
+                                <div class="grid-vlaue">
                                     <router-link :to="'/campaigns'">
                                         <el-button>
                                             Cancel
@@ -212,6 +212,10 @@ export default class extends Vue {
     private changeType(value: string) {
       if (value === 'scheduled') {
         this.scheduled = true
+        this.recurring = false
+      } else if (value === 'recurring') {
+        this.scheduled = false
+        this.recurring = true
       }
     }
 
@@ -238,10 +242,6 @@ export default class extends Vue {
 
 .tags {
     margin-left: 6px;
-}
-
-.grid-content-label {
-    margin-top: 1%;
 }
 
 .content-button {

@@ -8,17 +8,17 @@
                     </div>
                     <el-form
                     ref="contactForm"
-                    :model="contactData"
+                    :model="campaignData"
                     class="form-container"
                     >
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
                                 <div class="grid-content"><label class="label-space">{{$t('table.company')}}:</label></div>
                             </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
                                     <multiselect
-                                    v-model="contactData.company"
+                                    v-model="campaignData.company"
                                     placeholder="Search one company"
                                     :options="companies"
                                     :clear-on-select="false"
@@ -31,14 +31,14 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.firstName')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.name')}}: </label></div>
                             </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-input
-                                        placeholder="Please add first name"
-                                        v-model="contactData.firstName"
+                                        placeholder="Please add name"
+                                        v-model="campaignData.name"
                                         clearable>
                                         </el-input>
                                     </span>
@@ -48,91 +48,18 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.lastName')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.type')}}: </label></div>
                             </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add last name"
-                                        v-model="contactData.lastName"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.middleName')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                         <el-input
-                                        placeholder="Please add middle name"
-                                        v-model="contactData.middleName"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.gender')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-switch
-                                        v-model="contactData.gender"
-                                        active-text="Male"
-                                        active-color="#13ce66"
-                                        inactive-color="#ff4949"
-                                        inactive-text="Female">
-                                        </el-switch>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.email')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add email"
-                                        v-model="contactData.email"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.tags')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
                                     <span>
                                         <multiselect
-                                        v-model="contactData.tags"
-                                        tag-placeholder="Add this as new tag"
-                                        placeholder="Search or add a tag"
-                                        :options="tags"
-                                        :multiple="true"
+                                        v-model="campaignData.type"
+                                        placeholder="Search one type"
+                                        :options="types"
                                         :clear-on-select="false"
                                         :close-on-select="false"
-                                        :taggable="true"
-                                        @tag="addTag"
+                                        @input="changeType"
                                         >
                                         </multiselect>
                                     </span>
@@ -140,18 +67,57 @@
                             </el-col>
                         </el-row>
 
-                        <el-row class="content-row">
+                        <el-row class="content-row" v-if="scheduled">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.phone')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.campaign.scheduledOn')}}: </label></div>
                             </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
                                     <span>
-                                        <el-input
-                                        placeholder="Please add phone"
-                                        v-model="contactData.phone"
-                                        clearable>
-                                        </el-input>
+                                        <el-date-picker
+                                        v-model="campaignData.scheduledOn"
+                                        type="datetime"
+                                        format="yyyy-MM-dd HH:mm:ss"
+                                        placeholder="Select date and time"
+                                        class="timestamp-form"
+                                        :picker-options="datePickerOptions"
+                                        />
+                                    </span>
+                                </div>
+                            </el-col>
+                        </el-row>
+
+                        <el-row class="content-row" v-if="recurring">
+                            <el-col :span="10" class="content-label">
+                                <div class="grid-content"><label class="label-space">{{$t('table.campaign.recurringDays')}}: </label></div>
+                            </el-col>
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
+                                    <span>
+                                        <el-checkbox-group v-model="campaignData.recurringDays">
+                                            <el-checkbox-button v-for="day in recurringDays" :label="day" :key="day">
+                                                {{day}}
+                                            </el-checkbox-button>
+                                        </el-checkbox-group>
+                                    </span>
+                                </div>
+                            </el-col>
+                        </el-row>
+
+                        <el-row class="content-row" v-if="recurring">
+                            <el-col :span="10" class="content-label">
+                                <div class="grid-content"><label class="label-space">{{$t('table.campaign.recurringAt')}}: </label></div>
+                            </el-col>
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
+                                    <span>
+                                        <el-date-picker
+                                        v-model="campaignData.recurringAt"
+                                        type="datetime"
+                                        format="yyyy-MM-dd HH:mm:ss"
+                                        placeholder="Select date and time"
+                                        class="timestamp-form"
+                                        />
                                     </span>
                                 </div>
                             </el-col>
@@ -159,16 +125,16 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.notes')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.body')}}: </label></div>
                             </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
+                            <el-col :span="8" class="content-vlaue">
+                                <div class="grid-vlaue">
                                     <span>
                                         <el-input
                                         type="textarea"
-                                        :rows="2"
-                                        placeholder="Notes"
-                                        v-model="contactData.notes">
+                                        :rows="10"
+                                        placeholder="Message"
+                                        v-model="campaignData.body">
                                         </el-input>
                                     </span>
                                 </div>
@@ -177,13 +143,11 @@
 
                         <el-row class="content-row">
                             <el-col :span="14"  class="content-label">
-                                <div class="grid-content">
-                                    <router-link :to="'/contacts'">
-                                        <el-button>
-                                            Cancel
-                                        </el-button>
-                                    </router-link>
-                                </div>
+                                <router-link :to="'/contacts'">
+                                    <el-button>
+                                        Cancel
+                                    </el-button>
+                                </router-link>
                             </el-col>
                             <el-col :span="2"  class="content-button">
                                 <el-button type="primary">
@@ -200,9 +164,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultContactData } from '@/api/contacts'
+import { defaultCampaignData } from '@/api/campaigns'
 import { getCompanies } from '@/api/companies'
-import { getTags } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
 
@@ -211,13 +174,15 @@ import { map } from 'lodash'
   components: { Multiselect }
 })
 export default class extends Vue {
-    private contactData = defaultContactData
+    private campaignData = defaultCampaignData
+    private types :string[] = ['immediate', 'recurring', 'scheduled']
+    private recurringDays :string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     private companies :string[] = []
-    private tags :string[] = []
+    private scheduled = false
+    private recurring = false
 
     created() {
       this.fetchCompanies()
-      this.fetchTags()
     }
 
     private async fetchCompanies() {
@@ -229,18 +194,20 @@ export default class extends Vue {
       }
     }
 
-    private async fetchTags() {
-      try {
-        const { data } = await getTags({ /* Your params here */ })
-        this.tags = map(data.items, 'name')
-      } catch (err) {
-        console.error(err)
+    private changeType(value: string) {
+      if (value === 'scheduled') {
+        this.scheduled = true
+        this.recurring = false
+      } else if (value === 'recurring') {
+        this.scheduled = false
+        this.recurring = true
       }
     }
 
-    addTag(newTag: string) {
-      this.contactData.tags.push(newTag)
-      this.contactData.tags.push(newTag)
+    private datePickerOptions = {
+      disabledDate(time: Date) {
+        return time.getTime() < Date.now() - 8.64e7
+      }
     }
 }
 </script>
