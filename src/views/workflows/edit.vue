@@ -46,27 +46,6 @@
                             </el-col>
                         </el-row>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.type')}}: </label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <multiselect
-                                        v-model="workflowData.type"
-                                        placeholder="Search one type"
-                                        :options="types"
-                                        :clear-on-select="false"
-                                        :close-on-select="false"
-                                        @input="changeType"
-                                        >
-                                        </multiselect>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
                         <el-row class="content-row" v-if="scheduled">
                             <el-col :span="10" class="content-label">
                                 <div class="grid-content-label"><label class="label-space">{{$t('table.workflow.scheduledOn')}}: </label></div>
@@ -193,8 +172,6 @@ export default class extends Vue {
       try {
         const { data } = await getWorkflow(id, { /* Your params here */ })
         this.workflowData = data.workflow
-        this.scheduled = (this.workflowData.type === 'scheduled')
-        this.recurring = (this.workflowData.type === 'recurring')
       } catch (err) {
         console.error(err)
       }

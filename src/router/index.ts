@@ -232,7 +232,7 @@ export const constantRoutes: RouteConfig[] = [
         name: 'Workflows',
         meta: {
           title: 'workflows',
-          icon: 'workflow'
+          icon: 'tree'
         }
       },
       {
@@ -242,7 +242,7 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           noCache: true,
           title: 'workflows',
-          icon: 'workflow',
+          icon: 'tree',
           hidden: true
         }
       },
@@ -253,7 +253,7 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           noCache: true,
           title: 'workflows',
-          icon: 'workflow',
+          icon: 'tree',
           hidden: true
         }
       },
@@ -264,7 +264,7 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           noCache: true,
           title: 'workflows',
-          icon: 'workflow',
+          icon: 'tree',
           hidden: true
         }
       }
