@@ -5,6 +5,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>New workflow</span>
+                        <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
                     </div>
                     <el-row>
                         <el-col :span="8">
@@ -82,8 +83,6 @@
                                                 </div>
                                             </el-col>
                                         </el-row>
-
-                                        <el-button type="success" icon="el-icon-document-add" class="float-right submit">Save</el-button>
                                     </el-form>
                                 </el-card>
                             </el-row>
@@ -270,11 +269,6 @@ export default class extends Vue {
     width: 30px !important;
     height: 30px !important;
     margin-top: 8px;
-}
-
-.submit {
-    margin-bottom: 20px;
-    margin-right: 50px;
 }
 
 .all-scroll {
