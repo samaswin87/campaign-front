@@ -6,61 +6,89 @@
                     <div slot="header" class="clearfix">
                         <span>New workflow</span>
                     </div>
-                    <el-form
-                    ref="workflowForm"
-                    :model="workflowData"
-                    class="form-container"
-                    >
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.company')}}:</label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-value">
-                                    <multiselect
-                                    v-model="workflowData.company"
-                                    placeholder="Search one company"
-                                    :options="companies"
-                                    :clear-on-select="false"
-                                    :close-on-select="false"
-                                    >
-                                    </multiselect>
-                                </div>
-                            </el-col>
-                        </el-row>
+                    <el-row>
+                            <el-col :span="8">
+                                <el-row>
+                                    <el-card class="box-card workflow-details">
+                                        <el-form
+                                        ref="workflowForm"
+                                        :model="workflowData"
+                                        class="form-container"
+                                        >
+                                            <el-row class="content-row">
+                                                <el-col :span="2">
+                                                    <svg-icon name="company" class="svg-icon"/>
+                                                </el-col>
+                                                <el-col :span="20">
+                                                    <div class="grid-value">
+                                                        <multiselect
+                                                        v-model="workflowData.company"
+                                                        placeholder="Search one company"
+                                                        :options="companies"
+                                                        :clear-on-select="false"
+                                                        :close-on-select="false"
+                                                        >
+                                                        </multiselect>
+                                                    </div>
+                                                </el-col>
+                                            </el-row>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.name')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-value">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add first name"
-                                        v-model="workflowData.name"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                                            <el-row class="content-row">
+                                                <el-col :span="2">
+                                                    <svg-icon name="keyword" class="svg-icon"/>
+                                                </el-col>
+                                                <el-col :span="20">
+                                                    <div class="grid-value">
+                                                        <span>
+                                                            <el-input
+                                                            placeholder="Please add keyword"
+                                                            v-model="workflowData.name"
+                                                            clearable>
+                                                            </el-input>
+                                                        </span>
+                                                    </div>
+                                                </el-col>
+                                            </el-row>
 
-                        <el-row class="content-row">
-                            <el-col :span="14"  class="content-label">
-                                <router-link :to="'/workflows'">
-                                    <el-button>
-                                        Cancel
-                                    </el-button>
-                                </router-link>
+                                            <el-row class="content-row">
+                                                <el-col :span="2">
+                                                    <svg-icon name="phone" class="svg-icon"/>
+                                                </el-col>
+                                                <el-col :span="20">
+                                                    <div class="grid-value">
+                                                        <span>
+                                                            <el-input
+                                                            placeholder="Please add phone"
+                                                            v-model="workflowData.phone"
+                                                            clearable>
+                                                            </el-input>
+                                                        </span>
+                                                    </div>
+                                                </el-col>
+                                            </el-row>
+
+                                            <el-row class="content-row">
+                                                <el-col :span="20" class="content-vlaue">
+                                                    <div class="grid-content">
+                                                        <span>
+                                                            <el-switch
+                                                            v-model="workflowData.confidential"
+                                                            active-text="Confidential"
+                                                            active-color="#13ce66"
+                                                            inactive-color="#ff4949"
+                                                            inactive-text="Non Confidential">
+                                                            </el-switch>
+                                                        </span>
+                                                    </div>
+                                                </el-col>
+                                            </el-row>
+
+                                            <el-button type="success" icon="el-icon-document-add" class="float-right submit">Save</el-button>
+                                        </el-form>
+                                    </el-card>
+                                </el-row>
                             </el-col>
-                            <el-col :span="2"  class="content-button">
-                                <el-button type="primary">
-                                    Submit
-                                </el-button>
-                            </el-col>
-                        </el-row>
-                    </el-form>
+                    </el-row>
                 </el-card>
             </el-row>
         </div>
@@ -98,19 +126,27 @@ export default class extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.content-label {
-    text-align: end;
-}
-
-.content-vlaue {
-    margin-left: 3%;
-}
 
 .content-row {
-    margin-bottom: 1%;
+    margin-bottom: 5%;
 }
 
 .content-button {
     margin-left: 28px;
+}
+
+.content-vlaue {
+    padding-left: 50px;
+}
+
+.svg-icon {
+    width: 30px !important;
+    height: 30px !important;
+    margin-top: 8px;
+}
+
+.submit {
+    margin-bottom: 20px;
+    margin-right: 50px;
 }
 </style>

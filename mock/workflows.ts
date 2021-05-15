@@ -13,7 +13,8 @@ for (let i = 0; i < workflowCount; i++) {
     createdOn: faker.date.past().getTime(),
     noOfContacts: faker.datatype.number(),
     company: faker.company.companyName(),
-    phone: faker.phone.phoneNumberFormat(2)
+    phone: faker.phone.phoneNumberFormat(2),
+    confidential: faker.datatype.boolean()
   })
 }
 

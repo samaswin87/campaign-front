@@ -8,7 +8,8 @@ export const defaultWorkflowData: IWorkflowData = {
   createdOn: '',
   company: '',
   noOfContacts: 1,
-  phone: ''
+  phone: '',
+  confidential: false
 }
 
 export const getWorkflows = (params: any) =>

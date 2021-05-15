@@ -36,6 +36,7 @@ export interface IWorkflowData {
   createdOn: string | number
   noOfContacts: number
   phone: string
+  confidential: boolean
 }
 
 export interface IWorkflowFinalResponseData {
