@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { IWorkflowData } from './types'
+import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData } from './types'
 
 export const defaultWorkflowData: IWorkflowData = {
   id: 0,
@@ -10,6 +10,25 @@ export const defaultWorkflowData: IWorkflowData = {
   noOfContacts: 1,
   phone: '',
   confidential: false
+}
+
+export const defaultFinalResponseData: IWorkflowFinalResponseData = {
+  id: 0,
+  workflowId: 1,
+  destinationURL: '',
+  createdOn: '',
+  updatedOn: '',
+  body: ''
+}
+
+export const defaultPromtData: IWorkflowPromtData = {
+  id: 0,
+  workflowId: 1,
+  default: '',
+  order: 0,
+  name: '',
+  body: '',
+  date: ''
 }
 
 export const getWorkflows = (params: any) =>

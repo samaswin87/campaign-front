@@ -1,5 +1,6 @@
 /* tslint:disable */
 import './404'
+import './add-url'
 import './back-top'
 import './bug'
 import './campaign'

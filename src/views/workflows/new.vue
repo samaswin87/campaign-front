@@ -17,7 +17,7 @@
                                     >
                                         <el-row class="content-row">
                                             <el-col :span="2">
-                                                <svg-icon name="company" class="svg-icon"/>
+                                                <svg-icon name="company" class="svg-icon-botton"/>
                                             </el-col>
                                             <el-col :span="20">
                                                 <div class="grid-value">
@@ -35,7 +35,7 @@
 
                                         <el-row class="content-row">
                                             <el-col :span="2">
-                                                <svg-icon name="keyword" class="svg-icon"/>
+                                                <svg-icon name="keyword" class="svg-icon-botton"/>
                                             </el-col>
                                             <el-col :span="20">
                                                 <div class="grid-value">
@@ -52,7 +52,7 @@
 
                                         <el-row class="content-row">
                                             <el-col :span="2">
-                                                <svg-icon name="phone" class="svg-icon"/>
+                                                <svg-icon name="phone" class="svg-icon-botton"/>
                                             </el-col>
                                             <el-col :span="20">
                                                 <div class="grid-value">
@@ -89,12 +89,12 @@
                             </el-row>
                         </el-col>
                         <el-col :span="16">
-                            <el-card class="box-card workflow-promt">
+                            <el-card class="box-card workflow-promt content-card">
                                 <div slot="header" class="clearfix">
                                     <el-tooltip class="item" effect="dark" content="Add Promts" placement="bottom">
                                         <el-button type="primary" icon="el-icon-circle-plus" @click="addPromt"></el-button>
                                     </el-tooltip>
-                                    <span class="content-button">Promts</span>
+                                    <span class="content-space">Prompts are sent in the order they appear.</span>
                                 </div>
                                 <draggable
                                     :list="promtList"
@@ -114,14 +114,38 @@
                                     </div>
                                 </draggable>
                             </el-card>
+                                <el-card class="box-card workflow-promt">
+                                    <div slot="header" class="clearfix">
+                                        <el-button
+                                            type="primary"
+                                            @click="addDestination"
+                                        >
+                                            <svg-icon name="add-url" />
+                                        </el-button>
+                                        <span class="content-space">Final Response</span>
+                                    </div>
+                                    <el-input
+                                    placeholder="The final message is sent after the last prompt is answered."
+                                    v-model="finalResponseData.body"
+                                    type="textarea"
+                                    :rows="8"
+                                    clearable>
+                                    </el-input>
+                                </el-card>
                         </el-col>
                     </el-row>
                 </el-card>
             </el-row>
+
             <AddPromt
             :visible.sync="promtLoading"
             :order.sync="order"
             @promtRecord="addPromtRecord"
+            />
+
+            <AddDestinationURL
+            :visible.sync="destinationLoading"
+            @addDestinationURL="addDestinationURL"
             />
         </div>
     </div>
@@ -129,11 +153,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultWorkflowData } from '@/api/workflows'
+import { defaultWorkflowData, defaultFinalResponseData } from '@/api/workflows'
 import { getCompanies } from '@/api/companies'
 import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
 import AddPromt from './components/AddPromt.vue'
+import AddDestinationURL from './components/AddDestinationURL.vue'
 import Draggable from 'vuedraggable'
 
 @Component({
@@ -141,13 +166,16 @@ import Draggable from 'vuedraggable'
   components: {
     Multiselect,
     AddPromt,
-    Draggable
+    Draggable,
+    AddDestinationURL
   }
 })
 export default class extends Vue {
     private workflowData = defaultWorkflowData
+    private finalResponseData = defaultFinalResponseData
     private companies :string[] = []
     private promtLoading = false
+    private destinationLoading = false
     private promtList:any[] = []
     private draggableList = 0
     private order = 0
@@ -190,6 +218,10 @@ export default class extends Vue {
       this.promtLoading = true
     }
 
+    private addDestination() {
+      this.destinationLoading = true
+    }
+
     private addPromtRecord(data: any) {
       this.promtList.push(data)
       this.order = this.promtList.length
@@ -206,13 +238,24 @@ export default class extends Vue {
       console.log('Old Index: ' + event.oldIndex)
       console.log('New Index: ' + event.newIndex)
     }
+
+    private addDestinationURL(data: any) {
+      console.log('Add destination URL to object')
+    }
 }
 </script>
 
 <style lang="scss" scoped>
 
+.content-card {
+    margin-bottom: 2%;
+}
+
 .content-row {
     margin-bottom: 5%;
+}
+.content-space {
+    margin-left: 10px;
 }
 
 .content-button {
@@ -223,7 +266,7 @@ export default class extends Vue {
     padding-left: 50px;
 }
 
-.svg-icon {
+.svg-icon-botton {
     width: 30px !important;
     height: 30px !important;
     margin-top: 8px;

@@ -42,7 +42,7 @@ export interface IWorkflowData {
 export interface IWorkflowFinalResponseData {
   id: number
   workflowId: number
-  body: Text
+  body: string
   destinationURL: string
   createdOn: string | number
   updatedOn: string | number
@@ -50,7 +50,7 @@ export interface IWorkflowFinalResponseData {
 
 export interface IWorkflowPromtData {
   id: number
-  body: JSON
+  body: string
   name: string
   default: string
   order: number

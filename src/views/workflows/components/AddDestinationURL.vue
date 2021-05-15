@@ -1,24 +1,18 @@
 <template>
     <el-dialog
-      title="Add Promt"
+      title="Add Destination URL"
       :visible.sync="visible"
       :before-close="handleClose"
     >
       <el-form
-        ref="promtForm"
-        :model="promtRecord"
+        ref="destinationForm"
+        :model="responseRecord"
         label-position="left"
         label-width="30%"
         style="width: 80%; margin-left:10%;"
       >
-        <el-form-item label="Moustachu Name">
-          <el-input v-model="promtRecord.name"></el-input>
-        </el-form-item>
-        <el-form-item label="Default Value">
-          <el-input v-model="promtRecord.default"></el-input>
-        </el-form-item>
-        <el-form-item label="body">
-          <el-input type="textarea" :rows="6" v-model="promtRecord.body"></el-input>
+        <el-form-item label="Destination Url">
+          <el-input type="textarea" placeholder="Need to complete the params mappeing UI later" :rows="4" v-model="responseRecord.destinationURL"></el-input>
         </el-form-item>
       </el-form>
       <div
@@ -30,7 +24,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="addPromt"
+          @click="addResponse"
         >
           {{ $t('common.add') }}
         </el-button>
@@ -41,7 +35,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Form } from 'element-ui'
-import { defaultPromtData } from '@/api/workflows'
+import { defaultFinalResponseData } from '@/api/workflows'
 
 @Component({
   name: 'AddPromt',
@@ -51,18 +45,12 @@ export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
     @Prop({ required: false }) private order!: number
 
-    private promtRecord = defaultPromtData
+    private responseRecord = defaultFinalResponseData
 
-    created() {
-      this.promtRecord.order = this.order
-    }
-
-    private addPromt() {
-      (this.$refs.promtForm as Form).validate(async(valid) => {
+    private addResponse() {
+      (this.$refs.destinationForm as Form).validate(async(valid) => {
         if (valid) {
-          this.promtRecord.order = this.order
-          this.$emit('promtRecord', this.promtRecord)
-          this.promtRecord = defaultPromtData
+          this.$emit('addDestinationURL', this.responseRecord)
         }
       })
       this.$emit('update:visible', false)
