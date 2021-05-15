@@ -172,7 +172,7 @@ import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
 
 @Component({
-  name: 'CampaignView',
+  name: 'CampaignEdit',
   components: { Multiselect }
 })
 export default class extends Vue {

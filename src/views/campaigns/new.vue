@@ -143,7 +143,7 @@
 
                         <el-row class="content-row">
                             <el-col :span="14"  class="content-label">
-                                <router-link :to="'/contacts'">
+                                <router-link :to="'/campaigns'">
                                     <el-button>
                                         Cancel
                                     </el-button>
@@ -170,7 +170,7 @@ import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
 
 @Component({
-  name: 'ContactView',
+  name: 'CampaignCreate',
   components: { Multiselect }
 })
 export default class extends Vue {
@@ -223,10 +223,6 @@ export default class extends Vue {
 
 .content-row {
     margin-bottom: 1%;
-}
-
-.tags {
-  margin-left: 6px;
 }
 
 .content-button {
