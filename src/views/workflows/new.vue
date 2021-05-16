@@ -123,11 +123,13 @@
                                         </el-button>
                                         <span class="content-space">Final Response</span>
                                     </div>
+                                    <el-tag type="danger">Note: Add destination URL by declaring the variable {destinationURL} in the context</el-tag>
                                     <el-input
                                     placeholder="The final message is sent after the last prompt is answered."
                                     v-model="finalResponseData.body"
                                     type="textarea"
                                     :rows="8"
+                                    class="margin-top-10"
                                     clearable>
                                     </el-input>
                                 </el-card>
@@ -253,6 +255,7 @@ export default class extends Vue {
 .content-row {
     margin-bottom: 5%;
 }
+
 .content-space {
     margin-left: 10px;
 }
