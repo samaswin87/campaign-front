@@ -4,7 +4,7 @@
       ref="excel-upload-input"
       class="excel-upload-input"
       type="file"
-      accept=".xlsx, .xls"
+      accept=".xlsx, .xls, .csv"
       @change="handleClick"
     >
     <div

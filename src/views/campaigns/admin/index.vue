@@ -182,6 +182,7 @@ export default class extends Vue {
   }
 
   private createRoute = 'CampaignCreate'
+  private importRoute = 'UploadContacts'
   private statusOptions = ['active', 'inactive']
   private showReviewer = false
   private dialogFormVisible = false

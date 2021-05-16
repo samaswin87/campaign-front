@@ -26,6 +26,7 @@ export interface IContactData {
   notes: string
   gender: string
   company: string
+  customColumns: {}
 }
 
 export interface IWorkflowData {

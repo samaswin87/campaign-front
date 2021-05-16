@@ -19,7 +19,8 @@ for (let i = 0; i < contactCount; i++) {
     noOfCampaigns: faker.datatype.number(),
     keywords: [faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName(), faker.internet.domainName()],
     phone: faker.phone.phoneNumberFormat(2),
-    notes: faker.lorem.sentence(6, 10)
+    notes: faker.lorem.sentence(6, 10),
+    customColumns: {}
   })
 }
 

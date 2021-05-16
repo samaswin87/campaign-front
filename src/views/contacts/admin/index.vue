@@ -5,6 +5,7 @@
         <el-col :span="8">
           <TableDefaultActions
             :createRoute="createRoute"
+            :importRoute="importRoute"
           />
         </el-col>
         <el-col :span="8">
@@ -204,6 +205,7 @@ import { IContactData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 @Component({
   name: 'ContactTable',
@@ -213,7 +215,8 @@ import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.v
     TagsDialog,
     MoveDialog,
     TableDefaultActions,
-    TableSearchWithFilters
+    TableSearchWithFilters,
+    UploadExcelComponent
   }
 })
 
@@ -227,6 +230,7 @@ export default class extends Vue {
   private tagsLoading = false
   private moveLoading = false
   private createRoute = 'ContactCreate'
+  private importRoute = 'UploadContacts'
   private listQuery = {
     page: 1,
     limit: 20,

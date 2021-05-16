@@ -131,6 +131,17 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'user',
           hidden: true
         }
+      },
+      {
+        path: 'import-contacts',
+        component: () => import('@/views/contacts/import-contacts.vue'),
+        name: 'UploadContacts',
+        meta: {
+          noCache: true,
+          title: 'uploadContacts',
+          icon: 'user',
+          hidden: true
+        }
       }
     ]
   },

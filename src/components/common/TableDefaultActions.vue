@@ -18,14 +18,16 @@
         >
         </el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" :content="$t('table.import')" placement="bottom">
-        <el-button
-            style="margin-left: 10px;"
-            type="primary"
-            icon="el-icon-download"
-        >
-        </el-button>
-        </el-tooltip>
+        <router-link :to="{name: this.importRoute}">
+            <el-tooltip class="item" effect="dark" :content="$t('table.import')" placement="bottom">
+            <el-button
+                style="margin-left: 10px;"
+                type="primary"
+                icon="el-icon-download"
+            >
+            </el-button>
+            </el-tooltip>
+        </router-link>
     </div>
 </template>
 
@@ -38,5 +40,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 export default class extends Vue {
     @Prop({ required: true }) private createRoute!: string
+    @Prop({ required: true }) private importRoute!: string
 }
 </script>

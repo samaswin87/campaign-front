@@ -14,7 +14,8 @@ export const defaultContactData: IContactData = {
   phone: '',
   notes: '',
   gender: '',
-  company: ''
+  company: '',
+  customColumns: {}
 }
 
 export const getContacts = (params: any) =>

@@ -72,7 +72,8 @@ export default {
     menus: 'Menus',
     menu: 'Menu',
     recipient: 'Recipient',
-    conversations: 'Conversations'
+    conversations: 'Conversations',
+    uploadContacts: 'Import Contacts'
   },
   navbar: {
     logOut: 'Log Out',

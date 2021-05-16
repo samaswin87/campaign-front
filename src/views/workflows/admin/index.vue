@@ -163,6 +163,7 @@ export default class extends Vue {
   }
 
   private createRoute = 'WorkflowCreate'
+  private importRoute = 'UploadContacts'
   private statusOptions = ['active', 'inactive']
   private showReviewer = false
   private dialogFormVisible = false
