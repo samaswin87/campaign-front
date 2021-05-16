@@ -23,6 +23,7 @@
       >
         Browse
       </el-button>
+      <el-button size="mini" v-if="this.excelData.header && this.excelData.header.length > 0" type="primary">Import now</el-button>
     </div>
   </div>
 </template>

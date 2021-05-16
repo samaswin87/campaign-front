@@ -1,10 +1,14 @@
 <template>
   <div class="app-container">
-    <upload-excel-component
-      :on-success="handleSuccess"
-      :before-upload="beforeUpload"
-      class="margin-bottom-20"
-    />
+    <el-row>
+      <el-col :span="24">
+        <upload-excel-component
+          :on-success="handleSuccess"
+          :before-upload="beforeUpload"
+          class="margin-bottom-20"
+        />
+      </el-col>
+    </el-row>
     <el-row>
         <el-col :span="24 / tableHeader.length"
           v-for="item of tableHeader"
