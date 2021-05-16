@@ -191,6 +191,17 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'campaign',
           hidden: true
         }
+      },
+      {
+        path: 'import-campaigns',
+        component: () => import('@/views/campaigns/import-campaigns.vue'),
+        name: 'UploadCampaigns',
+        meta: {
+          noCache: true,
+          title: 'uploadCampaigns',
+          icon: 'campaign',
+          hidden: true
+        }
       }
     ]
   },
@@ -201,7 +212,7 @@ export const constantRoutes: RouteConfig[] = [
     redirect: 'campaign/recipients/index',
     children: [
       {
-        path: '/campaign/recipients/index',
+        path: '/index',
         component: () => import('@/views/recipients/index.vue'),
         name: 'Recipients',
         meta: {
@@ -211,7 +222,7 @@ export const constantRoutes: RouteConfig[] = [
         }
       },
       {
-        path: '/campaign/recipients/new',
+        path: '/new',
         component: () => import('@/views/recipients/new.vue'),
         name: 'RecipientCreate',
         meta: {
@@ -227,6 +238,16 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           noCache: true,
           title: 'conversations',
+          hidden: true
+        }
+      },
+      {
+        path: 'import-recipients',
+        component: () => import('@/views/recipients/import-recipients.vue'),
+        name: 'UploadRecipients',
+        meta: {
+          noCache: true,
+          title: 'uploadRecipients',
           hidden: true
         }
       }
@@ -275,6 +296,17 @@ export const constantRoutes: RouteConfig[] = [
         meta: {
           noCache: true,
           title: 'workflow',
+          icon: 'tree',
+          hidden: true
+        }
+      },
+      {
+        path: 'import-workflows',
+        component: () => import('@/views/workflows/import-workflows.vue'),
+        name: 'UploadWorkflows',
+        meta: {
+          noCache: true,
+          title: 'uploadWorkflows',
           icon: 'tree',
           hidden: true
         }

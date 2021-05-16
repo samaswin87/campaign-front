@@ -5,6 +5,7 @@
         <el-col :span="16">
           <TableDefaultActions
             :createRoute="createRoute"
+            :importRoute="importRoute"
           />
         </el-col>
         <el-col :span="8" class="float-right">
@@ -182,7 +183,7 @@ export default class extends Vue {
   }
 
   private createRoute = 'CampaignCreate'
-  private importRoute = 'UploadContacts'
+  private importRoute = 'UploadCampaigns'
   private statusOptions = ['active', 'inactive']
   private showReviewer = false
   private dialogFormVisible = false

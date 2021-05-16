@@ -5,6 +5,7 @@
         <el-col :span="14">
           <TableDefaultActions
             :createRoute="createRoute"
+            :importRoute="importRoute"
           />
         </el-col>
         <el-col :span="10" class="float-right">
@@ -145,6 +146,7 @@ export default class extends Vue {
   private filterLoading = false
   private dialogLoading = false
   private createRoute = 'RecipientCreate'
+  private importRoute = 'UploadRecipients'
   private listQuery = {
     page: 1,
     limit: 20,

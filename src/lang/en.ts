@@ -73,7 +73,10 @@ export default {
     menu: 'Menu',
     recipient: 'Recipient',
     conversations: 'Conversations',
-    uploadContacts: 'Import Contacts'
+    uploadContacts: 'Import Contacts',
+    uploadCampaigns: 'Import Campaigns',
+    uploadWorkflows: 'Import Workflows',
+    uploadRecipients: 'Import Recipients'
   },
   navbar: {
     logOut: 'Log Out',
