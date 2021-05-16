@@ -12,10 +12,8 @@
           class="margin-bottom-20">
           <multiselect
             v-model="columnsMapping"
-            tag-placeholder="Add this as new column"
             placeholder="Search or add a column"
             :options="contactColumns"
-            :multiple="true"
             :clear-on-select="false"
             :close-on-select="false"
             :taggable="true"
