@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData } from './types'
 
+export const defaultFinalResponseData: IWorkflowFinalResponseData = {
+  id: 0,
+  workflowId: 1,
+  destinationURL: '',
+  createdOn: '',
+  updatedOn: '',
+  body: ''
+}
+
 export const defaultWorkflowData: IWorkflowData = {
   id: 0,
   status: 'draft',
@@ -9,16 +18,8 @@ export const defaultWorkflowData: IWorkflowData = {
   company: '',
   noOfContacts: 1,
   phone: '',
-  confidential: false
-}
-
-export const defaultFinalResponseData: IWorkflowFinalResponseData = {
-  id: 0,
-  workflowId: 1,
-  destinationURL: '',
-  createdOn: '',
-  updatedOn: '',
-  body: ''
+  confidential: false,
+  finalResponse: defaultFinalResponseData
 }
 
 export const defaultPromtData: IWorkflowPromtData = {

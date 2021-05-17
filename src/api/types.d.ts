@@ -29,17 +29,6 @@ export interface IContactData {
   customColumns: {}
 }
 
-export interface IWorkflowData {
-  id: number
-  status: string
-  company: string
-  name: string
-  createdOn: string | number
-  noOfContacts: number
-  phone: string
-  confidential: boolean
-}
-
 export interface IWorkflowFinalResponseData {
   id: number
   workflowId: number
@@ -49,6 +38,17 @@ export interface IWorkflowFinalResponseData {
   updatedOn: string | number
 }
 
+export interface IWorkflowData {
+  id: number
+  status: string
+  company: string
+  name: string
+  createdOn: string | number
+  noOfContacts: number
+  phone: string
+  confidential: boolean
+  finalResponse: IWorkflowFinalResponseData
+}
 export interface IWorkflowPromtData {
   id: number
   body: string

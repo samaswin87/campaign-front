@@ -107,7 +107,13 @@
                                     class="list-complete-item"
                                     >
                                         <el-card shadow="hover" class="all-scroll">
-                                            <i class="el-icon-rank" /> <span>{{ element.body }} Order: [{{element.order}}]</span>
+                                            <svg-icon
+                                            class="margin-right-10"
+                                            name="drag"
+                                            width="20"
+                                            height="20"
+                                            />
+                                            <span>{{ element.body }} Order: [{{element.order}}]</span>
                                             <i class="el-icon-delete-solid float-right pointer" @click="removePromt(element)"/>
                                         </el-card>
                                     </div>
@@ -241,7 +247,7 @@ export default class extends Vue {
     }
 
     private addDestinationURL(data: any) {
-      console.log('Add destination URL to object')
+      console.log('Add destination URL to object :' + data)
     }
 }
 </script>

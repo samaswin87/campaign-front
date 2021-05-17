@@ -4,228 +4,299 @@
             <el-row>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>Edit Workflow</span>
+                        <span>Edit workflow</span>
+                        <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
                     </div>
-                    <el-form
-                    ref="workflowForm"
-                    :model="workflowData"
-                    class="form-container"
-                    >
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.company')}}:</label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <multiselect
-                                    v-model="workflowData.company"
-                                    placeholder="Search one company"
-                                    :options="companies"
-                                    :clear-on-select="false"
-                                    :close-on-select="false"
+                    <el-row>
+                        <el-col :span="8">
+                            <el-row>
+                                <el-card class="box-card workflow-details">
+                                    <el-form
+                                    ref="workflowForm"
+                                    :model="workflowData"
+                                    class="form-container"
                                     >
-                                    </multiselect>
-                                </div>
-                            </el-col>
-                        </el-row>
+                                        <el-row class="content-row">
+                                            <el-col :span="2">
+                                                <svg-icon name="company" class="svg-icon-botton"/>
+                                            </el-col>
+                                            <el-col :span="20">
+                                                <div class="grid-value">
+                                                    <multiselect
+                                                    v-model="workflowData.company"
+                                                    placeholder="Search one company"
+                                                    :options="companies"
+                                                    :clear-on-select="false"
+                                                    :close-on-select="false"
+                                                    >
+                                                    </multiselect>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.name')}}: </label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add name"
-                                        v-model="workflowData.name"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                                        <el-row class="content-row">
+                                            <el-col :span="2">
+                                                <svg-icon name="keyword" class="svg-icon-botton"/>
+                                            </el-col>
+                                            <el-col :span="20">
+                                                <div class="grid-value">
+                                                    <span>
+                                                        <el-input
+                                                        placeholder="Please add keyword"
+                                                        v-model="workflowData.name"
+                                                        clearable>
+                                                        </el-input>
+                                                    </span>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
 
-                        <el-row class="content-row" v-if="scheduled">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.workflow.scheduledOn')}}: </label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-date-picker
-                                        v-model="workflowData.scheduledOn"
-                                        type="datetime"
-                                        format="yyyy-MM-dd HH:mm:ss"
-                                        placeholder="Select date and time"
-                                        class="timestamp-form"
-                                        :picker-options="datePickerOptions"
-                                        />
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                                        <el-row class="content-row">
+                                            <el-col :span="2">
+                                                <svg-icon name="phone" class="svg-icon-botton"/>
+                                            </el-col>
+                                            <el-col :span="20">
+                                                <div class="grid-value">
+                                                    <span>
+                                                        <el-input
+                                                        placeholder="Please add phone"
+                                                        v-model="workflowData.phone"
+                                                        clearable>
+                                                        </el-input>
+                                                    </span>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
 
-                        <el-row class="content-row" v-if="recurring">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.workflow.recurringDays')}}: </label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-checkbox-group v-model="workflowData.recurringDays">
-                                            <el-checkbox-button v-for="day in recurringDays" :label="day" :key="day">
-                                                {{day}}
-                                            </el-checkbox-button>
-                                        </el-checkbox-group>
-                                    </span>
+                                        <el-row class="content-row">
+                                            <el-col :span="20" class="content-vlaue">
+                                                <div class="grid-content">
+                                                    <span>
+                                                        <el-switch
+                                                        v-model="workflowData.confidential"
+                                                        active-text="Confidential"
+                                                        active-color="#ff4949"
+                                                        inactive-color="#13ce66"
+                                                        inactive-text="Non Confidential">
+                                                        </el-switch>
+                                                    </span>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+                                    </el-form>
+                                </el-card>
+                            </el-row>
+                        </el-col>
+                        <el-col :span="16">
+                            <el-card class="box-card workflow-promt content-card">
+                                <div slot="header" class="clearfix">
+                                    <el-tooltip class="item" effect="dark" content="Add Promts" placement="bottom">
+                                        <el-button type="primary" icon="el-icon-circle-plus" @click="addPromt"></el-button>
+                                    </el-tooltip>
+                                    <span class="content-space">Prompts are sent in the order they appear.</span>
                                 </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row" v-if="recurring">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.workflow.recurringAt')}}: </label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-date-picker
-                                        v-model="workflowData.recurringAt"
-                                        type="datetime"
-                                        format="yyyy-MM-dd HH:mm:ss"
-                                        placeholder="Select date and time"
-                                        class="timestamp-form"
-                                        />
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content-label"><label class="label-space">{{$t('table.workflow.body')}}: </label></div>
-                            </el-col>
-                            <el-col :span="8" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        type="textarea"
-                                        :rows="10"
-                                        placeholder="Message"
-                                        v-model="workflowData.body">
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="17"  class="content-label">
-                                <div class="grid-content">
-                                    <router-link :to="'/workflows'">
-                                        <el-button>
-                                            Cancel
+                                <draggable
+                                    :list="promtList"
+                                    :key.sync="draggableList"
+                                    class="dragArea"
+                                    @end="updateItemOrder($event)"
+                                >
+                                    <div
+                                    v-for="element in promtList"
+                                    :key="element.order"
+                                    class="list-complete-item"
+                                    >
+                                        <el-card shadow="hover" class="all-scroll">
+                                            <svg-icon
+                                            class="margin-right-10"
+                                            name="drag"
+                                            width="20"
+                                            height="20"
+                                            />
+                                            <span>{{ element.body }} Order: [{{element.order}}]</span>
+                                            <i class="el-icon-delete-solid float-right pointer" @click="removePromt(element)"/>
+                                        </el-card>
+                                    </div>
+                                </draggable>
+                            </el-card>
+                                <el-card class="box-card workflow-promt">
+                                    <div slot="header" class="clearfix">
+                                        <el-button
+                                            type="primary"
+                                            @click="addDestination"
+                                        >
+                                            <svg-icon name="add-url" />
                                         </el-button>
-                                    </router-link>
-                                </div>
-                            </el-col>
-                            <el-col :span="2"  class="content-button">
-                                <el-button type="primary">
-                                    Submit
-                                </el-button>
-                            </el-col>
-                        </el-row>
-                    </el-form>
+                                        <span class="content-space">Final Response</span>
+                                    </div>
+                                    <el-tag type="danger">Note: Add destination URL by declaring the variable {destinationURL} in the context</el-tag>
+                                    <el-input
+                                    placeholder="The final message is sent after the last prompt is answered."
+                                    v-model="finalResponseData.body"
+                                    type="textarea"
+                                    :rows="8"
+                                    class="margin-top-10"
+                                    clearable>
+                                    </el-input>
+                                </el-card>
+                        </el-col>
+                    </el-row>
                 </el-card>
             </el-row>
+
+            <AddPromt
+            :visible.sync="promtLoading"
+            :order.sync="order"
+            @promtRecord="addPromtRecord"
+            />
+
+            <AddDestinationURL
+            :visible.sync="destinationLoading"
+            @addDestinationURL="addDestinationURL"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultWorkflowData, getWorkflow } from '@/api/workflows'
+import { defaultWorkflowData, defaultFinalResponseData, getWorkflow } from '@/api/workflows'
 import { getCompanies } from '@/api/companies'
 import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
+import AddPromt from './components/AddPromt.vue'
+import AddDestinationURL from './components/AddDestinationURL.vue'
+import Draggable from 'vuedraggable'
 
 @Component({
-  name: 'WorkflowView',
-  components: { Multiselect }
+  name: 'WorkflowCreate',
+  components: {
+    Multiselect,
+    AddPromt,
+    Draggable,
+    AddDestinationURL
+  }
 })
 export default class extends Vue {
     private workflowData = defaultWorkflowData
+    private finalResponseData = defaultFinalResponseData
     private companies :string[] = []
-    private types :string[] = ['immediate', 'recurring', 'scheduled']
-    private recurringDays :string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    private scheduled = false
-    private recurring = false
+    private promtLoading = false
+    private destinationLoading = false
+    private promtList:any[] = []
+    private draggableList = 0
+    private order = 0
 
     created() {
+      this.fetchCompanies()
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
-      this.fetchCompanies()
-    }
+      this.promtList.push({
+        name: 'Name',
+        defualt: '',
+        body: 'What is your name?',
+        order: 0
+      })
 
-    private async fetchData(id: number) {
-      try {
-        const { data } = await getWorkflow(id, { /* Your params here */ })
-        this.workflowData = data.workflow
-      } catch (err) {
-        console.error(err)
-      }
+      this.promtList.push({
+        name: 'Gender',
+        defualt: 'Male',
+        body: 'What is gender?',
+        order: 1
+      })
+
+      this.promtList.push({
+        name: 'Country',
+        defualt: '',
+        body: 'What is you country?',
+        order: 2
+      })
+      this.order = this.promtList.length
     }
 
     private async fetchCompanies() {
       try {
-        const { data } = await getCompanies({ /* Your params here */ })
+        const { data } = await getCompanies({})
         this.companies = map(data.items, 'name')
       } catch (err) {
         console.error(err)
       }
     }
 
-    private changeType(value: string) {
-      if (value === 'scheduled') {
-        this.scheduled = true
-      }
+    private addPromt() {
+      this.promtLoading = true
     }
 
-    private datePickerOptions = {
-      disabledDate(time: Date) {
-        return time.getTime() < Date.now() - 8.64e7
+    private addDestination() {
+      this.destinationLoading = true
+    }
+
+    private addPromtRecord(data: any) {
+      this.promtList.push(data)
+      this.order = this.promtList.length
+      this.draggableList += 1
+    }
+
+    private removePromt(element: any) {
+      const index = this.promtList.indexOf(element)
+      this.promtList.splice(index, 1)
+      this.order = this.promtList.length
+    }
+
+    private updateItemOrder(event: any) {
+      console.log('Old Index: ' + event.oldIndex)
+      console.log('New Index: ' + event.newIndex)
+    }
+
+    private addDestinationURL(data: any) {
+      console.log('Add destination URL to object :' + data)
+    }
+
+    private async fetchData(id: number) {
+      try {
+        const { data } = await getWorkflow(id, { /* Your params here */ })
+        this.workflowData = data.workflow
+        this.finalResponseData = data.workflow.finalResponse
+      } catch (err) {
+        console.error(err)
       }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.content-label {
-    text-align: end;
-}
 
-.content-vlaue {
-    margin-left: 3%;
+.content-card {
+    margin-bottom: 2%;
 }
 
 .content-row {
-    margin-bottom: 1%;
+    margin-bottom: 5%;
 }
 
-.tags {
-    margin-left: 6px;
-}
-
-.grid-content-label {
-    margin-top: 1%;
+.content-space {
+    margin-left: 10px;
 }
 
 .content-button {
     margin-left: 28px;
 }
 
-.timestamp-form {
-    width: 100%
+.content-vlaue {
+    padding-left: 50px;
+}
+
+.svg-icon-botton {
+    width: 30px !important;
+    height: 30px !important;
+    margin-top: 8px;
+}
+
+.all-scroll {
+    cursor: all-scroll;
+}
+
+.pointer {
+    cursor: pointer;
 }
 </style>

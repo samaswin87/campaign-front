@@ -1,11 +1,22 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IWorkflowData } from '../src/api/types'
+import { IWorkflowData, IWorkflowFinalResponseData } from '../src/api/types'
 
 const workflowList: IWorkflowData[] = []
-const workflowCount = 30
+const workflowCount = 100
 
 for (let i = 0; i < workflowCount; i++) {
+  const wordCount = faker.datatype.number({ min: 30, max: 70 })
+  let sentence = faker.lorem.words(wordCount)
+  sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1) + ' {destinationURL} .'
+  const finalResponseData: IWorkflowFinalResponseData = {
+    id: i,
+    workflowId: i,
+    body: sentence,
+    destinationURL: faker.internet.url(),
+    createdOn: faker.date.past().getTime(),
+    updatedOn: faker.date.past().getTime()
+  }
   workflowList.push({
     id: i,
     status: faker.random.arrayElement(['published', 'draft']),
@@ -14,7 +25,8 @@ for (let i = 0; i < workflowCount; i++) {
     noOfContacts: faker.datatype.number(),
     company: faker.company.companyName(),
     phone: faker.phone.phoneNumberFormat(2),
-    confidential: faker.datatype.boolean()
+    confidential: faker.datatype.boolean(),
+    finalResponse: finalResponseData
   })
 }
 
