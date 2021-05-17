@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IWorkflowData, IWorkflowFinalResponseData } from '../src/api/types'
+import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData } from '../src/api/types'
 
 const workflowList: IWorkflowData[] = []
 const workflowCount = 100
@@ -17,6 +17,21 @@ for (let i = 0; i < workflowCount; i++) {
     createdOn: faker.date.past().getTime(),
     updatedOn: faker.date.past().getTime()
   }
+
+  const promts: IWorkflowPromtData[] = []
+  for (let j = 0; j < 4; j++) {
+    const promt: IWorkflowPromtData = {
+      id: j,
+      body: faker.lorem.sentence(10, 20),
+      name: faker.lorem.sentence(6, 10),
+      default: 'name_' + j,
+      order: j,
+      workflowId: i,
+      date: faker.date.past().getTime()
+    }
+    promts.push(promt)
+  }
+
   workflowList.push({
     id: i,
     status: faker.random.arrayElement(['published', 'draft']),
@@ -26,7 +41,8 @@ for (let i = 0; i < workflowCount; i++) {
     company: faker.company.companyName(),
     phone: faker.phone.phoneNumberFormat(2),
     confidential: faker.datatype.boolean(),
-    finalResponse: finalResponseData
+    finalResponse: finalResponseData,
+    promts: promts
   })
 }
 

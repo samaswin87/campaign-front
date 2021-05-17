@@ -38,6 +38,15 @@ export interface IWorkflowFinalResponseData {
   updatedOn: string | number
 }
 
+export interface IWorkflowPromtData {
+  id: number
+  body: string
+  name: string
+  default: string
+  order: number
+  workflowId: number
+  date: string | number
+}
 export interface IWorkflowData {
   id: number
   status: string
@@ -48,15 +57,7 @@ export interface IWorkflowData {
   phone: string
   confidential: boolean
   finalResponse: IWorkflowFinalResponseData
-}
-export interface IWorkflowPromtData {
-  id: number
-  body: string
-  name: string
-  default: string
-  order: number
-  workflowId: number
-  date: string | number
+  promts: IWorkflowPromtData[]
 }
 
 export interface IWorkflowConversationsData {

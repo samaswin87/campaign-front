@@ -191,27 +191,6 @@ export default class extends Vue {
       this.fetchCompanies()
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
-      this.promtList.push({
-        name: 'Name',
-        defualt: '',
-        body: 'What is your name?',
-        order: 0
-      })
-
-      this.promtList.push({
-        name: 'Gender',
-        defualt: 'Male',
-        body: 'What is gender?',
-        order: 1
-      })
-
-      this.promtList.push({
-        name: 'Country',
-        defualt: '',
-        body: 'What is you country?',
-        order: 2
-      })
-      this.order = this.promtList.length
     }
 
     private async fetchCompanies() {
@@ -257,6 +236,8 @@ export default class extends Vue {
         const { data } = await getWorkflow(id, { /* Your params here */ })
         this.workflowData = data.workflow
         this.finalResponseData = data.workflow.finalResponse
+        this.promtList = data.workflow.promts
+        this.order = this.promtList.length
       } catch (err) {
         console.error(err)
       }
