@@ -86,16 +86,13 @@
                         <el-col :span="16">
                             <el-card class="box-card workflow-promt content-card">
                                 <div slot="header" class="clearfix">
-                                    <el-tooltip class="item" effect="dark" content="Add Promts" placement="bottom">
-                                        <el-button type="primary" icon="el-icon-circle-plus" @click="addPromt"></el-button>
-                                    </el-tooltip>
-                                    <span class="content-space">Prompts are sent in the order they appear.</span>
+                                    <i class="el-icon-s-order" />
+                                    <span class="content-space">PROMTS</span>
                                 </div>
                                 <draggable
                                     :list="promtList"
                                     :key.sync="draggableList"
                                     class="dragArea"
-                                    @end="updateItemOrder($event)"
                                 >
                                     <div
                                     v-for="element in promtList"
@@ -103,27 +100,16 @@
                                     class="list-complete-item"
                                     >
                                         <el-card shadow="hover" class="all-scroll">
-                                            <svg-icon
-                                            class="margin-right-10"
-                                            name="drag"
-                                            width="20"
-                                            height="20"
-                                            />
-                                            <span>{{ element.body }} Order: [{{element.order}}]</span>
-                                            <i class="el-icon-delete-solid float-right pointer" @click="removePromt(element)"/>
+                                            <i class="el-icon-s-promotion margin-right-10" />
+                                            <span>{{ element.body }}</span>
                                         </el-card>
                                     </div>
                                 </draggable>
                             </el-card>
                                 <el-card class="box-card workflow-promt">
                                     <div slot="header" class="clearfix">
-                                        <el-button
-                                            type="primary"
-                                            @click="addDestination"
-                                        >
-                                            <svg-icon name="add-url" />
-                                        </el-button>
-                                        <span class="content-space">Final Response</span>
+                                        <i class="el-icon-message-solid" />
+                                        <span class="content-space">FINAL RESPONSE</span>
                                     </div>
                                     <span v-html="displayResponse(finalResponseData.body)"></span>
                                 </el-card>
@@ -204,12 +190,6 @@ export default class extends Vue {
       this.draggableList += 1
     }
 
-    private removePromt(element: any) {
-      const index = this.promtList.indexOf(element)
-      this.promtList.splice(index, 1)
-      this.order = this.promtList.length
-    }
-
     private updateItemOrder(event: any) {
       console.log('Old Index: ' + event.oldIndex)
       console.log('New Index: ' + event.newIndex)
@@ -263,13 +243,5 @@ export default class extends Vue {
     width: 30px !important;
     height: 30px !important;
     margin-top: 8px;
-}
-
-.all-scroll {
-    cursor: all-scroll;
-}
-
-.pointer {
-    cursor: pointer;
 }
 </style>

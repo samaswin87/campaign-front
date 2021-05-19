@@ -10,6 +10,16 @@ export const defaultFinalResponseData: IWorkflowFinalResponseData = {
   body: ''
 }
 
+export const defaultPromtData: IWorkflowPromtData = {
+  id: 0,
+  workflowId: 1,
+  default: '',
+  order: 0,
+  name: '',
+  body: '',
+  date: ''
+}
+
 export const defaultWorkflowData: IWorkflowData = {
   id: 0,
   status: 'draft',
@@ -19,17 +29,8 @@ export const defaultWorkflowData: IWorkflowData = {
   noOfContacts: 1,
   phone: '',
   confidential: false,
-  finalResponse: defaultFinalResponseData
-}
-
-export const defaultPromtData: IWorkflowPromtData = {
-  id: 0,
-  workflowId: 1,
-  default: '',
-  order: 0,
-  name: '',
-  body: '',
-  date: ''
+  finalResponse: defaultFinalResponseData,
+  promts: [defaultPromtData]
 }
 
 export const getWorkflows = (params: any) =>
