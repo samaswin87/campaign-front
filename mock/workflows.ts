@@ -34,8 +34,8 @@ for (let i = 0; i < workflowCount; i++) {
 
   workflowList.push({
     id: i,
-    status: faker.random.arrayElement(['published', 'draft']),
-    name: faker.lorem.sentence(6, 10),
+    status: faker.random.arrayElement(['published', 'unpublished']),
+    name: faker.lorem.sentence(1, 1),
     createdOn: faker.date.past().getTime(),
     noOfContacts: faker.datatype.number(),
     company: faker.company.companyName(),

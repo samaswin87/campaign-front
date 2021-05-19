@@ -5,8 +5,13 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>Show workflow</span>
-                        <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
                     </div>
+                    <el-row>
+                        <el-col :span="24" class="margin-bottom-20">
+                            <el-button :disabled="workflowSelected" @click.native="selectWorkflow"><svg-icon name="nested" /> Workflow</el-button>
+                            <el-button :disabled="conversationsSelected" @click.native="selectConversation"><svg-icon name="message" /> Conversations</el-button>
+                        </el-col>
+                    </el-row>
                     <el-row>
                         <el-col :span="8">
                             <el-row>
@@ -18,29 +23,25 @@
                                     >
                                         <el-row class="content-row">
                                             <el-col :span="2">
-                                                <svg-icon name="company" class="svg-icon-botton"/>
+                                                <svg-icon name="company"/>
                                             </el-col>
                                             <el-col :span="20">
                                                 <div class="grid-value">
-                                                    <el-input
-                                                    v-model="workflowData.company"
-                                                    disabled>
-                                                    </el-input>
+                                                    {{workflowData.company}}
                                                 </div>
                                             </el-col>
                                         </el-row>
 
                                         <el-row class="content-row">
                                             <el-col :span="2">
-                                                <svg-icon name="keyword" class="svg-icon-botton"/>
+                                                <svg-icon name="keyword"/>
                                             </el-col>
                                             <el-col :span="20">
                                                 <div class="grid-value">
                                                     <span>
-                                                        <el-input
-                                                        v-model="workflowData.name"
-                                                        disabled>
-                                                        </el-input>
+                                                        <el-tag effect="plain">
+                                                            {{workflowData.name}}
+                                                        </el-tag>
                                                     </span>
                                                 </div>
                                             </el-col>
@@ -48,33 +49,38 @@
 
                                         <el-row class="content-row">
                                             <el-col :span="2">
-                                                <svg-icon name="phone" class="svg-icon-botton"/>
+                                                <svg-icon name="phone"/>
                                             </el-col>
                                             <el-col :span="20">
                                                 <div class="grid-value">
                                                     <span>
-                                                        <el-input
-                                                        v-model="workflowData.phone"
-                                                        disabled>
-                                                        </el-input>
+                                                        {{workflowData.phone}}
                                                     </span>
                                                 </div>
                                             </el-col>
                                         </el-row>
 
                                         <el-row class="content-row">
-                                            <el-col :span="20" class="content-vlaue">
-                                                <div class="grid-content">
+                                            <el-col :span="2">
+                                                <svg-icon :name="workflowData.confidential ? 'eye-cross' : 'eye-on'"/>
+                                            </el-col>
+                                            <el-col :span="20">
+                                                <div class="grid-value">
                                                     <span>
-                                                        <el-switch
-                                                        v-model="workflowData.confidential"
-                                                        active-text="Confidential"
-                                                        active-color="#ff4949"
-                                                        inactive-color="#13ce66"
-                                                        inactive-text="Non Confidential"
-                                                        disabled
-                                                        >
-                                                        </el-switch>
+                                                        {{workflowData.confidential ? 'Confidential' : 'Non Confidential'}}
+                                                    </span>
+                                                </div>
+                                            </el-col>
+                                        </el-row>
+
+                                        <el-row class="content-row">
+                                            <el-col :span="2">
+                                                <svg-icon :name="workflowData.status"/>
+                                            </el-col>
+                                            <el-col :span="20">
+                                                <div class="grid-value">
+                                                    <span>
+                                                        {{workflowData.status | uppercaseFirstChar}}
                                                     </span>
                                                 </div>
                                             </el-col>
@@ -83,7 +89,7 @@
                                 </el-card>
                             </el-row>
                         </el-col>
-                        <el-col :span="16">
+                        <el-col :span="16" v-show="workflowSelected">
                             <el-card class="box-card workflow-promt content-card">
                                 <div slot="header" class="clearfix">
                                     <i class="el-icon-s-order" />
@@ -113,6 +119,8 @@
                                     </div>
                                     <span v-html="displayResponse(finalResponseData.body)"></span>
                                 </el-card>
+                        </el-col>
+                        <el-col :span="16" v-show="conversationsSelected">
                         </el-col>
                     </el-row>
                 </el-card>
@@ -160,6 +168,8 @@ export default class extends Vue {
     private promtList:any[] = []
     private draggableList = 0
     private order = 0
+    private conversationsSelected = false
+    private workflowSelected = true
 
     created() {
       this.fetchCompanies()
@@ -182,6 +192,16 @@ export default class extends Vue {
 
     private addDestination() {
       this.destinationLoading = true
+    }
+
+    private selectWorkflow() {
+      this.workflowSelected = true
+      this.conversationsSelected = false
+    }
+
+    private selectConversation() {
+      this.workflowSelected = false
+      this.conversationsSelected = true
     }
 
     private addPromtRecord(data: any) {
