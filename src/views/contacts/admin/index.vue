@@ -130,13 +130,13 @@
         <el-table-column
         :label="$t('table.status')"
         min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <el-tag effect="dark" :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
+        >
+          <template slot-scope="{row}">
+            <el-tag effect="dark" :type="row.status | statusFilter">
+              {{ row.status }}
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column
           :label="$t('table.actions')"
           align="center"

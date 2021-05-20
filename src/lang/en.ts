@@ -157,6 +157,7 @@ export default {
     tags: 'Tags',
     noOfContacts: '# of Contacts',
     body: 'Message',
+    keyword: 'Keyword',
     contact: {
       optOut: 'Opted Out',
       firstName: 'First Name',

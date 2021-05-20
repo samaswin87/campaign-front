@@ -32,13 +32,24 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.name')"
+        :label="$t('table.keyword')"
         min-width="150px"
       >
         <template slot-scope="{row}">
           <span
             class="link-type"
           >{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('table.noOfContacts')"
+        min-width="150px"
+        v-if="!dashboard"
+      >
+        <template slot-scope="{row}">
+          <span
+            class="link-type"
+          >{{ row.noOfContacts }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -50,7 +61,31 @@
           <span>{{ row.company }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column
+        :label="$t('table.status')"
+        min-width="150px"
+      >
+        <template slot-scope="{row}">
+          <el-tag effect="dark" :type="row.status | statusFilter">
+            {{ row.status }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('table.actions')"
+        align="center"
+        class-name="fixed-width"
+        v-if="action"
+      >
+        <el-tooltip class="item" effect="dark" content="Add to Menu Promt" placement="left">
+          <el-button
+            icon="el-icon-circle-plus-outline"
+            type="primary"
+            circle
+          >
+          </el-button>
+        </el-tooltip>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -64,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { getWorkflows } from '@/api/workflows'
 import { IWorkflowData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
@@ -76,6 +111,8 @@ import Pagination from '@/components/Pagination/index.vue'
   }
 })
 export default class extends Vue {
+  @Prop({ required: true }) private action!: boolean
+  @Prop({ required: true }) private dashboard!: boolean
   private list: IWorkflowData[] = []
   private tableKey = 0
   private total = 0

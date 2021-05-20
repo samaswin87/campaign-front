@@ -90,10 +90,13 @@
                         <el-col :span="16">
                             <el-card class="box-card menu-promt content-card">
                                 <div slot="header" class="clearfix">
-                                    <el-tooltip class="item" effect="dark" content="Add Promts" placement="bottom">
-                                        <el-button type="primary" icon="el-icon-circle-plus" @click="addPromt"></el-button>
-                                    </el-tooltip>
-                                    <span class="content-space">Prompts are sent in the order they appear.</span>
+                                    <svg-icon
+                                    class="margin-right-10"
+                                    name="list"
+                                    width="20"
+                                    height="20"
+                                    />
+                                    <span class="content-space">PROMTS</span>
                                 </div>
                                 <draggable
                                     :list="promtList"
@@ -113,7 +116,15 @@
                                             width="20"
                                             height="20"
                                             />
-                                            <span>{{ element.body }} Order: [{{element.order}}]</span>
+                                            <span>Text
+                                                <el-tag
+                                                    type="primary"
+                                                    effect="dark"
+                                                    size="mini"
+                                                >
+                                                {{ element.body }}
+                                                </el-tag>
+                                            </span>
                                             <i class="el-icon-delete-solid float-right pointer" @click="removePromt(element)"/>
                                         </el-card>
                                     </div>
@@ -121,39 +132,23 @@
                             </el-card>
                                 <el-card class="box-card menu-promt">
                                     <div slot="header" class="clearfix">
-                                        <el-button
-                                            type="primary"
-                                            @click="addDestination"
-                                        >
-                                            <svg-icon name="add-url" />
-                                        </el-button>
-                                        <span class="content-space">Final Response</span>
+                                        <svg-icon
+                                            class="margin-right-10"
+                                            name="tree"
+                                            width="20"
+                                            height="20"
+                                        />
+                                        <span class="content-space">AVAILABLE WORKFLOWS</span>
+                                        <workflows-table
+                                        :dashboard=false
+                                        :action=true
+                                        />
                                     </div>
-                                    <el-tag type="danger">Note: Add destination URL by declaring the variable {destinationURL} in the context</el-tag>
-                                    <el-input
-                                    placeholder="The final message is sent after the last prompt is answered."
-                                    v-model="finalResponseData.body"
-                                    type="textarea"
-                                    :rows="8"
-                                    class="margin-top-10"
-                                    clearable>
-                                    </el-input>
                                 </el-card>
                         </el-col>
                     </el-row>
                 </el-card>
             </el-row>
-
-            <AddPromt
-            :visible.sync="promtLoading"
-            :order.sync="order"
-            @promtRecord="addPromtRecord"
-            />
-
-            <AddDestinationURL
-            :visible.sync="destinationLoading"
-            @addDestinationURL="addDestinationURL"
-            />
         </div>
     </div>
 </template>
@@ -164,24 +159,21 @@ import { defaultMenuData, defaultFinalResponseData } from '@/api/menus'
 import { getCompanies } from '@/api/companies'
 import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
-import AddPromt from './components/AddPromt.vue'
-import AddDestinationURL from './components/AddDestinationURL.vue'
 import Draggable from 'vuedraggable'
+import WorkflowsTable from '@/components/common/WorkflowsTable.vue'
 
 @Component({
   name: 'MenuCreate',
   components: {
     Multiselect,
-    AddPromt,
     Draggable,
-    AddDestinationURL
+    WorkflowsTable
   }
 })
 export default class extends Vue {
     private menuData = defaultMenuData
     private finalResponseData = defaultFinalResponseData
     private companies :string[] = []
-    private promtLoading = false
     private destinationLoading = false
     private promtList:any[] = []
     private draggableList = 0
@@ -192,21 +184,21 @@ export default class extends Vue {
       this.promtList.push({
         name: 'Name',
         defualt: '',
-        body: 'What is your name?',
+        body: 'Keyword1',
         order: 0
       })
 
       this.promtList.push({
         name: 'Gender',
         defualt: 'Male',
-        body: 'What is gender?',
+        body: 'Keyword2',
         order: 1
       })
 
       this.promtList.push({
         name: 'Country',
         defualt: '',
-        body: 'What is you country?',
+        body: 'Keyword3',
         order: 2
       })
       this.order = this.promtList.length
@@ -219,14 +211,6 @@ export default class extends Vue {
       } catch (err) {
         console.error(err)
       }
-    }
-
-    private addPromt() {
-      this.promtLoading = true
-    }
-
-    private addDestination() {
-      this.destinationLoading = true
     }
 
     private addPromtRecord(data: any) {
@@ -244,10 +228,6 @@ export default class extends Vue {
     private updateItemOrder(event: any) {
       console.log('Old Index: ' + event.oldIndex)
       console.log('New Index: ' + event.newIndex)
-    }
-
-    private addDestinationURL(data: any) {
-      console.log('Add destination URL to object :' + data)
     }
 }
 </script>

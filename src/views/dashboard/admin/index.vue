@@ -24,7 +24,10 @@
       >
         <div style="margin:0 0 5px 20px">Workflows
         </div>
-        <workflows-table />
+        <workflows-table
+        :action=false
+        :dashboard=true
+        />
       </el-col>
     </el-row>
   </div>
@@ -34,7 +37,7 @@
 import 'echarts/theme/macarons.js' // Theme used in BarChart, LineChart, PieChart and RadarChart
 import { Component, Vue } from 'vue-property-decorator'
 import CampaignsTable from './components/CampaignsTable.vue'
-import WorkflowsTable from './components/WorkflowsTable.vue'
+import WorkflowsTable from '@/components/common/WorkflowsTable.vue'
 
 @Component({
   name: 'DashboardAdmin',
