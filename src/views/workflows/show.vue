@@ -137,7 +137,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultWorkflowData, defaultFinalResponseData, getWorkflow } from '@/api/workflows'
 import { getCompanies } from '@/api/companies'
 import { map } from 'lodash'
-import Conversations from './components/Conversations.vue'
+import Conversations from './components/WorkflowConversations.vue'
 import Draggable from 'vuedraggable'
 
 @Component({
