@@ -21,7 +21,7 @@
     <el-table
       ref="conversationTable"
       :key="tableKey"
-      :data="list"
+      :data.sync="conversations"
       border
       fit
       highlight-current-row
@@ -82,15 +82,15 @@
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
-      @pagination="list"
+      @pagination="getList"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { defaultConversationData, getConversations } from '@/api/workflows'
-import { ICampaignRecipientData } from '@/api/types'
+import { defaultConversationData } from '@/api/workflows'
+import { ICampaignConversationsData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import ConversationTableFilters from './ConversationTableFilters.vue'
@@ -105,12 +105,13 @@ import ConversationTableFilters from './ConversationTableFilters.vue'
 })
 
 export default class extends Vue {
-  @Prop({ required: true }) private list!: ICampaignRecipientData[]
+  @Prop({ required: true }) private list!: ICampaignConversationsData[]
   private tableKey = 0
   private total = 0
   private listLoading = true
   private filterLoading = false
   private dialogLoading = false
+  private conversations: ICampaignConversationsData[] = []
   private listQuery = {
     page: 1,
     limit: 20,
@@ -137,15 +138,14 @@ export default class extends Vue {
     this.getList()
   }
 
-  private async getList() {
+  private getList() {
     this.listLoading = true
-    const { data } = await getConversations(1, this.listQuery)
-    this.list = data.items
-    this.total = data.total
-    // Just to simulate the time of the request
-    setTimeout(() => {
-      this.listLoading = false
-    }, 0.5 * 1000)
+    this.conversations = this.list
+    if (this.listQuery.sort === '-id') {
+      this.conversations = this.conversations.reverse()
+    }
+    this.conversations = this.conversations.filter((_, index) => index < (this.listQuery.limit as number) * (this.listQuery.page as number) && index >= (this.listQuery.limit as number) * (this.listQuery.page as number - 1))
+    this.total = this.list.length
   }
 
   private dialogVisiblity() {
