@@ -71,20 +71,11 @@ export interface IWorkflowData {
   promts: IWorkflowPromtData[]
   conversations: IWorkflowConversationsData[]
 }
-export interface IMenuData {
-  id: number
-  status: string
-  company: string
-  name: string
-  createdOn: string | number
-  noOfContacts: number
-  phone: string
-}
 
 export interface IMenuFinalResponseData {
   id: number
   menuId: number
-  body: Text
+  body: string
   destinationURL: string
   createdOn: string | number
   updatedOn: string | number
@@ -92,7 +83,7 @@ export interface IMenuFinalResponseData {
 
 export interface IMenuPromtData {
   id: number
-  body: JSON
+  body: string
   name: string
   default: string
   order: number
@@ -106,7 +97,21 @@ export interface IMenuConversationsData {
   contact: string
   message: string
   menuId: number
-  date: string | number
+  lastReplyAt: string | number
+  firstReplyAt: string | number
+}
+export interface IMenuData {
+  id: number
+  status: string
+  company: string
+  name: string
+  createdOn: string | number
+  noOfContacts: number
+  phone: string
+  confidential: boolean
+  finalResponse: IMenuFinalResponseData
+  promts: IMenuPromtData[]
+  conversations: IMenuConversationsData[]
 }
 export interface ICampaignConversationsData {
   id: number
