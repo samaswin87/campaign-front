@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { IMenuData } from './types'
 
-export const defaultMenuwData: IMenuData = {
+export const defaultMenuData: IMenuData = {
   id: 0,
   status: 'draft',
   name: '',
@@ -11,7 +11,7 @@ export const defaultMenuwData: IMenuData = {
   phone: ''
 }
 
-export const getMenuws = (params: any) =>
+export const getMenus = (params: any) =>
   request({
     url: '/menus',
     method: 'get',

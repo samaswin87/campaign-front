@@ -369,6 +369,17 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'menu',
           hidden: true
         }
+      },
+      {
+        path: 'import-menus',
+        component: () => import('@/views/menus/import-menus.vue'),
+        name: 'UploadMenus',
+        meta: {
+          noCache: true,
+          title: 'menu',
+          icon: 'menu',
+          hidden: true
+        }
       }
     ]
   },

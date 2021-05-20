@@ -1,11 +1,11 @@
 <template>
     <el-dialog
-      title="Workflow Filter"
+      title="Menu Filter"
       :visible.sync="visible"
       :before-close="handleClose"
     >
       <el-form
-        ref="workflowFilterForm"
+        ref="menuFilterForm"
         :model="filterRecord"
         label-position="left"
         label-width="30%"
@@ -18,7 +18,7 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item label="Keywords">
-            <el-radio-group v-model="filterRecord.workflowOption">
+            <el-radio-group v-model="filterRecord.menuOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
               <el-radio label="In Not Empty"></el-radio>
@@ -50,7 +50,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="filterWorkflow"
+          @click="filterMenu"
         >
           {{ $t('table.apply') }}
         </el-button>
@@ -64,7 +64,7 @@ import { Form } from 'element-ui'
 import Multiselect from 'vue-multiselect'
 
 @Component({
-  name: 'WorkflowTableFilter',
+  name: 'MenuTableFilter',
   components: { Multiselect }
 })
 export default class extends Vue {
@@ -75,20 +75,20 @@ export default class extends Vue {
     private filterRecord = {
       status: 'Active',
       keywords: '',
-      workflows: '',
+      menus: '',
       schduledOn: '',
       tags: null,
       phoneNumber: null,
       tagOption: 'In Equal',
       posted: 'Twitter',
-      workflowOption: 'In Equal',
+      menuOption: 'In Equal',
       phoneOption: 'In Equal'
     }
 
-    private filterWorkflow() {
-      (this.$refs.workflowFilterForm as Form).validate(async(valid) => {
+    private filterMenu() {
+      (this.$refs.menuFilterForm as Form).validate(async(valid) => {
         if (valid) {
-          this.$emit('workflowFiltered', this.filterRecord)
+          this.$emit('menuFiltered', this.filterRecord)
         }
       })
       this.$emit('update:visible', false)

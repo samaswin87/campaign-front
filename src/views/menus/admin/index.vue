@@ -5,6 +5,7 @@
         <el-col :span="16">
           <TableDefaultActions
             :createRoute="createRoute"
+            :importRoute="importRoute"
           />
         </el-col>
         <el-col :span="8" class="float-right">
@@ -14,7 +15,7 @@
     </div>
 
     <el-table
-      ref="workflowTable"
+      ref="menuTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -89,14 +90,14 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
-          <router-link :to="{name: 'WorkflowView', params: {id: row.id}}">
+          <router-link :to="{name: 'MenuView', params: {id: row.id}}">
             <el-button
               icon="el-icon-view"
               circle
             >
             </el-button>
           </router-link>
-          <router-link :to="{name: 'WorkflowEdit', params: {id: row.id}}">
+          <router-link :to="{name: 'MenuEdit', params: {id: row.id}}">
             <el-button
               icon="el-icon-edit-outline"
               circle
@@ -122,36 +123,36 @@
       @pagination="getList"
     />
 
-    <WorkflowTableFilters
+    <MenuTableFilters
       :visible.sync="filterLoading"
-      @workflowFiltered="workflowFiltered"
+      @menuFiltered="menuFiltered"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref } from 'vue-property-decorator'
-import { getWorkflows, defaultWorkflowData } from '@/api/workflows'
-import WorkflowTableFilters from './components/WorkflowTableFilters.vue'
-import { IWorkflowData } from '@/api/types'
+import { getMenus, defaultMenuData } from '@/api/menus'
+import MenuTableFilters from './components/MenuTableFilters.vue'
+import { IMenuData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 
 @Component({
-  name: 'WorkflowTable',
+  name: 'MenuTable',
   components: {
     Pagination,
-    WorkflowTableFilters,
+    MenuTableFilters,
     TableDefaultActions,
     TableSearchWithFilters
   }
 })
 
 export default class extends Vue {
-  @Ref('workflowTable') readonly workflowTable!: any;
+  @Ref('menuTable') readonly menuTable!: any;
   private tableKey = 0
-  private list: IWorkflowData[] = []
+  private list: IMenuData[] = []
   private total = 0
   private listLoading = true
   private filterLoading = false
@@ -162,13 +163,13 @@ export default class extends Vue {
     sort: '+id'
   }
 
-  private createRoute = 'WorkflowCreate'
-  private importRoute = 'UploadContacts'
+  private createRoute = 'MenuCreate'
+  private importRoute = 'UploadMenus'
   private statusOptions = ['active', 'inactive']
   private showReviewer = false
   private dialogFormVisible = false
   private dialogStatus = ''
-  private workflowRow = defaultWorkflowData
+  private menuRow = defaultMenuData
   private textMap = {
     update: 'Edit',
     create: 'Create'
@@ -178,13 +179,13 @@ export default class extends Vue {
   private pageviewsData = []
 
   private downloadLoading = false
-  private tempWorkflowData = defaultWorkflowData
+  private tempMenuData = defaultMenuData
 
   created() {
     this.getList()
   }
 
-  private workflowFiltered(data: any) {
+  private menuFiltered(data: any) {
     console.log(data)
   }
 
@@ -192,14 +193,14 @@ export default class extends Vue {
     return this.filterLoading
   }
 
-  private viewWorkflow(row: any) {
-    this.workflowRow = Object.assign({}, row)
+  private viewMenu(row: any) {
+    this.menuRow = Object.assign({}, row)
     this.dialogLoading = true
   }
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getWorkflows(this.listQuery)
+    const { data } = await getMenus(this.listQuery)
     this.list = data.items
     this.total = data.total
     // Just to simulate the time of the request
