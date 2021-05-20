@@ -71,7 +71,7 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row}">
-          <router-link :to="{name: 'WorkflowRecipientChat', params: {workFlowId: workFlowId, id: row.id}, query: {contact: row.contact}}">
+          <router-link :to="{name: 'WorkflowRecipientChat', params: {menuId: menuId, id: row.id}, query: {contact: row.contact}}">
             <el-button
               icon="el-icon-chat-round"
               circle
@@ -115,7 +115,7 @@ import ConversationTableFilters from './ConversationTableFilters.vue'
 })
 
 export default class extends Vue {
-  @Prop({ required: true }) private workFlowId!: number
+  @Prop({ required: true }) private menuId!: number
   private tableKey = 0
   private total = 0
   private conversations: ICampaignConversationsData[] = []
@@ -150,7 +150,7 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getWorkflowConversations(this.workFlowId, this.listQuery)
+    const { data } = await getWorkflowConversations(this.menuId, this.listQuery)
     if (this.listQuery.sort === '-id') {
       this.conversations = this.conversations.reverse()
     }

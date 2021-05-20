@@ -22,7 +22,7 @@ for (let i = 0; i < menuCount; i++) {
   for (let j = 0; j < 4; j++) {
     const promt: IMenuPromtData = {
       id: j,
-      body: faker.lorem.sentence(10, 20),
+      body: 'Text ' + faker.lorem.sentence(1, 1),
       name: faker.lorem.sentence(6, 10),
       default: 'name_' + j,
       order: j,

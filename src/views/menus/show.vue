@@ -112,17 +112,10 @@
                                     </div>
                                 </draggable>
                             </el-card>
-                                <el-card class="box-card menu-promt">
-                                    <div slot="header" class="clearfix">
-                                        <i class="el-icon-message-solid" />
-                                        <span class="content-space">FINAL RESPONSE</span>
-                                    </div>
-                                    <span v-html="displayResponse(finalResponseData.body)"></span>
-                                </el-card>
                         </el-col>
                         <el-col :span="16" v-show="conversationsSelected">
                             <Conversations
-                                :workFlowId.sync="workFlowId"
+                                :menuId.sync="menuId"
                             />
                         </el-col>
                     </el-row>
@@ -134,7 +127,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultMenuData, defaultFinalResponseData, getMenu } from '@/api/menus'
+import { defaultMenuData, getMenu } from '@/api/menus'
 import { getCompanies } from '@/api/companies'
 import { map } from 'lodash'
 import Conversations from './components/MenuConversations.vue'
@@ -149,7 +142,6 @@ import Draggable from 'vuedraggable'
 })
 export default class extends Vue {
     private menuData = defaultMenuData
-    private finalResponseData = defaultFinalResponseData
     private companies :string[] = []
     private promtList:any[] = []
     private conversationList:any[] = []
@@ -157,13 +149,13 @@ export default class extends Vue {
     private order = 0
     private conversationsSelected = false
     private menuSelected = true
-    private workFlowId = 0
+    private menuId = 0
 
     created() {
       this.fetchCompanies()
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
-      this.workFlowId = parseInt(id)
+      this.menuId = parseInt(id)
     }
 
     private async fetchCompanies() {
@@ -189,17 +181,12 @@ export default class extends Vue {
       try {
         const { data } = await getMenu(id, { /* Your params here */ })
         this.menuData = data.menu
-        this.finalResponseData = data.menu.finalResponse
         this.promtList = data.menu.promts
         this.order = this.promtList.length
         this.conversationList = data.menu.conversations
       } catch (err) {
         console.error(err)
       }
-    }
-
-    private displayResponse(body: string) {
-      return body.replace('{destinationURL}', '<span class="el-tag el-tag--danger el-tag--medium el-tag--light">{destinationURL}</span>')
     }
 }
 </script>
