@@ -47,6 +47,17 @@ export interface IWorkflowPromtData {
   workflowId: number
   date: string | number
 }
+
+export interface IWorkflowConversationsData {
+  id: number
+  type: string
+  contact: string
+  message: string
+  workflowId: number
+  lastReplyAt: string | number
+  firstReplyAt: string | number
+}
+
 export interface IWorkflowData {
   id: number
   status: string
@@ -58,15 +69,7 @@ export interface IWorkflowData {
   confidential: boolean
   finalResponse: IWorkflowFinalResponseData
   promts: IWorkflowPromtData[]
-}
-
-export interface IWorkflowConversationsData {
-  id: number
-  type: string
-  contact: string
-  message: string
-  workflowId: number
-  date: string | number
+  conversations: IWorkflowConversationsData[]
 }
 export interface IMenuData {
   id: number

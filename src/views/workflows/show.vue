@@ -121,21 +121,13 @@
                                 </el-card>
                         </el-col>
                         <el-col :span="16" v-show="conversationsSelected">
+                            <Conversations
+                                :list.sync="conversationList"
+                            />
                         </el-col>
                     </el-row>
                 </el-card>
             </el-row>
-
-            <AddPromt
-            :visible.sync="promtLoading"
-            :order.sync="order"
-            @promtRecord="addPromtRecord"
-            />
-
-            <AddDestinationURL
-            :visible.sync="destinationLoading"
-            @addDestinationURL="addDestinationURL"
-            />
         </div>
     </div>
 </template>
@@ -144,28 +136,23 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultWorkflowData, defaultFinalResponseData, getWorkflow } from '@/api/workflows'
 import { getCompanies } from '@/api/companies'
-import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
-import AddPromt from './components/AddPromt.vue'
-import AddDestinationURL from './components/AddDestinationURL.vue'
+import Conversations from './components/Conversations.vue'
 import Draggable from 'vuedraggable'
 
 @Component({
   name: 'WorkflowCreate',
   components: {
-    Multiselect,
-    AddPromt,
     Draggable,
-    AddDestinationURL
+    Conversations
   }
 })
 export default class extends Vue {
     private workflowData = defaultWorkflowData
     private finalResponseData = defaultFinalResponseData
     private companies :string[] = []
-    private promtLoading = false
-    private destinationLoading = false
     private promtList:any[] = []
+    private conversationList:any[] = []
     private draggableList = 0
     private order = 0
     private conversationsSelected = false
@@ -186,14 +173,6 @@ export default class extends Vue {
       }
     }
 
-    private addPromt() {
-      this.promtLoading = true
-    }
-
-    private addDestination() {
-      this.destinationLoading = true
-    }
-
     private selectWorkflow() {
       this.workflowSelected = true
       this.conversationsSelected = false
@@ -204,21 +183,6 @@ export default class extends Vue {
       this.conversationsSelected = true
     }
 
-    private addPromtRecord(data: any) {
-      this.promtList.push(data)
-      this.order = this.promtList.length
-      this.draggableList += 1
-    }
-
-    private updateItemOrder(event: any) {
-      console.log('Old Index: ' + event.oldIndex)
-      console.log('New Index: ' + event.newIndex)
-    }
-
-    private addDestinationURL(data: any) {
-      console.log('Add destination URL to object :' + data)
-    }
-
     private async fetchData(id: number) {
       try {
         const { data } = await getWorkflow(id, { /* Your params here */ })
@@ -226,6 +190,7 @@ export default class extends Vue {
         this.finalResponseData = data.workflow.finalResponse
         this.promtList = data.workflow.promts
         this.order = this.promtList.length
+        this.conversationList = data.workflow.conversations
       } catch (err) {
         console.error(err)
       }

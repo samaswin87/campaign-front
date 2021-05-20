@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData } from './types'
+import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData, IWorkflowConversationsData } from './types'
 
 export const defaultFinalResponseData: IWorkflowFinalResponseData = {
   id: 0,
@@ -20,6 +20,16 @@ export const defaultPromtData: IWorkflowPromtData = {
   date: ''
 }
 
+export const defaultConversationData: IWorkflowConversationsData = {
+  id: 0,
+  workflowId: 1,
+  type: '',
+  message: '',
+  contact: '',
+  lastReplyAt: '',
+  firstReplyAt: ''
+}
+
 export const defaultWorkflowData: IWorkflowData = {
   id: 0,
   status: 'draft',
@@ -30,7 +40,8 @@ export const defaultWorkflowData: IWorkflowData = {
   phone: '',
   confidential: false,
   finalResponse: defaultFinalResponseData,
-  promts: [defaultPromtData]
+  promts: [defaultPromtData],
+  conversations: []
 }
 
 export const getWorkflows = (params: any) =>
@@ -43,6 +54,13 @@ export const getWorkflows = (params: any) =>
 export const getWorkflow = (id: number, params: any) =>
   request({
     url: `/workflows/${id}`,
+    method: 'get',
+    params
+  })
+
+export const getConversations = (id: number, params: any) =>
+  request({
+    url: `/workflows/${id}/conversations`,
     method: 'get',
     params
   })

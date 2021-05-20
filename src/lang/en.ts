@@ -179,6 +179,11 @@ export default {
       data: 'Message Templates',
       addedOn: 'Added On',
       lastReplyAt: 'Last Reply At'
+    },
+    conversation: {
+      message: 'Message',
+      lastReplyAt: 'Last Reply At',
+      firstReplyAt: 'First Reply At'
     }
   },
   example: {

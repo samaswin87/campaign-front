@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData } from '../src/api/types'
+import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData, IWorkflowConversationsData } from '../src/api/types'
 
 const workflowList: IWorkflowData[] = []
 const workflowCount = 100
@@ -32,6 +32,20 @@ for (let i = 0; i < workflowCount; i++) {
     promts.push(promt)
   }
 
+  const conversations: IWorkflowConversationsData[] = []
+  for (let k = 0; k < 100; k++) {
+    const conversation: IWorkflowConversationsData = {
+      id: k,
+      type: faker.random.arrayElement(['sent', 'replied', 'failed']),
+      workflowId: i,
+      contact: faker.phone.phoneNumberFormat(2),
+      message: faker.lorem.sentence(10, 20),
+      lastReplyAt: faker.date.past().getTime(),
+      firstReplyAt: faker.date.past().getTime()
+    }
+    conversations.push(conversation)
+  }
+
   workflowList.push({
     id: i,
     status: faker.random.arrayElement(['published', 'unpublished']),
@@ -42,7 +56,8 @@ for (let i = 0; i < workflowCount; i++) {
     phone: faker.phone.phoneNumberFormat(2),
     confidential: faker.datatype.boolean(),
     finalResponse: finalResponseData,
-    promts: promts
+    promts: promts,
+    conversations: conversations
   })
 }
 
@@ -74,6 +89,33 @@ export const getWorkflow = (req: Request, res: Response) => {
         code: 20000,
         data: {
           workflow
+        }
+      })
+    }
+  }
+  return res.json({
+    code: 70001,
+    message: 'Workflow not found'
+  })
+}
+
+export const getConversations = (req: Request, res: Response) => {
+  const { id } = req.params
+  const { page = 1, limit = 20, sort } = req.query
+  for (const workflow of workflowList) {
+    if (workflow.id.toString() === id) {
+      let conversations = workflow.conversations
+
+      if (sort === '-id') {
+        conversations = conversations.reverse()
+      }
+
+      const pageList = conversations.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
+
+      return res.json({
+        code: 20000,
+        data: {
+          pageList
         }
       })
     }

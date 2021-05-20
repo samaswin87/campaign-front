@@ -354,6 +354,43 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+  /workflows/{id}/conversations:
+    get:
+      tags:
+        - Conversations
+      summary: Get Conversations Detail
+      description: Get Conversations detail by ID.
+      operationId: getConversations
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Conversations id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/Recipients'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /menus:
     get:
       tags:
