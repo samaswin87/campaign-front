@@ -122,7 +122,7 @@
                         </el-col>
                         <el-col :span="16" v-show="conversationsSelected">
                             <Conversations
-                                :list.sync="conversationList"
+                                :workFlowId.sync="workFlowId"
                             />
                         </el-col>
                     </el-row>
@@ -157,11 +157,13 @@ export default class extends Vue {
     private order = 0
     private conversationsSelected = false
     private workflowSelected = true
+    private workFlowId = 0
 
     created() {
       this.fetchCompanies()
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
+      this.workFlowId = parseInt(id)
     }
 
     private async fetchCompanies() {

@@ -115,7 +115,8 @@ export const getConversations = (req: Request, res: Response) => {
       return res.json({
         code: 20000,
         data: {
-          pageList
+          total: conversations.length,
+          items: pageList
         }
       })
     }

@@ -89,7 +89,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { defaultConversationData } from '@/api/workflows'
+import { defaultConversationData, getConversations } from '@/api/workflows'
 import { ICampaignConversationsData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
@@ -105,13 +105,13 @@ import ConversationTableFilters from './ConversationTableFilters.vue'
 })
 
 export default class extends Vue {
-  @Prop({ required: true }) private list!: ICampaignConversationsData[]
+  @Prop({ required: true }) private workFlowId!: number
   private tableKey = 0
   private total = 0
+  private conversations: ICampaignConversationsData[] = []
   private listLoading = true
   private filterLoading = false
   private dialogLoading = false
-  private conversations: ICampaignConversationsData[] = []
   private listQuery = {
     page: 1,
     limit: 20,
@@ -138,14 +138,15 @@ export default class extends Vue {
     this.getList()
   }
 
-  private getList() {
+  private async getList() {
     this.listLoading = true
-    this.conversations = this.list
+    const { data } = await getConversations(this.workFlowId, this.listQuery)
     if (this.listQuery.sort === '-id') {
       this.conversations = this.conversations.reverse()
     }
-    this.conversations = this.conversations.filter((_, index) => index < (this.listQuery.limit as number) * (this.listQuery.page as number) && index >= (this.listQuery.limit as number) * (this.listQuery.page as number - 1))
-    this.total = this.list.length
+    this.conversations = data.items
+    this.total = data.total
+    this.listLoading = false
   }
 
   private dialogVisiblity() {
