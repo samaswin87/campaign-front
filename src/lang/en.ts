@@ -181,6 +181,7 @@ export default {
       lastReplyAt: 'Last Reply At'
     },
     conversation: {
+      sendMessages: 'Send messages to filetered contacts',
       message: 'Message',
       lastReplyAt: 'Last Reply At',
       firstReplyAt: 'First Reply At'

@@ -310,6 +310,16 @@ export const constantRoutes: RouteConfig[] = [
           icon: 'tree',
           hidden: true
         }
+      },
+      {
+        path: '/workflows/:workflowId/recipients/:id/chat',
+        component: () => import('@/views/workflows/chat.vue'),
+        name: 'WorkflowRecipientChat',
+        meta: {
+          noCache: true,
+          title: 'conversations',
+          hidden: true
+        }
       }
     ]
   },

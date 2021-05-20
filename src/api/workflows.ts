@@ -58,7 +58,7 @@ export const getWorkflow = (id: number, params: any) =>
     params
   })
 
-export const getConversations = (id: number, params: any) =>
+export const getWorkflowConversations = (id: number, params: any) =>
   request({
     url: `/workflows/${id}/conversations`,
     method: 'get',

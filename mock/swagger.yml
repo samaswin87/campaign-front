@@ -360,7 +360,7 @@ paths:
         - Conversations
       summary: Get Conversations Detail
       description: Get Conversations detail by ID.
-      operationId: getConversations
+      operationId: getWorkflowConversations
       security:
         - AccessTokenAuth: []
       parameters:

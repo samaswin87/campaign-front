@@ -99,7 +99,7 @@ export const getWorkflow = (req: Request, res: Response) => {
   })
 }
 
-export const getConversations = (req: Request, res: Response) => {
+export const getWorkflowConversations = (req: Request, res: Response) => {
   const { id } = req.params
   const { page = 1, limit = 20, sort } = req.query
   for (const workflow of workflowList) {

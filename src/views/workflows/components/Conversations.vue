@@ -2,12 +2,22 @@
   <div>
     <div class="filter-container">
       <el-row>
-        <el-col :span="14">
+        <el-col :span="8">
           <el-tooltip class="item" effect="dark" :content="$t('table.export')" placement="bottom">
             <el-button
                 style="margin-left: 10px;"
                 type="primary"
                 icon="el-icon-upload"
+            >
+            </el-button>
+          </el-tooltip>
+        </el-col>
+        <el-col :span="6">
+          <el-tooltip class="item" effect="dark" :content="$t('table.conversation.sendMessages')" placement="bottom">
+            <el-button
+                style="margin-left: 10px;"
+                type="primary"
+                icon="el-icon-s-promotion"
             >
             </el-button>
           </el-tooltip>
@@ -61,7 +71,7 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row}">
-          <router-link :to="{name: 'RecipientChat', params: {campaignId: 1}, query: {conversationId: row.id}}">
+          <router-link :to="{name: 'WorkflowRecipientChat', params: {workFlowId: workFlowId, id: row.id}, query: {contact: row.contact}}">
             <el-button
               icon="el-icon-chat-round"
               circle
@@ -89,7 +99,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
-import { defaultConversationData, getConversations } from '@/api/workflows'
+import { defaultConversationData, getWorkflowConversations } from '@/api/workflows'
 import { ICampaignConversationsData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
@@ -140,7 +150,7 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getConversations(this.workFlowId, this.listQuery)
+    const { data } = await getWorkflowConversations(this.workFlowId, this.listQuery)
     if (this.listQuery.sort === '-id') {
       this.conversations = this.conversations.reverse()
     }
