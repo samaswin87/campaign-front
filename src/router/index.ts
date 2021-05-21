@@ -408,7 +408,120 @@ export const constantRoutes: RouteConfig[] = [
  * the routes that need to be dynamically loaded based on user roles
 */
 export const asyncRoutes: RouteConfig[] = [
-  /** when your routing map is too long, you can split it into small modules **/
+  {
+    path: '/companies',
+    component: () => import('@/views/settings/index.vue'),
+    redirect: '/companies/index',
+    meta: {
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/companies/index.vue'),
+        name: 'Companies',
+        meta: {
+          title: 'companies',
+          icon: 'company'
+        }
+      }
+    ]
+  },
+  {
+    path: '/users',
+    component: () => import('@/views/users/index.vue'),
+    redirect: '/users/index',
+    meta: {
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/users/index.vue'),
+        name: 'Users',
+        meta: {
+          title: 'users',
+          icon: 'users'
+        }
+      }
+    ]
+  },
+  {
+    path: '/platform-numbers',
+    component: () => import('@/views/platform-numbers/index.vue'),
+    redirect: '/platform-numbers/index',
+    meta: {
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/platform-numbers/index.vue'),
+        name: 'Platform Numbers',
+        meta: {
+          title: 'platformNumbers',
+          icon: 'platform-numbers'
+        }
+      }
+    ]
+  },
+  {
+    path: '/integrations',
+    component: () => import('@/views/integrations/index.vue'),
+    redirect: '/integrations/index',
+    meta: {
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/integrations/index.vue'),
+        name: 'Integrations',
+        meta: {
+          title: 'integrations',
+          icon: 'integrations'
+        }
+      }
+    ]
+  },
+  {
+    path: '/settings',
+    component: () => import('@/views/settings/index.vue'),
+    redirect: '/settings/index',
+    meta: {
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/settings/index.vue'),
+        name: 'Settings',
+        meta: {
+          title: 'settings',
+          icon: 'settings'
+        }
+      }
+    ]
+  },
+  {
+    path: '/tags',
+    component: () => import('@/views/tags/index.vue'),
+    redirect: '/tags/index',
+    meta: {
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/tags/index.vue'),
+        name: 'Tags',
+        meta: {
+          title: 'tags',
+          icon: 'tags'
+        }
+      }
+    ]
+  }
 ]
 
 const createRouter = () => new VueRouter({

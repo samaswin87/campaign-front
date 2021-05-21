@@ -15,6 +15,8 @@
           <svg-icon
             v-if="theOnlyOneChild.meta.icon"
             :name="theOnlyOneChild.meta.icon"
+            width="23"
+            height="23"
           />
           <span
             v-if="theOnlyOneChild.meta.title"
@@ -32,6 +34,8 @@
         <svg-icon
           v-if="item.meta && item.meta.icon"
           :name="item.meta.icon"
+          width="23"
+          height="23"
         />
         <span
           v-if="item.meta && item.meta.title"

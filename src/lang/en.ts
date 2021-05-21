@@ -76,7 +76,14 @@ export default {
     uploadContacts: 'Import Contacts',
     uploadCampaigns: 'Import Campaigns',
     uploadWorkflows: 'Import Workflows',
-    uploadRecipients: 'Import Recipients'
+    uploadRecipients: 'Import Recipients',
+    settings: 'Settings',
+    companies: 'Companies',
+    integrations: 'Integrations',
+    users: 'Users',
+    tags: 'Tags',
+    trackingLinks: 'Tracking Links',
+    platformNumbers: 'Platform Numbers'
   },
   navbar: {
     logOut: 'Log Out',
