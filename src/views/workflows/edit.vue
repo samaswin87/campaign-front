@@ -4,7 +4,7 @@
             <el-row>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>Edit workflow</span>
+                        <span>Edit Workflow</span>
                         <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
                     </div>
                     <el-row>
@@ -169,7 +169,7 @@ import AddDestinationURL from './components/AddDestinationURL.vue'
 import Draggable from 'vuedraggable'
 
 @Component({
-  name: 'WorkflowCreate',
+  name: 'WorkflowEdit',
   components: {
     Multiselect,
     AddPromt,

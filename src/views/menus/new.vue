@@ -139,11 +139,8 @@
                                             height="20"
                                         />
                                         <span class="content-space">AVAILABLE WORKFLOWS</span>
-                                        <workflows-table
-                                        :dashboard=false
-                                        :action=true
-                                        />
                                     </div>
+                                    <workflows-table :dashboard=false :action=true />
                                 </el-card>
                         </el-col>
                     </el-row>
