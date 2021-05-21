@@ -190,4 +190,5 @@ export interface IUserData {
   avatar: string
   introduction: string
   roles: string[]
+  companyId: number
 }

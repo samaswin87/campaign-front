@@ -5,6 +5,7 @@ import { IUserData } from '../src/api/types'
 const userList: IUserData[] = [
   {
     id: 0,
+    companyId: 1,
     username: 'admin',
     password: 'any',
     name: 'Super Admin',
@@ -16,6 +17,7 @@ const userList: IUserData[] = [
   },
   {
     id: 1,
+    companyId: 2,
     username: 'editor',
     password: 'any',
     name: 'Normal Editor',
@@ -38,7 +40,8 @@ for (let i = 2; i < userCount; i++) {
     introduction: faker.lorem.sentence(20),
     email: faker.internet.email(),
     phone: faker.phone.phoneNumberFormat(2),
-    roles: ['visitor']
+    roles: ['visitor'],
+    companyId: i
   })
 }
 

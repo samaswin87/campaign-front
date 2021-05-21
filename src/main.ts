@@ -20,11 +20,14 @@ import '@/utils/error-log'
 import '@/pwa/register-service-worker'
 import * as directives from '@/directives'
 import * as filters from '@/filters'
+import VueSession from 'vue-easysession'
 
 library.add(faUserSecret)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
+
+Vue.use(VueSession.install)
 
 Vue.use(ElementUI, {
   size: AppModule.size, // Set element-ui default size

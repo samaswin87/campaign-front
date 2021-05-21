@@ -32,7 +32,7 @@
     <div class="user-bio">
       <div class="user-education user-bio-section">
         <div class="user-bio-section-header">
-          <svg-icon name="education" /><span>Education</span>
+          <svg-icon name="account" width="17" height="17"/><span>Account</span>
         </div>
         <div class="user-bio-section-body">
           <div class="text-muted">

@@ -34,3 +34,21 @@ export const getCompanies = (req: Request, res: Response) => {
     }
   })
 }
+
+export const getCompany = (req: Request, res: Response) => {
+  const { id } = req.params
+  for (const company of companyList) {
+    if (company.id.toString() === id) {
+      return res.json({
+        code: 20000,
+        data: {
+          company
+        }
+      })
+    }
+  }
+  return res.json({
+    code: 70001,
+    message: 'Company not found'
+  })
+}

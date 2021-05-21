@@ -15,3 +15,10 @@ export const getCompanies = (params: any) =>
     method: 'get',
     params
   })
+
+export const getCompany = (id: number, params: any) =>
+  request({
+    url: `/companies/${id}`,
+    method: 'get',
+    params
+  })

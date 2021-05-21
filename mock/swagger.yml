@@ -203,6 +203,43 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Company'
+  /companies/{id}:
+    get:
+      tags:
+        - companies
+      summary: Get Company Detail
+      description: Get company detail by ID.
+      operationId: getCompany
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Company id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      company:
+                        $ref: '#/components/schemas/Company'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /tags:
     get:
       tags:
