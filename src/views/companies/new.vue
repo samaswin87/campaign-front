@@ -144,9 +144,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultCompanyData, getCompanies } from '@/api/companies'
+import { defaultCompanyData } from '@/api/companies'
 import Multiselect from 'vue-multiselect'
-import { map } from 'lodash'
 
 @Component({
   name: 'CompanyNew',
@@ -154,20 +153,6 @@ import { map } from 'lodash'
 })
 export default class extends Vue {
     private companyData = defaultCompanyData
-    private companies :string[] = []
-
-    created() {
-      this.fetchCompanies()
-    }
-
-    private async fetchCompanies() {
-      try {
-        const { data } = await getCompanies({ /* Your params here */ })
-        this.companies = map(data.items, 'name')
-      } catch (err) {
-        console.error(err)
-      }
-    }
 }
 </script>
 
