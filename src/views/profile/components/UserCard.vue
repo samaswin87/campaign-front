@@ -36,7 +36,7 @@
         </div>
         <div class="user-bio-section-body">
           <div class="text-muted">
-            JS in Computer Science from the University of Technology
+            {{this.company.name}}
           </div>
         </div>
       </div>
@@ -74,7 +74,10 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { IProfile } from '../index.vue'
+import { getCompany, defaultCompanyData } from '@/api/companies'
 import PanThumb from '@/components/PanThumb/index.vue'
+import { UserModule } from '@/store/modules/user'
+import { ICompanyData } from '@/api/types'
 
 @Component({
   name: 'UserCard',
@@ -84,6 +87,17 @@ import PanThumb from '@/components/PanThumb/index.vue'
 })
 export default class extends Vue {
   @Prop({ required: true }) private user!: IProfile
+  private company :ICompanyData = defaultCompanyData
+
+  created() {
+    UserModule.GetUserInfo()
+    this.fetchCompany(UserModule.companyId)
+  }
+
+  private async fetchCompany(id: number) {
+    const { data } = await getCompany(id, {})
+    this.company = data.company
+  }
 }
 </script>
 
