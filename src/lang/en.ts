@@ -77,6 +77,7 @@ export default {
     uploadCampaigns: 'Import Campaigns',
     uploadWorkflows: 'Import Workflows',
     uploadRecipients: 'Import Recipients',
+    uploadCompanies: 'Import Companies',
     settings: 'Settings',
     companies: 'Companies',
     integrations: 'Integrations',

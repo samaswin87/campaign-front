@@ -410,8 +410,8 @@ export const constantRoutes: RouteConfig[] = [
 export const asyncRoutes: RouteConfig[] = [
   {
     path: '/companies',
-    component: () => import('@/views/companies/index.vue'),
     redirect: '/companies/index',
+    component: Layout,
     meta: {
       roles: ['admin', 'editor']
     },
@@ -423,6 +423,17 @@ export const asyncRoutes: RouteConfig[] = [
         meta: {
           title: 'companies',
           icon: 'company'
+        }
+      },
+      {
+        path: 'import-companies',
+        component: () => import('@/views/companies/import-companies.vue'),
+        name: 'UploadCompanies',
+        meta: {
+          noCache: true,
+          title: 'uploadCompanies',
+          icon: 'company',
+          hidden: true
         }
       }
     ]
