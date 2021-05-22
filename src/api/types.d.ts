@@ -179,7 +179,13 @@ export interface ITransactionData {
   price: number
   status: string
 }
-
+export interface ITimeLineData {
+  id: number
+  userId: number
+  timestamp: string | number
+  title: string
+  content: string
+}
 export interface IUserData {
   id: number
   username: string
@@ -191,4 +197,5 @@ export interface IUserData {
   introduction: string
   roles: string[]
   companyId: number
+  timelines: ITimeLineData[]
 }

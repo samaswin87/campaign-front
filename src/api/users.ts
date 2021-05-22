@@ -11,7 +11,8 @@ export const defaultUserData: IUserData = {
   avatar: '',
   introduction: '',
   roles: [],
-  companyId: 0
+  companyId: 0,
+  timelines: []
 }
 
 export const getUsers = (params: any) =>

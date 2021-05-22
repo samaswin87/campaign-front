@@ -43,6 +43,36 @@ export default class extends Vue {
       timestamp: '2019/4/23',
       title: 'Release New Version',
       content: 'Armour committed 2019/4/23 20:46'
+    },
+    {
+      timestamp: '2019/4/23',
+      title: 'Release New Version',
+      content: 'Armour committed 2019/4/23 20:46'
+    },
+    {
+      timestamp: '2019/4/23',
+      title: 'Release New Version',
+      content: 'Armour committed 2019/4/23 20:46'
+    },
+    {
+      timestamp: '2019/4/23',
+      title: 'Release New Version',
+      content: 'Armour committed 2019/4/23 20:46'
+    },
+    {
+      timestamp: '2019/4/23',
+      title: 'Release New Version',
+      content: 'Armour committed 2019/4/23 20:46'
+    },
+    {
+      timestamp: '2019/4/23',
+      title: 'Release New Version',
+      content: 'Armour committed 2019/4/23 20:46'
+    },
+    {
+      timestamp: '2019/4/23',
+      title: 'Release New Version',
+      content: 'Armour committed 2019/4/23 20:46'
     }
   ]
 }

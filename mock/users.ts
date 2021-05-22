@@ -1,6 +1,17 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IUserData } from '../src/api/types'
+import { IUserData, ITimeLineData } from '../src/api/types'
+
+const timelines:ITimeLineData[] = []
+for (let index = 1; index < 10; index++) {
+  timelines.push({
+    id: index,
+    userId: 0,
+    timestamp: faker.date.past().getTime(),
+    title: faker.lorem.sentence(6, 12),
+    content: faker.lorem.sentence(20, 40)
+  })
+}
 
 const userList: IUserData[] = [
   {
@@ -13,7 +24,8 @@ const userList: IUserData[] = [
     introduction: 'I am a super administrator',
     email: 'admin@test.com',
     phone: '1234567890',
-    roles: ['admin']
+    roles: ['admin'],
+    timelines: timelines
   },
   {
     id: 1,
@@ -25,7 +37,8 @@ const userList: IUserData[] = [
     introduction: 'I am an editor',
     email: 'editor@test.com',
     phone: '1234567890',
-    roles: ['editor']
+    roles: ['editor'],
+    timelines: timelines
   }
 ]
 const userCount = 100
@@ -41,7 +54,8 @@ for (let i = 2; i < userCount; i++) {
     email: faker.internet.email(),
     phone: faker.phone.phoneNumberFormat(2),
     roles: ['visitor'],
-    companyId: i
+    companyId: i,
+    timelines: timelines
   })
 }
 

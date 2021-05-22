@@ -1,7 +1,18 @@
 <template>
   <el-form>
+    <el-row>
+      <el-col :span="4">
+        <el-button type="primary">Change password</el-button>
+      </el-col>
+      <el-col :span="6">
+        <el-button type="primary">Upgrade Plan</el-button>
+      </el-col>
+    </el-row>
     <el-form-item label="Name">
       <el-input v-model.trim="user.name" />
+    </el-form-item>
+    <el-form-item label="Phone">
+      <el-input v-model.trim="user.phone" />
     </el-form-item>
     <el-form-item label="Email">
       <el-input v-model.trim="user.email" />
@@ -19,12 +30,21 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { UserModule } from '@/store/modules/user'
+import { IUserData } from '@/api/types'
+import { defaultUserData } from '@/api/users'
 
 @Component({
   name: 'Account'
 })
 export default class extends Vue {
-  private user:any = null
+  private user:IUserData = defaultUserData
+
+  created() {
+    this.user.name = UserModule.name
+    this.user.phone = UserModule.phone.toString()
+    this.user.email = UserModule.email
+  }
 
   private submit() {
     this.$message({
