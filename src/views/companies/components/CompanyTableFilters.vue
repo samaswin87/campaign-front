@@ -1,11 +1,11 @@
 <template>
     <el-dialog
-      title="Contact Filter"
+      title="Company Filter"
       :visible.sync="visible"
       :before-close="handleClose"
     >
       <el-form
-        ref="contactFilterForm"
+        ref="companyFilterForm"
         :model="filterRecord"
         label-position="left"
         label-width="30%"
@@ -18,38 +18,13 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item label="Keywords">
-            <el-radio-group v-model="filterRecord.workflowOption">
+            <el-radio-group v-model="filterRecord.nameOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
               <el-radio label="In Not Empty"></el-radio>
               <el-radio label="Is Empty"></el-radio>
             </el-radio-group>
-            <el-input type="textarea" v-model="filterRecord.keywords"></el-input>
-        </el-form-item>
-        <el-form-item label="Campaigns">
-            <el-radio-group v-model="filterRecord.campaignOption">
-              <el-radio label="In Equal"></el-radio>
-              <el-radio label="Is Not Equal"></el-radio>
-              <el-radio label="In Not Empty"></el-radio>
-              <el-radio label="Is Empty"></el-radio>
-            </el-radio-group>
-            <el-input type="textarea" v-model="filterRecord.campaigns"></el-input>
-        </el-form-item>
-        <el-form-item label="Tags">
-            <el-radio-group v-model="filterRecord.tagOption">
-              <el-radio label="In Equal"></el-radio>
-              <el-radio label="Is Not Equal"></el-radio>
-              <el-radio label="In Not Empty"></el-radio>
-              <el-radio label="Is Empty"></el-radio>
-            </el-radio-group>
-            <multiselect
-              v-model="filterRecord.tags"
-              :options="tags"
-              :multiple="true"
-              :clear-on-select="false"
-              :close-on-select="false"
-            >
-            </multiselect>
+            <el-input type="text" v-model="filterRecord.name"></el-input>
         </el-form-item>
         <el-form-item label="Phone Number">
             <el-radio-group v-model="filterRecord.phoneOption">
@@ -70,7 +45,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="filterContact"
+          @click="filterCompany"
         >
           {{ $t('table.apply') }}
         </el-button>
@@ -84,31 +59,24 @@ import { Form } from 'element-ui'
 import Multiselect from 'vue-multiselect'
 
 @Component({
-  name: 'ContactTableFilter',
+  name: 'CompanyTableFilter',
   components: { Multiselect }
 })
 export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
 
-    private tags = ['vue', 'element', 'cooking', 'mint-ui', 'vuex', 'vue-router', 'babel']
-
     private filterRecord = {
       status: 'Active',
-      keywords: '',
-      campaigns: '',
-      schduledOn: '',
-      tags: null,
+      name: '',
       phoneNumber: null,
-      tagOption: 'In Equal',
-      campaignOption: 'In Equal',
-      workflowOption: 'In Equal',
+      nameOption: 'In Equal',
       phoneOption: 'In Equal'
     }
 
-    private filterContact() {
-      (this.$refs.contactFilterForm as Form).validate(async(valid) => {
+    private filterCompany() {
+      (this.$refs.companyFilterForm as Form).validate(async(valid) => {
         if (valid) {
-          this.$emit('contactFiltered', this.filterRecord)
+          this.$emit('companyFiltered', this.filterRecord)
         }
       })
       this.$emit('update:visible', false)
