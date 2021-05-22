@@ -39,7 +39,7 @@ export interface ICompanyData {
   remainingCredits: number
   messageForward: boolean
   apiToken: string
-  planCredits: IPlanCredits
+  planCredits: IPlanCredits[]
 }
 
 export interface IContactData {

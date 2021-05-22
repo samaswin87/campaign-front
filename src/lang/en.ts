@@ -165,6 +165,8 @@ export default {
     noOfContacts: '# of Contacts',
     body: 'Message',
     keyword: 'Keyword',
+    updatedAt: 'Updated On',
+    email: 'Email',
     contact: {
       optOut: 'Opted Out',
       firstName: 'First Name',
@@ -193,6 +195,25 @@ export default {
       message: 'Message',
       lastReplyAt: 'Last Reply At',
       firstReplyAt: 'First Reply At'
+    },
+    companies: {
+      plan: 'Plan',
+      callForwarding: 'Call Forwarding',
+      totalCredits: 'Total Credits',
+      remainingCredits: 'Remaining Credits',
+      messageForward: 'Message Forward',
+      apiToken: 'API Token',
+      planCredits: 'Credits',
+      availedCredits: 'Availed Credits',
+      month: 'Month',
+      inbounds: 'Inbound Credits',
+      outbounds: 'Outbound Credits',
+      voiceInbounds: 'Voice Inbound Credits',
+      voiceOutbounds: 'Voice Outbound Credits',
+      availedInbounds: 'Availed Inbound Credits',
+      availedOutbounds: 'Availed Outbound Credits',
+      availedVoiceInbounds: 'Availed Voice Inbound Credits',
+      availedVoiceOutbounds: 'Availed Voice Outbound Credits'
     }
   },
   example: {

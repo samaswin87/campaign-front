@@ -30,7 +30,7 @@ export const defaultCompanyData: ICompanyData = {
   remainingCredits: 0,
   messageForward: false,
   apiToken: '',
-  planCredits: defaultPlanCreditData
+  planCredits: [defaultPlanCreditData]
 }
 
 export const getCompanies = (params: any) =>

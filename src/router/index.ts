@@ -410,7 +410,7 @@ export const constantRoutes: RouteConfig[] = [
 export const asyncRoutes: RouteConfig[] = [
   {
     path: '/companies',
-    component: () => import('@/views/settings/index.vue'),
+    component: () => import('@/views/companies/index.vue'),
     redirect: '/companies/index',
     meta: {
       roles: ['admin', 'editor']

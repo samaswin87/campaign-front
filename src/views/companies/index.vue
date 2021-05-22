@@ -1,92 +1,265 @@
 <template>
-  <div class="dashboard-editor-container">
-    <div class="clearfix">
-      <pan-thumb
-        :image="avatar"
-        style="float: left"
-      >
-        Your roles:
-        <span
-          v-for="item in roles"
-          :key="item"
-          class="info-roles"
-        >{{ item }}</span>
-      </pan-thumb>
-      <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
-      <div class="info-container">
-        <span class="display_name">{{ name }}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
-      </div>
+  <div class="app-container">
+    <div class="filter-container">
+      <el-row>
+        <el-col :span="8">
+          <TableDefaultActions
+            :createRoute="createRoute"
+            :importRoute="importRoute"
+          />
+        </el-col>
+        <el-col :span="8" class="float-right">
+            <TableSearchWithFilters @handleFilter="handleFilter" />
+        </el-col>
+      </el-row>
     </div>
-    <div>
-      <img
-        :src="emptyGif"
-        class="emptyGif"
+    <el-row>
+      <el-col>
+        <el-table
+        ref="companyTable"
+        :key="tableKey"
+        v-loading="listLoading"
+        :data="list"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%;"
+        @sort-change="sortChange"
       >
-    </div>
+        <el-table-column
+          :label="$t('table.id')"
+          prop="id"
+          sortable="custom"
+          align="center"
+          width="80"
+          :class-name="getSortClass('id')"
+        >
+          <template slot-scope="{row}">
+            <span>{{ row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.name')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.phone')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.phone }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.companies.totalCredits')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.totalCredits }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.companies.remainingCredits')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.remainingCredits }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.email')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <span
+            >{{ row.email }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+        :label="$t('table.status')"
+        min-width="150px"
+        >
+          <template slot-scope="{row}">
+            <el-tag effect="dark" :type="row.status | statusFilter">
+              {{ row.status }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.actions')"
+          align="center"
+          width="230"
+          class-name="fixed-width"
+        >
+          <template slot-scope="{row}">
+            <router-link :to="{name: 'CompanyView', params: {id: row.id}}">
+              <el-button
+                icon="el-icon-view"
+                circle
+              >
+              </el-button>
+            </router-link>
+            <router-link :to="{name: 'CompanyEdit', params: {id: row.id}}">
+              <el-button
+                icon="el-icon-edit-outline"
+                circle
+              >
+              </el-button>
+            </router-link>
+            <el-button
+              v-if="row.status!=='deleted'"
+              :icon="iconStatus(row.status)"
+              @click="handleDelete(row)"
+              circle
+            >
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      </el-col>
+    </el-row>
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
+
+    <CompanyTableFilters
+      :visible.sync="filterLoading"
+      @companyFiltered="companyFiltered"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
-import PanThumb from '@/components/PanThumb/index.vue'
+import { Component, Vue, Ref } from 'vue-property-decorator'
+import { getCompanies, defaultCompanyData } from '@/api/companies'
+import CompanyTableFilters from './components/CompanyTableFilters.vue'
+import { ICompanyData } from '@/api/types'
+import Pagination from '@/components/Pagination/index.vue'
+import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
+import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
+import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 
 @Component({
-  name: 'DashboardEditor',
+  name: 'CompanyTable',
   components: {
-    PanThumb
+    Pagination,
+    CompanyTableFilters,
+    TableDefaultActions,
+    TableSearchWithFilters,
+    UploadExcelComponent
   }
 })
+
 export default class extends Vue {
-  private emptyGif = 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
-
-  get name() {
-    return UserModule.name
+  @Ref('companyTable') readonly companyTable!: any;
+  private tableKey = 0
+  private list: ICompanyData[] = []
+  private total = 0
+  private listLoading = true
+  private filterLoading = false
+  private createRoute = 'CompanyCreate'
+  private importRoute = 'UploadCompanies'
+  private listQuery = {
+    page: 1,
+    limit: 20,
+    sort: '+id'
   }
 
-  get avatar() {
-    return UserModule.avatar
+  private statusOptions = ['active', 'inactive']
+  private companyRow = defaultCompanyData
+
+  created() {
+    this.getList()
   }
 
-  get roles() {
-    return UserModule.roles
+  private companyFiltered(data: any) {
+    console.log(data)
+  }
+
+  private viewCompany(row: any) {
+    this.companyRow = Object.assign({}, row)
+  }
+
+  private iconStatus(status: string) {
+    if (status === 'active') {
+      return 'el-icon-open'
+    }
+
+    return 'el-icon-turn-off'
+  }
+
+  private async getList() {
+    this.listLoading = true
+    const { data } = await getCompanies(this.listQuery)
+    this.list = data.items
+    this.total = data.total
+    // Just to simulate the time of the request
+    setTimeout(() => {
+      this.listLoading = false
+    }, 0.5 * 1000)
+  }
+
+  private handleFilter() {
+    this.filterLoading = true
+  }
+
+  private handleModifyStatus(row: any, status: string) {
+    this.$message({
+      message: '操作成功',
+      type: 'success'
+    })
+    row.status = status
+  }
+
+  private sortChange(data: any) {
+    const { prop, order } = data
+    if (prop === 'id') {
+      this.sortByID(order)
+    }
+  }
+
+  private sortByID(order: string) {
+    if (order === 'ascending') {
+      this.listQuery.sort = '+id'
+    } else {
+      this.listQuery.sort = '-id'
+    }
+  }
+
+  private getSortClass(key: string) {
+    const sort = this.listQuery.sort
+    return sort === `+${key}` ? 'ascending' : 'descending'
+  }
+
+  private handleDelete(row: any) {
+    this.$confirm('Are you sure?', 'Warning', {
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      type: 'warning'
+    }).then(() => {
+      this.$message({
+        type: 'success',
+        message: 'Company opted out'
+      })
+    }).catch(() => {
+      this.$message({
+        type: 'info',
+        message: 'Company not opted out'
+      })
+    })
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.emptyGif {
-  display: block;
-  width: 45%;
-  margin: 0 auto;
-}
-
-.dashboard-editor-container {
-  background-color: #e3e3e3;
-  min-height: 100vh;
-  padding: 50px 60px 0px;
-
-  .info-roles {
-    font-size: 12px;
-    font-weight: 700;
-    color: #333;
-    display: block;
-  }
-
-  .info-container {
-    position: relative;
-    margin-left: 190px;
-    height: 150px;
-    line-height: 200px;
-
-    .display_name {
-      font-size: 48px;
-      line-height: 48px;
-      color: #212121;
-      position: absolute;
-      top: 25px;
-    }
-  }
-}
-</style>
