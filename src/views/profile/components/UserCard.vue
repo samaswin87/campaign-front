@@ -84,7 +84,7 @@ import { ICompanyData } from '@/api/types'
 export default class extends Vue {
   private user: any = defaultUserData
   private company :ICompanyData = defaultCompanyData
-  private plans = ['Free', 'Lite', 'Plus', 'Premium', 'Ultimate']
+  private plans = ['Tentative', 'Lite', 'Plus', 'Premium', 'Ultimate']
 
   created() {
     this.user = UserModule

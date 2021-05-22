@@ -4,12 +4,42 @@ export interface ITagData {
   name: string
 }
 
+export interface IPlatformNumbersData {
+  id: number
+  companyId: number
+  phone: number
+  shortCode: boolean
+}
+export interface IPlanCredits {
+  id: number
+  companyId: number
+  credits: number
+  month: string
+  inbounds: number
+  outbounds: number
+  voiceInbounds: number
+  voiceOutbounds: number
+  availedInbounds: number
+  availedOutbounds: number
+  availedVoiceInbounds: number
+  availedVoiceOutbounds: number
+  createdAt: string | number
+  updatedAt: string | number
+}
+
 export interface ICompanyData {
   id: number
   status: string
   email: string
   phone: string
   name: string
+  plan: string
+  callForwarding: boolean
+  totalCredits: number
+  remainingCredits: number
+  messageForward: boolean
+  apiToken: string
+  planCredits: IPlanCredits
 }
 
 export interface IContactData {
