@@ -89,7 +89,7 @@
         >
           <template slot-scope="{row}">
             <el-tag effect="dark" :type="row.status | statusFilter">
-              {{ row.status }}
+              {{ row.status | uppercaseFirstChar}}
             </el-tag>
           </template>
         </el-table-column>
