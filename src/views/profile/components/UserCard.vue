@@ -87,7 +87,6 @@ export default class extends Vue {
   private plans = ['Free', 'Lite', 'Plus', 'Premium', 'Ultimate']
 
   created() {
-    UserModule.GetUserInfo()
     this.user = UserModule
     this.fetchCompany(UserModule.companyId)
   }

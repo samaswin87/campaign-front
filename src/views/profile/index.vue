@@ -36,7 +36,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
 import Account from './components/Account.vue'
 import Timeline from './components/Timeline.vue'
 import UserCard from './components/UserCard.vue'
@@ -51,21 +50,5 @@ import UserCard from './components/UserCard.vue'
 })
 export default class extends Vue {
   private activeTab = 'timeline'
-
-  get name() {
-    return UserModule.name
-  }
-
-  get email() {
-    return UserModule.email
-  }
-
-  get avatar() {
-    return UserModule.avatar
-  }
-
-  get roles() {
-    return UserModule.roles
-  }
 }
 </script>
