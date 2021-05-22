@@ -426,6 +426,39 @@ export const asyncRoutes: RouteConfig[] = [
         }
       },
       {
+        path: '/companies/:id/show',
+        component: () => import('@/views/companies/show.vue'),
+        name: 'CompanyView',
+        meta: {
+          noCache: true,
+          title: 'company',
+          icon: 'company',
+          hidden: true
+        }
+      },
+      {
+        path: '/companies/:id/edit',
+        component: () => import('@/views/companies/edit.vue'),
+        name: 'CompanyEdit',
+        meta: {
+          noCache: true,
+          title: 'company',
+          icon: 'company',
+          hidden: true
+        }
+      },
+      {
+        path: '/companies/new',
+        component: () => import('@/views/companies/new.vue'),
+        name: 'CompanyCreate',
+        meta: {
+          noCache: true,
+          title: 'company',
+          icon: 'company',
+          hidden: true
+        }
+      },
+      {
         path: 'import-companies',
         component: () => import('@/views/companies/import-companies.vue'),
         name: 'UploadCompanies',
