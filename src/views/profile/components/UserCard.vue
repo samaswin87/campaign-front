@@ -16,7 +16,7 @@
           :hoverable="false"
         >
           <div>Hello</div>
-          {{ user.roles }}
+          {{ user.roles.join(', ') }}
         </pan-thumb>
       </div>
       <div class="box-center">
@@ -24,7 +24,7 @@
           {{ user.name }}
         </div>
         <div class="user-role text-center text-muted">
-          {{ user.roles | uppercaseFirstChar }}
+          {{ user.roles.join(', ') | uppercaseFirstChar }}
         </div>
       </div>
     </div>
@@ -32,38 +32,34 @@
     <div class="user-bio">
       <div class="user-education user-bio-section">
         <div class="user-bio-section-header">
-          <svg-icon name="account" width="17" height="17"/><span>Account</span>
+          <svg-icon name="account" width="17" height="17"/><span>Personal Details</span>
         </div>
         <div class="user-bio-section-body">
-          <div class="text-muted">
-            {{this.company.name}}
+          <div class="text-muted margin-bottom-10">
+            <svg-icon name="company" /> {{this.company.name}}
+          </div>
+          <div class="text-muted margin-bottom-10">
+            <svg-icon name="email" /> {{this.user.email}}
+          </div>
+          <div class="text-muted margin-bottom-10">
+            <svg-icon name="phone" /> {{this.user.phone}}
           </div>
         </div>
       </div>
 
-      <div class="user-skills user-bio-section">
+      <div class="user-accounts user-bio-section">
         <div class="user-bio-section-header">
-          <svg-icon name="skill" /><span>Skills</span>
+          <svg-icon name="role" /><span>Current Plan</span>
         </div>
         <div class="user-bio-section-body">
           <div class="progress-item">
-            <span>Vue</span>
-            <el-progress :percentage="51" />
-          </div>
-          <div class="progress-item">
-            <span>Typescript</span>
-            <el-progress :percentage="45" />
-          </div>
-          <div class="progress-item">
-            <span>Css</span>
-            <el-progress :percentage="4" />
-          </div>
-          <div class="progress-item">
-            <span>ESLint</span>
-            <el-progress
-              :percentage="100"
-              status="success"
-            />
+            <span>
+              <el-tag
+              type="primary"
+              effect="plain">
+                {{this.plans[4]}}
+              </el-tag>
+            </span>
           </div>
         </div>
       </div>
@@ -72,9 +68,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { IProfile } from '../index.vue'
+import { Component, Vue } from 'vue-property-decorator'
 import { getCompany, defaultCompanyData } from '@/api/companies'
+import { defaultUserData } from '@/api/users'
 import PanThumb from '@/components/PanThumb/index.vue'
 import { UserModule } from '@/store/modules/user'
 import { ICompanyData } from '@/api/types'
@@ -86,11 +82,13 @@ import { ICompanyData } from '@/api/types'
   }
 })
 export default class extends Vue {
-  @Prop({ required: true }) private user!: IProfile
+  private user: any = defaultUserData
   private company :ICompanyData = defaultCompanyData
+  private plans = ['Free', 'Lite', 'Plus', 'Premium', 'Ultimate']
 
   created() {
     UserModule.GetUserInfo()
+    this.user = UserModule
     this.fetchCompany(UserModule.companyId)
   }
 

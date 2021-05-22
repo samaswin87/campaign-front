@@ -6,7 +6,7 @@
           :span="6"
           :xs="24"
         >
-          <user-card :user="user" />
+          <user-card />
         </el-col>
         <el-col
           :span="18"

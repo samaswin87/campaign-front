@@ -1,4 +1,18 @@
 import request from '@/utils/request'
+import { IUserData } from './types'
+
+export const defaultUserData: IUserData = {
+  id: 0,
+  username: '',
+  password: '',
+  name: '',
+  email: '',
+  phone: '',
+  avatar: '',
+  introduction: '',
+  roles: [],
+  companyId: 0
+}
 
 export const getUsers = (params: any) =>
   request({

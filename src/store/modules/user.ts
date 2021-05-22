@@ -14,6 +14,7 @@ export interface IUserState {
   roles: string[]
   email: string
   companyId: number
+  phone: number
 }
 
 @Module({ dynamic: true, store, name: 'user' })
@@ -25,6 +26,7 @@ class User extends VuexModule implements IUserState {
   public roles: string[] = []
   public email = ''
   public companyId = 0
+  public phone = 0
 
   @Mutation
   private SET_TOKEN(token: string) {
@@ -61,6 +63,11 @@ class User extends VuexModule implements IUserState {
     this.companyId = companyId
   }
 
+  @Mutation
+  private SET_PHONE(phone: number) {
+    this.phone = phone
+  }
+
   @Action
   public async Login(userInfo: { username: string, password: string}) {
     let { username, password } = userInfo
@@ -86,7 +93,7 @@ class User extends VuexModule implements IUserState {
     if (!data) {
       throw Error('Verification failed, please Login again.')
     }
-    const { roles, name, avatar, introduction, email, companyId } = data.user
+    const { roles, name, avatar, introduction, email, companyId, phone } = data.user
     // roles must be a non-empty array
     if (!roles || roles.length <= 0) {
       throw Error('GetUserInfo: roles must be a non-null array!')
@@ -97,6 +104,7 @@ class User extends VuexModule implements IUserState {
     this.SET_INTRODUCTION(introduction)
     this.SET_EMAIL(email)
     this.SET_COMPANY_ID(companyId)
+    this.SET_PHONE(phone)
   }
 
   @Action
