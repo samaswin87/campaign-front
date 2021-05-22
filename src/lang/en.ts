@@ -84,7 +84,8 @@ export default {
     users: 'Users',
     tags: 'Tags',
     trackingLinks: 'Tracking Links',
-    platformNumbers: 'Platform Numbers'
+    platformNumbers: 'Platform Numbers',
+    company: 'Company'
   },
   navbar: {
     logOut: 'Log Out',
