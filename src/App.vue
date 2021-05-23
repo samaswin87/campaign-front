@@ -19,3 +19,4 @@ export default class extends Vue {}
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src='css-utility-classes/dist/utils.css'></style>

@@ -24,6 +24,7 @@
         "codemirror": "^5.58.2",
         "core-js": "^3.7.0",
         "cors": "^2.8.5",
+        "css-utility-classes": "git+https://github.com/samaswin87/css-utility-classes.git",
         "driver.js": "^0.9.8",
         "echarts": "^4.9.0",
         "element-ui": "^2.14.0",

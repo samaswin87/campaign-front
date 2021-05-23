@@ -24,6 +24,18 @@ export const statusFilter = (status: string) => {
   return statusMap[status]
 }
 
+// Filter for status
+export const planFilter = (status: string) => {
+  const statusMap: { [key: string]: string } = {
+    Tentative: 'info',
+    Lite: 'success',
+    Plus: '',
+    Premium: 'warning',
+    Ultimate: 'danger'
+  }
+  return statusMap[status]
+}
+
 // Filter for campaign type status
 export const campaignTypeFilter = (status: string) => {
   const statusMap: { [key: string]: string } = {
