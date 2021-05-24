@@ -12,7 +12,9 @@
                                 <el-tab-pane label="Details">
                                     <Details/>
                                 </el-tab-pane>
-                                <el-tab-pane label="Current Credits">Current Credits</el-tab-pane>
+                                <el-tab-pane label="Current Credits">
+                                    <Credits/>
+                                </el-tab-pane>
                                 <el-tab-pane label="Credits History">Credits History</el-tab-pane>
                                 <el-tab-pane label="Platform Numbers">Platform Numbers</el-tab-pane>
                             </el-tabs>
@@ -29,11 +31,13 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanyData, getCompany } from '@/api/companies'
 import { IPlanCredits } from '@/api/types'
 import Details from './components/Details.vue'
+import Credits from './components/Credits.vue'
 
 @Component({
   name: 'CompanyCreate',
   components: {
-    Details
+    Details,
+    Credits
   }
 })
 export default class extends Vue {
