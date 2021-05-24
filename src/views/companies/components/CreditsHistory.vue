@@ -33,6 +33,51 @@
                     >{{ row.month }}</span>
                 </template>
                 </el-table-column>
+                <el-table-column
+                :label="$t('table.companies.additionalCredits')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.additionalCredits }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.companies.inbounds')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.inbounds }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.companies.outbounds')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.outbounds }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.companies.voiceInbounds')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.voiceInbounds }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.companies.voiceOutbounds')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.voiceOutbounds }}</span>
+                </template>
+                </el-table-column>
             </el-table>
             <pagination
             v-show="total>0"
