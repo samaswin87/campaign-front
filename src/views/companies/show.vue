@@ -105,14 +105,17 @@
                                                 </el-col>
                                                 <el-col :span="12" class="text-left ml-20-px">
                                                     <span>
+                                                        <el-input-number
+                                                            v-model="companyData.totalCredits"
+                                                            controls-position="right"
+                                                            @change="handleChange"
+                                                            :step="100"
+                                                            step-strictly>
+                                                        </el-input-number>
                                                         <el-tooltip class="item" effect="dark" content="Will notify the updated credits to admin and admin will contact you to reflect in the credits" placement="top">
-                                                            <el-input-number
-                                                                v-model="companyData.totalCredits"
-                                                                controls-position="right"
-                                                                @change="handleChange"
-                                                                :step="100"
-                                                                step-strictly>
-                                                            </el-input-number>
+                                                            <el-button  class="ml-5-px" type="primary">
+                                                                <svg-icon name="upgrade"></svg-icon> Update Credits
+                                                            </el-button>
                                                         </el-tooltip>
                                                     </span>
                                                 </el-col>
