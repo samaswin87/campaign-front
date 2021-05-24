@@ -4,88 +4,103 @@
             <span>Credits History</span>
         </div>
         <div class="company-details">
-            <el-table
-                ref="contactTable"
-                :key="tableKey"
-                v-loading="listLoading"
-                :data.sync="list"
-                border
-                fit
-                highlight-current-row
-                style="width: 100%;"
-                @sort-change="sortChange"
-            >
-                <el-table-column
-                :label="$t('table.id')"
-                prop="id"
-                sortable="custom"
-                align="center"
-                width="80"
-                :class-name="getSortClass('id')"
-                >
-                </el-table-column>
-                <el-table-column
-                :label="$t('table.companies.month')"
-                min-width="150px"
-                >
-                <template slot-scope="{row}">
-                    <span
-                    >{{ row.month }}</span>
-                </template>
-                </el-table-column>
-                <el-table-column
-                :label="$t('table.companies.additionalCredits')"
-                min-width="150px"
-                >
-                <template slot-scope="{row}">
-                    <span
-                    >{{ row.additionalCredits }}</span>
-                </template>
-                </el-table-column>
-                <el-table-column
-                :label="$t('table.companies.inbounds')"
-                min-width="150px"
-                >
-                <template slot-scope="{row}">
-                    <span
-                    >{{ row.inbounds }}</span>
-                </template>
-                </el-table-column>
-                <el-table-column
-                :label="$t('table.companies.outbounds')"
-                min-width="150px"
-                >
-                <template slot-scope="{row}">
-                    <span
-                    >{{ row.outbounds }}</span>
-                </template>
-                </el-table-column>
-                <el-table-column
-                :label="$t('table.companies.voiceInbounds')"
-                min-width="150px"
-                >
-                <template slot-scope="{row}">
-                    <span
-                    >{{ row.voiceInbounds }}</span>
-                </template>
-                </el-table-column>
-                <el-table-column
-                :label="$t('table.companies.voiceOutbounds')"
-                min-width="150px"
-                >
-                <template slot-scope="{row}">
-                    <span
-                    >{{ row.voiceOutbounds }}</span>
-                </template>
-                </el-table-column>
-            </el-table>
-            <pagination
-            v-show="total>0"
-            :total="total"
-            :page.sync="listQuery.page"
-            :limit.sync="listQuery.limit"
-            @pagination="getList"
-            />
+            <el-row>
+                <el-col :span="8" class="float-right mb-10-px">
+                    <TableSearchWithFilters @handleFilter="handleFilter" />
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col>
+                    <el-table
+                    ref="creditTable"
+                    :key="tableKey"
+                    v-loading="listLoading"
+                    :data.sync="list"
+                    border
+                    fit
+                    highlight-current-row
+                    style="width: 100%;"
+                    @sort-change="sortChange"
+                    >
+                        <el-table-column
+                        :label="$t('table.id')"
+                        prop="id"
+                        sortable="custom"
+                        align="center"
+                        width="80"
+                        :class-name="getSortClass('id')"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                        :label="$t('table.companies.month')"
+                        min-width="150px"
+                        >
+                        <template slot-scope="{row}">
+                            <span
+                            >{{ row.month }}</span>
+                        </template>
+                        </el-table-column>
+                        <el-table-column
+                        :label="$t('table.companies.additionalCredits')"
+                        min-width="150px"
+                        >
+                        <template slot-scope="{row}">
+                            <span
+                            >{{ row.additionalCredits }}</span>
+                        </template>
+                        </el-table-column>
+                        <el-table-column
+                        :label="$t('table.companies.inbounds')"
+                        min-width="150px"
+                        >
+                        <template slot-scope="{row}">
+                            <span
+                            >{{ row.inbounds }}</span>
+                        </template>
+                        </el-table-column>
+                        <el-table-column
+                        :label="$t('table.companies.outbounds')"
+                        min-width="150px"
+                        >
+                        <template slot-scope="{row}">
+                            <span
+                            >{{ row.outbounds }}</span>
+                        </template>
+                        </el-table-column>
+                        <el-table-column
+                        :label="$t('table.companies.voiceInbounds')"
+                        min-width="150px"
+                        >
+                        <template slot-scope="{row}">
+                            <span
+                            >{{ row.voiceInbounds }}</span>
+                        </template>
+                        </el-table-column>
+                        <el-table-column
+                        :label="$t('table.companies.voiceOutbounds')"
+                        min-width="150px"
+                        >
+                        <template slot-scope="{row}">
+                            <span
+                            >{{ row.voiceOutbounds }}</span>
+                        </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <credits-table-filters
+                        :visible.sync="filterLoading"
+                        @creditFiltered="creditFiltered"
+                    />
+
+                    <pagination
+                    v-show="total>0"
+                    :total="total"
+                    :page.sync="listQuery.page"
+                    :limit.sync="listQuery.limit"
+                    @pagination="getList"
+                    />
+                </el-col>
+            </el-row>
         </div>
     </el-card>
 </template>
@@ -95,11 +110,15 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanyData, getCompany, getCredits } from '@/api/companies'
 import { IPlanCredits } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
+import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
+import CreditsTableFilters from './CreditsTableFilters.vue'
 
 @Component({
   name: 'CreditsHistory',
   components: {
-    Pagination
+    Pagination,
+    TableSearchWithFilters,
+    CreditsTableFilters
   }
 })
 export default class extends Vue {
@@ -109,6 +128,7 @@ export default class extends Vue {
     private list: IPlanCredits[] = []
     private total = 0
     private listLoading = true
+    private filterLoading = false
     private listQuery = {
       page: 1,
       limit: 20,
@@ -120,6 +140,10 @@ export default class extends Vue {
       this.fetchData(parseInt(id))
     }
 
+    private handleFilter() {
+      this.filterLoading = true
+    }
+
     private async fetchData(id: number) {
       try {
         this.listLoading = true
@@ -129,6 +153,10 @@ export default class extends Vue {
       } catch (err) {
         console.error(err)
       }
+    }
+
+    private creditFiltered(data: any) {
+      console.log(data)
     }
 
     private async getList() {
