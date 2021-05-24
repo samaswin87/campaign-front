@@ -8,7 +8,7 @@
                     </div>
                     <el-row>
                         <el-col :span="24">
-                            <el-tabs tab-position="left" class="details-header">
+                            <el-tabs tab-position="left" class="details-header" type="border-card">
                                 <el-tab-pane label="Details">
                                     <Details/>
                                 </el-tab-pane>
