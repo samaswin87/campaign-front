@@ -99,7 +99,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanyData, getCompany } from '@/api/companies'
 
 @Component({
-  name: 'Details',
+  name: 'CompanyDetails',
   components: {
   }
 })

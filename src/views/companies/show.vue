@@ -10,12 +10,14 @@
                         <el-col :span="24">
                             <el-tabs tab-position="left" class="details-header" type="border-card">
                                 <el-tab-pane label="Details">
-                                    <Details/>
+                                    <company-details/>
                                 </el-tab-pane>
                                 <el-tab-pane label="Current Credits">
-                                    <Credits/>
+                                    <credits/>
                                 </el-tab-pane>
-                                <el-tab-pane label="Credits History">Credits History</el-tab-pane>
+                                <el-tab-pane label="Credits History">
+                                    <credits-history/>
+                                </el-tab-pane>
                                 <el-tab-pane label="Platform Numbers">Platform Numbers</el-tab-pane>
                             </el-tabs>
                         </el-col>
@@ -30,14 +32,16 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanyData, getCompany } from '@/api/companies'
 import { IPlanCredits } from '@/api/types'
-import Details from './components/Details.vue'
 import Credits from './components/Credits.vue'
+import CreditsHistory from './components/CreditsHistory.vue'
+import CompanyDetails from './components/Details.vue'
 
 @Component({
-  name: 'CompanyCreate',
+  name: 'CompanyShow',
   components: {
-    Details,
-    Credits
+    Credits,
+    CreditsHistory,
+    CompanyDetails
   }
 })
 export default class extends Vue {

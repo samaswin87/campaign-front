@@ -49,3 +49,10 @@ export const getCompany = (id: number, params: any) =>
     method: 'get',
     params
   })
+
+export const getCredits = (id: number, params: any) =>
+  request({
+    url: `/companies/${id}/credits`,
+    method: 'get',
+    params
+  })
