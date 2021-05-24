@@ -60,10 +60,3 @@ export default class extends Vue {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.details-header {
-    height:600px
-}
-</style>

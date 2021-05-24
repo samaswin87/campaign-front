@@ -206,16 +206,21 @@ export default {
       messageForward: 'Message Forward',
       apiToken: 'API Token',
       planCredits: 'Credits',
+      planCredit: 'Monthly Plan Credits',
+      remainingPlanCredit: 'Remaining Monthly Plan Credits',
       availedCredits: 'Availed Credits',
       month: 'Month',
-      inbounds: 'Inbound Credits',
-      outbounds: 'Outbound Credits',
+      credits: 'Plan Credits',
+      additionalCredits: 'Addition Credits',
+      inbounds: 'Inbound Message Credits',
+      outbounds: 'Outbound Message Credits',
       voiceInbounds: 'Voice Inbound Credits',
       voiceOutbounds: 'Voice Outbound Credits',
-      availedInbounds: 'Availed Inbound Credits',
-      availedOutbounds: 'Availed Outbound Credits',
+      availedInbounds: 'Availed Message Inbound Credits',
+      availedOutbounds: 'Availed Message Outbound Credits',
       availedVoiceInbounds: 'Availed Voice Inbound Credits',
-      availedVoiceOutbounds: 'Availed Voice Outbound Credits'
+      availedVoiceOutbounds: 'Availed Voice Outbound Credits',
+      usedPercentage: 'Current Month Credits Usage (%)'
     }
   },
   example: {

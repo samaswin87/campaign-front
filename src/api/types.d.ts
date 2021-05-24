@@ -15,6 +15,7 @@ export interface IPlanCredits {
   companyId: number
   credits: number
   month: string
+  additionalCredits: number
   inbounds: number
   outbounds: number
   voiceInbounds: number
@@ -34,10 +35,12 @@ export interface ICompanyData {
   phone: string
   name: string
   plan: string
+  planCredit: number
   callForwarding: boolean
   totalCredits: number
   remainingCredits: number
   messageForward: boolean
+  usedPercentage: number
   apiToken: string
   planCredits: IPlanCredits[]
 }

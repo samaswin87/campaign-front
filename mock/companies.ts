@@ -12,7 +12,7 @@ for (let i = 1; i < companyCount; i++) {
     credits.push({
       id: j,
       companyId: i,
-      credits: randomNumber,
+      credits: 100,
       month: faker.random.arrayElement(['Jan-2021', 'Feb-2021', 'Mar-2021', 'April-2021', 'May-2021', 'Jun-2021', 'Jul-2021', 'Aug-2021', 'Sept-2021', 'Oct-2021', 'Nov-2021', 'Decr-2021']),
       inbounds: randomNumber,
       outbounds: randomNumber,
@@ -23,7 +23,8 @@ for (let i = 1; i < companyCount; i++) {
       availedVoiceInbounds: faker.random.arrayElement([0, 1000, 100]),
       availedVoiceOutbounds: faker.random.arrayElement([0, 1000, 100]),
       createdAt: faker.date.future().getTime(),
-      updatedAt: faker.date.future().getTime()
+      updatedAt: faker.date.future().getTime(),
+      additionalCredits: faker.datatype.number(5000)
     })
   }
 
@@ -39,7 +40,9 @@ for (let i = 1; i < companyCount; i++) {
     remainingCredits: randomNumber,
     messageForward: faker.random.arrayElement([true, false]),
     apiToken: faker.lorem.sentence(3, 4).replace(/\s/g, ''),
-    planCredits: credits
+    planCredits: credits,
+    planCredit: 1000,
+    usedPercentage: 40
   })
 }
 

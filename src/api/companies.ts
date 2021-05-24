@@ -13,6 +13,7 @@ export const defaultPlanCreditData: IPlanCredits = {
   availedInbounds: 0,
   availedOutbounds: 0,
   availedVoiceInbounds: 0,
+  additionalCredits: 0,
   availedVoiceOutbounds: 0,
   createdAt: '',
   updatedAt: ''
@@ -30,7 +31,9 @@ export const defaultCompanyData: ICompanyData = {
   remainingCredits: 0,
   messageForward: false,
   apiToken: '',
-  planCredits: [defaultPlanCreditData]
+  planCredits: [defaultPlanCreditData],
+  planCredit: 0,
+  usedPercentage: 0
 }
 
 export const getCompanies = (params: any) =>
