@@ -43,16 +43,21 @@
                                             </el-row>
 
                                             <el-row class="mb-10-px">
-                                                <el-col :span="10" class="text-right fw-b">
+                                                <el-col :span="10" class="text-right fw-b mt-10-px">
                                                     <span>{{$t('table.companies.plan')}}:</span>
                                                 </el-col>
                                                 <el-col :span="12" class="text-left ml-20-px">
                                                     <span>
                                                         <el-tag
-                                                        :type="planFilter"
+                                                        :type="planFilter(companyData.plan)"
                                                         effect="dark">
                                                             {{companyData.plan}}
                                                         </el-tag>
+                                                        <el-tooltip class="item" effect="dark" content="Upgrade Plan" placement="top">
+                                                            <el-button class="ml-5-px" circle>
+                                                                <svg-icon name="upgrade"></svg-icon>
+                                                            </el-button>
+                                                        </el-tooltip>
                                                     </span>
                                                 </el-col>
                                             </el-row>
@@ -62,7 +67,65 @@
                                                     <span>{{$t('table.companies.messageForward')}}:</span>
                                                 </el-col>
                                                 <el-col :span="12" class="text-left ml-20-px">
-                                                    <span>{{companyData.messageForward}}</span>
+                                                    <span>
+                                                        <el-switch v-model="companyData.messageForward"></el-switch>
+                                                    </span>
+                                                </el-col>
+                                            </el-row>
+
+                                            <el-row class="mb-10-px">
+                                                <el-col :span="10" class="text-right fw-b">
+                                                    <span>{{$t('table.companies.callForwarding')}}:</span>
+                                                </el-col>
+                                                <el-col :span="12" class="text-left ml-20-px">
+                                                    <span>
+                                                        <el-switch v-model="companyData.callForwarding"></el-switch>
+                                                    </span>
+                                                </el-col>
+                                            </el-row>
+
+                                            <el-row class="mb-10-px">
+                                                <el-col :span="10" class="text-right fw-b mt-7-px">
+                                                    <span>{{$t('table.companies.apiToken')}}:</span>
+                                                </el-col>
+                                                <el-col :span="12" class="text-left ml-20-px">
+                                                    <span>
+                                                        <el-tag type="danger" effect="plain">{{companyData.apiToken}}</el-tag>
+                                                        <el-tooltip class="item" effect="dark" content="Generate Token" placement="top">
+                                                            <el-button  class="ml-5-px" icon="el-icon-refresh" circle>
+                                                            </el-button>
+                                                        </el-tooltip>
+                                                    </span>
+                                                </el-col>
+                                            </el-row>
+
+                                            <el-row class="mb-10-px">
+                                                <el-col :span="10" class="text-right fw-b mt-10-px">
+                                                    <span>{{$t('table.companies.totalCredits')}}:</span>
+                                                </el-col>
+                                                <el-col :span="12" class="text-left ml-20-px">
+                                                    <span>
+                                                        <el-tooltip class="item" effect="dark" content="Will notify the updated credits to admin and admin will contact you to reflect in the credits" placement="top">
+                                                            <el-input-number
+                                                                v-model="companyData.totalCredits"
+                                                                controls-position="right"
+                                                                @change="handleChange"
+                                                                :step="100"
+                                                                step-strictly>
+                                                            </el-input-number>
+                                                        </el-tooltip>
+                                                    </span>
+                                                </el-col>
+                                            </el-row>
+
+                                            <el-row class="mb-10-px">
+                                                <el-col :span="10" class="text-right fw-b mt-5-px">
+                                                    <span>{{$t('table.companies.remainingCredits')}}:</span>
+                                                </el-col>
+                                                <el-col :span="12" class="text-left ml-20-px">
+                                                    <span>
+                                                        <el-tag type="danger" effect="plain">{{companyData.remainingCredits}}</el-tag>
+                                                    </span>
                                                 </el-col>
                                             </el-row>
                                         </div>
@@ -99,6 +162,10 @@ export default class extends Vue {
       this.fetchData(parseInt(id))
     }
 
+    private handleChange(value: number) {
+      console.log(value)
+    }
+
     private async fetchData(id: number) {
       try {
         const { data } = await getCompany(id, {})
@@ -107,6 +174,18 @@ export default class extends Vue {
       } catch (err) {
         console.error(err)
       }
+    }
+
+    // Filter for status
+    private planFilter = (status: string) => {
+      const statusMap: { [key: string]: string } = {
+        Tentative: 'info',
+        Lite: 'success',
+        Plus: '',
+        Premium: 'warning',
+        Ultimate: 'danger'
+      }
+      return statusMap[status]
     }
 }
 </script>

@@ -4069,7 +4069,7 @@ css-tree@^1.1.2:
 
 "css-utility-classes@git+https://github.com/samaswin87/css-utility-classes.git":
   version "0.1.1"
-  resolved "git+https://github.com/samaswin87/css-utility-classes.git#755751be05513a4fa365f7760322e50b5c29d674"
+  resolved "git+https://github.com/samaswin87/css-utility-classes.git#d47c364193e5906471a59f7b8661a53826feaa30"
 
 css-what@^3.2.1:
   version "3.4.2"

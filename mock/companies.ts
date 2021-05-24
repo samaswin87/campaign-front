@@ -38,7 +38,7 @@ for (let i = 1; i < companyCount; i++) {
     totalCredits: randomNumber,
     remainingCredits: randomNumber,
     messageForward: faker.random.arrayElement([true, false]),
-    apiToken: faker.random.alphaNumeric(),
+    apiToken: faker.lorem.sentence(3, 4).replace(/\s/g, ''),
     planCredits: credits
   })
 }
