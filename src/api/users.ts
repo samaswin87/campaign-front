@@ -40,6 +40,13 @@ export const getUserInfo = (data: any) =>
     data
   })
 
+export const getUser = (id: number, params: any) =>
+  request({
+    url: `/users/${id}`,
+    method: 'get',
+    params
+  })
+
 export const getUserByName = (username: string) =>
   request({
     url: `/users/${username}`,

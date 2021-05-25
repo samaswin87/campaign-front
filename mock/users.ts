@@ -152,6 +152,24 @@ export const getUserInfo = (req: Request, res: Response) => {
   })
 }
 
+export const getUser = (req: Request, res: Response) => {
+  const { id } = req.params
+  for (const user of userList) {
+    if (user.id.toString() === id) {
+      return res.json({
+        code: 20000,
+        data: {
+          user
+        }
+      })
+    }
+  }
+  return res.json({
+    code: 70001,
+    message: 'User not found'
+  })
+}
+
 export const getUserByName = (req: Request, res: Response) => {
   const { username } = req.params
   for (const user of userList) {

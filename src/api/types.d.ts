@@ -242,3 +242,13 @@ export interface IUserData {
   createdOn: string | number
   updatedOn: string | number
 }
+
+export interface IUserSettings {
+  id: number
+  userId: number
+  notifyWorkflow: boolean
+  notifyMenu: boolean
+  notifyCampaign: boolean
+  notifyCreditLimit: boolean
+  timeZone: string
+}

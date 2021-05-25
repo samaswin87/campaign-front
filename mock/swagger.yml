@@ -1375,6 +1375,43 @@ paths:
                           $ref: '#/components/schemas/User'
         401:
           $ref: '#/components/responses/Unauthorized'
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Get User Detail
+      description: Get user detail by ID.
+      operationId: getUser
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /users/register:
     post:
       tags:

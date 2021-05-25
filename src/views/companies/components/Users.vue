@@ -99,7 +99,7 @@
                           class-name="fixed-width"
                         >
                           <template slot-scope="{row}">
-                            <router-link :to="{name: 'UserView', params: {id: row.id}}">
+                            <router-link :to="{name: 'UserView', params: {id: row.id, companyId: companyData.id}}">
                               <el-button
                                 icon="el-icon-view"
                                 circle
