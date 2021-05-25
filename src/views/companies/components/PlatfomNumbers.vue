@@ -78,6 +78,22 @@
                             </el-tag>
                         </template>
                         </el-table-column>
+                         <el-table-column
+                            :label="$t('table.actions')"
+                            align="center"
+                            width="130"
+                            class-name="fixed-width"
+                          >
+                            <template slot-scope="{row}">
+                              <el-button
+                                v-if="row.status!=='deleted'"
+                                icon="el-icon-delete"
+                                @click="handleDelete(row)"
+                                circle
+                              >
+                              </el-button>
+                            </template>
+                          </el-table-column>
                     </el-table>
 
                     <platforms-table-filters
@@ -185,6 +201,24 @@ export default class extends Vue {
     private getSortClass(key: string) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    }
+
+    private handleDelete(row: any) {
+      this.$confirm('Are you sure?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: 'Platform Number removed'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Platform Number not removed'
+        })
+      })
     }
 }
 </script>
