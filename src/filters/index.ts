@@ -11,6 +11,11 @@ export const articleStatusFilter = (status: string) => {
   return statusMap[status]
 }
 
+// Filter for contact number
+export const shortcodeFilter = (phone: string) => {
+  return (phone.length === 5) ? 'warning' : 'success'
+}
+
 // Filter for status
 export const statusFilter = (status: string) => {
   const statusMap: { [key: string]: string } = {

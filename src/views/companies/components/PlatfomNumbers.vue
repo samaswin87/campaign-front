@@ -55,8 +55,9 @@
                         min-width="150px"
                         >
                         <template slot-scope="{row}">
-                            <span
-                            >{{ row.phone }}</span>
+                          <el-tag effect="dark" :type="row.phone | shortcodeFilter">
+                            {{ row.phone }}
+                          </el-tag>
                         </template>
                         </el-table-column>
                         <el-table-column
