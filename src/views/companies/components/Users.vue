@@ -112,10 +112,6 @@
                         :visible.sync="filterLoading"
                         @userFiltered="userFiltered"
                     />
-                    <add-platfrom
-                      :visible.sync="addUserLoading"
-                      @userRecord="userRecord"
-                    />
 
                     <pagination
                     v-show="total>0"
@@ -138,15 +134,13 @@ import { IUserData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import UsersTableFilters from './UsersTableFilters.vue'
-import AddPlatfrom from './AddPlatfrom.vue'
 
 @Component({
   name: 'User',
   components: {
     Pagination,
     TableSearchWithFilters,
-    UsersTableFilters,
-    AddPlatfrom
+    UsersTableFilters
   }
 })
 export default class extends Vue {

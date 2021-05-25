@@ -102,7 +102,7 @@
                         :visible.sync="filterLoading"
                         @platformFiltered="platformFiltered"
                     />
-                    <add-platfrom
+                    <add-platform
                       :visible.sync="addPlatformLoading"
                       @platformRecord="platformRecord"
                     />
@@ -127,7 +127,7 @@ import { IPlatformNumbersData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import PlatformsTableFilters from './PlatformsTableFilters.vue'
-import AddPlatfrom from './AddPlatfrom.vue'
+import AddPlatform from './AddPlatform.vue'
 
 @Component({
   name: 'PlatformNumbers',
@@ -135,7 +135,7 @@ import AddPlatfrom from './AddPlatfrom.vue'
     Pagination,
     TableSearchWithFilters,
     PlatformsTableFilters,
-    AddPlatfrom
+    AddPlatform
   }
 })
 export default class extends Vue {
