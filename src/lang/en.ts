@@ -168,6 +168,7 @@ export default {
     body: 'Message',
     keyword: 'Keyword',
     updatedAt: 'Updated On',
+    archivedAt: 'Archived On',
     email: 'Email',
     contact: {
       optOut: 'Opted Out',
@@ -221,6 +222,9 @@ export default {
       availedVoiceInbounds: 'Availed Voice Inbound Credits',
       availedVoiceOutbounds: 'Availed Voice Outbound Credits',
       usedPercentage: 'Current Month Credits Usage (%)'
+    },
+    platforms: {
+      shortCode: 'Short Code'
     }
   },
   example: {

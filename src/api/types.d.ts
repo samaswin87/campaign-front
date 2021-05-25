@@ -6,9 +6,14 @@ export interface ITagData {
 
 export interface IPlatformNumbersData {
   id: number
+  name: string
+  status: string
   companyId: number
-  phone: number
+  phone: string
   shortCode: boolean
+  archivedAt: string | number
+  createdAt: string | number
+  updatedAt: string | number
 }
 export interface IPlanCredits {
   id: number
@@ -43,6 +48,7 @@ export interface ICompanyData {
   usedPercentage: number
   apiToken: string
   planCredits: IPlanCredits[]
+  platforms: IPlatformNumbersData[]
 }
 
 export interface IContactData {

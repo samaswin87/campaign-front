@@ -1,11 +1,28 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { ICompanyData, IPlanCredits } from '../src/api/types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData } from '../src/api/types'
 
 const companyList: ICompanyData[] = []
 const companyCount = 100
 
 for (let i = 1; i < companyCount; i++) {
+  const platforms: IPlatformNumbersData[] = []
+
+  for (let k = 1; k < 25; k++) {
+    const phone = faker.random.arrayElement([faker.phone.phoneNumberFormat(2), faker.phone.phoneNumber('#####')])
+    platforms.push({
+      id: k,
+      name: faker.lorem.sentence(3, 4).replace(/\s/g, ''),
+      status: faker.random.arrayElement(['active', 'inactive']),
+      companyId: i,
+      phone: phone,
+      shortCode: phone.length === 5,
+      archivedAt: '',
+      createdAt: faker.date.future().getTime(),
+      updatedAt: faker.date.future().getTime()
+    })
+  }
+
   const randomNumber = faker.datatype.number()
   const credits: IPlanCredits[] = []
   for (let j = 1; j < 12; j++) {
@@ -42,7 +59,8 @@ for (let i = 1; i < companyCount; i++) {
     apiToken: faker.lorem.sentence(3, 4).replace(/\s/g, ''),
     planCredits: credits,
     planCredit: 1000,
-    usedPercentage: 40
+    usedPercentage: 40,
+    platforms: platforms
   })
 }
 
@@ -74,6 +92,32 @@ export const getCredits = (req: Request, res: Response) => {
   for (const company of companyList) {
     if (company.id.toString() === id) {
       mockList = company.planCredits
+    }
+  }
+
+  if (sort === '-id') {
+    mockList = mockList.reverse()
+  }
+
+  const pageList = mockList.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
+
+  return res.json({
+    code: 20000,
+    data: {
+      total: mockList.length,
+      items: pageList
+    }
+  })
+}
+
+export const getPlatforms = (req: Request, res: Response) => {
+  const { id } = req.params
+  const { page = 1, limit = 20, sort } = req.query
+
+  let mockList: IPlatformNumbersData[] = []
+  for (const company of companyList) {
+    if (company.id.toString() === id) {
+      mockList = company.platforms
     }
   }
 

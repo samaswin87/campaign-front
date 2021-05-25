@@ -1,5 +1,17 @@
 import request from '@/utils/request'
-import { ICompanyData, IPlanCredits } from './types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData } from './types'
+
+export const defaultPlatformData: IPlatformNumbersData = {
+  id: 0,
+  status: '',
+  name: '',
+  companyId: 0,
+  phone: '',
+  shortCode: false,
+  archivedAt: '',
+  createdAt: '',
+  updatedAt: ''
+}
 
 export const defaultPlanCreditData: IPlanCredits = {
   id: 0,
@@ -33,7 +45,8 @@ export const defaultCompanyData: ICompanyData = {
   apiToken: '',
   planCredits: [defaultPlanCreditData],
   planCredit: 0,
-  usedPercentage: 0
+  usedPercentage: 0,
+  platforms: []
 }
 
 export const getCompanies = (params: any) =>
@@ -53,6 +66,13 @@ export const getCompany = (id: number, params: any) =>
 export const getCredits = (id: number, params: any) =>
   request({
     url: `/companies/${id}/credits`,
+    method: 'get',
+    params
+  })
+
+export const getPlatforms = (id: number, params: any) =>
+  request({
+    url: `/companies/${id}/platforms`,
     method: 'get',
     params
   })

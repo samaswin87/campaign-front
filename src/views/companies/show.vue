@@ -18,7 +18,9 @@
                                 <el-tab-pane label="Credits History">
                                     <credits-history/>
                                 </el-tab-pane>
-                                <el-tab-pane label="Platform Numbers">Platform Numbers</el-tab-pane>
+                                <el-tab-pane label="Platform Numbers">
+                                    <platfom-numbers />
+                                </el-tab-pane>
                             </el-tabs>
                         </el-col>
                     </el-row>
@@ -35,13 +37,15 @@ import { IPlanCredits } from '@/api/types'
 import Credits from './components/Credits.vue'
 import CreditsHistory from './components/CreditsHistory.vue'
 import CompanyDetails from './components/Details.vue'
+import PlatfomNumbers from './components/PlatfomNumbers.vue'
 
 @Component({
   name: 'CompanyShow',
   components: {
     Credits,
     CreditsHistory,
-    CompanyDetails
+    CompanyDetails,
+    PlatfomNumbers
   }
 })
 export default class extends Vue {
