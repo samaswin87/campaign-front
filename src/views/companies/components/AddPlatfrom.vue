@@ -41,7 +41,7 @@ import { Form } from 'element-ui'
 import { defaultPlatformData } from '@/api/companies'
 
 @Component({
-  name: 'AddPlatform Number',
+  name: 'AddPlatform',
   components: { }
 })
 export default class extends Vue {
