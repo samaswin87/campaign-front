@@ -67,7 +67,7 @@
                         >
                         <template slot-scope="{row}">
                             <span
-                            >{{ row.createdAt }}</span>
+                            >{{ row.createdAt | parseTime}}</span>
                         </template>
                         </el-table-column>
                         <el-table-column
