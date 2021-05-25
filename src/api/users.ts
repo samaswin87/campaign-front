@@ -5,19 +5,30 @@ export const defaultUserData: IUserData = {
   id: 0,
   username: '',
   password: '',
-  name: '',
+  firstName: '',
+  lastName: '',
+  status: '',
   email: '',
   phone: '',
   avatar: '',
   introduction: '',
   roles: [],
   companyId: 0,
-  timelines: []
+  timelines: [],
+  createdOn: '',
+  updatedOn: ''
 }
 
 export const getUsers = (params: any) =>
   request({
     url: '/users',
+    method: 'get',
+    params
+  })
+
+export const getUsersByCompany = (id: number, params: any) =>
+  request({
+    url: `/companies/${id}/users`,
     method: 'get',
     params
   })

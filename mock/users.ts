@@ -18,47 +18,60 @@ const userList: IUserData[] = [
     id: 0,
     companyId: 1,
     username: 'admin',
+    status: 'active',
     password: 'any',
-    name: 'Super Admin',
+    firstName: 'Super',
+    lastName: 'Admin',
     avatar: '/img/icons/logo.png',
     introduction: 'I am a super administrator',
     email: 'admin@test.com',
     phone: '1234567890',
     roles: ['admin'],
-    timelines: timelines
+    timelines: timelines,
+    createdOn: faker.date.future().getTime(),
+    updatedOn: faker.date.future().getTime()
   },
   {
     id: 1,
     companyId: 2,
+    status: 'active',
     username: 'editor',
     password: 'any',
-    name: 'Normal Editor',
+    firstName: 'Normal',
+    lastName: 'Editor',
     avatar: '/img/icons/logo.png',
     introduction: 'I am an editor',
     email: 'editor@test.com',
     phone: '1234567890',
     roles: ['editor'],
-    timelines: timelines
+    timelines: timelines,
+    createdOn: faker.date.future().getTime(),
+    updatedOn: faker.date.future().getTime()
   }
 ]
-const userCount = 100
+const userCount = 30
 
-for (let i = 2; i < userCount; i++) {
-  userList.push({
-    id: i,
-    username: 'user_' + faker.random.alphaNumeric(9),
-    password: faker.random.alphaNumeric(20),
-    name: faker.name.findName(),
-    avatar: faker.image.imageUrl(),
-    introduction: faker.lorem.sentence(20),
-    email: faker.internet.email(),
-    phone: faker.phone.phoneNumberFormat(2),
-    roles: ['visitor'],
-    companyId: i,
-    timelines: timelines
-  })
+for (let k = 1; k < 100; k++) {
+  for (let i = 2; i < userCount; i++) {
+    userList.push({
+      id: i,
+      username: 'user_' + faker.random.alphaNumeric(9),
+      status: faker.random.arrayElement(['active', 'inactive']),
+      password: faker.random.alphaNumeric(20),
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      avatar: faker.image.imageUrl(),
+      introduction: faker.lorem.sentence(20),
+      email: faker.internet.email(),
+      phone: faker.phone.phoneNumberFormat(2),
+      roles: ['visitor'],
+      companyId: k,
+      timelines: timelines,
+      createdOn: faker.date.future().getTime(),
+      updatedOn: faker.date.future().getTime()
+    })
+  }
 }
-
 export const register = (req: Request, res: Response) => {
   return res.json({
     code: 20000
@@ -92,13 +105,39 @@ export const logout = (req: Request, res: Response) => {
 export const getUsers = (req: Request, res: Response) => {
   const { name } = req.query
   const users = userList.filter(user => {
-    const lowerCaseName = user.name.toLowerCase()
+    const lowerCaseName = (user.firstName + ' ' + user.lastName).toLowerCase()
     return !(name && lowerCaseName.indexOf((name as string).toLowerCase()) < 0)
   })
   return res.json({
     code: 20000,
     data: {
       items: users
+    }
+  })
+}
+
+export const getUsersByCompany = (req: Request, res: Response) => {
+  const { id } = req.params
+  const { page = 1, limit = 20, sort } = req.query
+
+  let mockList: IUserData[] = []
+  for (const user of userList) {
+    if (user.companyId.toString() === id) {
+      mockList.push(user)
+    }
+  }
+
+  if (sort === '-id') {
+    mockList = mockList.reverse()
+  }
+
+  const pageList = mockList.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
+
+  return res.json({
+    code: 20000,
+    data: {
+      total: mockList.length,
+      items: pageList
     }
   })
 }

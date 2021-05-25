@@ -8,8 +8,11 @@
         <el-button type="primary">Upgrade Plan</el-button>
       </el-col>
     </el-row>
-    <el-form-item label="Name">
-      <el-input v-model.trim="user.name" />
+    <el-form-item label="First Name">
+      <el-input v-model.trim="user.firstName" />
+    </el-form-item>
+    <el-form-item label="Last Name">
+      <el-input v-model.trim="user.lastName" />
     </el-form-item>
     <el-form-item label="Phone">
       <el-input v-model.trim="user.phone" />
@@ -41,7 +44,8 @@ export default class extends Vue {
   private user:IUserData = defaultUserData
 
   created() {
-    this.user.name = UserModule.name
+    this.user.firstName = UserModule.firstName
+    this.user.lastName = UserModule.lastName
     this.user.phone = UserModule.phone.toString()
     this.user.email = UserModule.email
   }

@@ -42,7 +42,7 @@ export default class extends Vue {
   private emptyGif = 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
 
   get name() {
-    return UserModule.name
+    return UserModule.firstName + ' ' + UserModule.lastName
   }
 
   get avatar() {

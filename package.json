@@ -2,7 +2,7 @@
     "name": "compaign-front",
     "version": "1.0.0",
     "private": true,
-    "author": "Chong Guo <armourcy@gmail.com>",
+    "author": "Aswin R <aswin.r312@outlook.com>",
     "scripts": {
         "serve": "concurrently \"npm:mock\" \"vue-cli-service serve\"",
         "test:unit": "jest --clearCache && vue-cli-service test:unit",

@@ -227,9 +227,11 @@ export interface ITimeLineData {
 }
 export interface IUserData {
   id: number
+  status: string
   username: string
   password: string
-  name: string
+  firstName: string
+  lastName: string
   email: string
   phone: string
   avatar: string
@@ -237,4 +239,6 @@ export interface IUserData {
   roles: string[]
   companyId: number
   timelines: ITimeLineData[]
+  createdOn: string | number
+  updatedOn: string | number
 }
