@@ -17,23 +17,32 @@
               <el-radio label="In Active" name="status"></el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item label="Name">
-            <el-radio-group v-model="filterRecord.nameOption">
+        <el-form-item label="First Name">
+            <el-radio-group v-model="filterRecord.firstNameOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
               <el-radio label="Strat With"></el-radio>
               <el-radio label="End With"></el-radio>
             </el-radio-group>
-            <el-input type="text" v-model="filterRecord.name"></el-input>
+            <el-input type="text" v-model="filterRecord.firstName"></el-input>
         </el-form-item>
-        <el-form-item label="Created On">
-            <el-radio-group v-model="filterRecord.createdOnOption">
+        <el-form-item label="Last Name">
+            <el-radio-group v-model="filterRecord.lastNameOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
               <el-radio label="Strat With"></el-radio>
               <el-radio label="End With"></el-radio>
             </el-radio-group>
-            <el-input type="text" v-model="filterRecord.createdOn"></el-input>
+            <el-input type="text" v-model="filterRecord.lastName"></el-input>
+        </el-form-item>
+        <el-form-item label="Email">
+            <el-radio-group v-model="filterRecord.emailOption">
+              <el-radio label="In Equal"></el-radio>
+              <el-radio label="Is Not Equal"></el-radio>
+              <el-radio label="Strat With"></el-radio>
+              <el-radio label="End With"></el-radio>
+            </el-radio-group>
+            <el-input type="text" v-model="filterRecord.email"></el-input>
         </el-form-item>
       </el-form>
       <div
@@ -66,10 +75,12 @@ export default class extends Vue {
 
     private filterRecord = {
       status: 'Active',
-      name: '',
-      createdOn: null,
-      nameOption: 'In Equal',
-      createdOnOption: 'In Equal'
+      firstName: '',
+      lastName: '',
+      email: '',
+      firstNameOption: 'In Equal',
+      lastNameOption: 'In Equal',
+      emailOption: 'In Equal'
     }
 
     private filterUser() {

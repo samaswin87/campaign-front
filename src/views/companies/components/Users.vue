@@ -97,6 +97,20 @@
                           class-name="fixed-width"
                         >
                           <template slot-scope="{row}">
+                            <router-link :to="{name: 'UserView', params: {id: row.id}}">
+                              <el-button
+                                icon="el-icon-view"
+                                circle
+                              >
+                              </el-button>
+                            </router-link>
+                            <router-link :to="{name: 'UserEdit', params: {id: row.id}}">
+                              <el-button
+                                icon="el-icon-edit-outline"
+                                circle
+                              >
+                              </el-button>
+                            </router-link>
                             <el-button
                               v-if="row.status!=='deleted'"
                               icon="el-icon-delete"
