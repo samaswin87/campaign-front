@@ -473,7 +473,7 @@ export const asyncRoutes: RouteConfig[] = [
   },
   {
     path: '/users',
-    component: () => import('@/views/users/index.vue'),
+    component: Layout,
     redirect: '/users/index',
     meta: {
       roles: ['admin', 'editor']
@@ -486,6 +486,17 @@ export const asyncRoutes: RouteConfig[] = [
         meta: {
           title: 'users',
           icon: 'users'
+        }
+      },
+      {
+        path: '/companies/:id/users/new',
+        component: () => import('@/views/users/new.vue'),
+        name: 'UserCreate',
+        meta: {
+          noCache: true,
+          title: 'users',
+          icon: 'users',
+          hidden: true
         }
       }
     ]

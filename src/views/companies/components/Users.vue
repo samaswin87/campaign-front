@@ -6,15 +6,17 @@
         <div class="company-details">
             <el-row>
                 <el-col :span="8">
-                  <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="top">
-                      <el-button
-                      class="ml-10-px"
-                      @click="addUser"
-                      type="primary"
-                      icon="el-icon-circle-plus-outline"
-                      >
-                      </el-button>
-                  </el-tooltip>
+                  <router-link :to="{name: 'UserCreate', params: {id: companyData.id}}">
+                    <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="top">
+                        <el-button
+                        class="ml-10-px"
+                        @click="addUser"
+                        type="primary"
+                        icon="el-icon-circle-plus-outline"
+                        >
+                        </el-button>
+                    </el-tooltip>
+                  </router-link>
                 </el-col>
                 <el-col :span="8" class="float-right mb-10-px">
                     <TableSearchWithFilters @handleFilter="handleFilter" />

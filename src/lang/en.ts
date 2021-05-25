@@ -170,6 +170,10 @@ export default {
     updatedAt: 'Updated On',
     archivedAt: 'Archived On',
     email: 'Email',
+    user: {
+      username: 'User Name',
+      password: 'Password'
+    },
     contact: {
       optOut: 'Opted Out',
       firstName: 'First Name',
