@@ -9,17 +9,34 @@
                     <el-row>
                         <el-col :span="24">
                             <el-tabs tab-position="left" class="details-header" type="border-card">
-                                <el-tab-pane label="Details">
+                                <el-tab-pane>
+                                    <span slot="label"><i class="el-icon-info"></i> Details</span>
                                     <company-details/>
                                 </el-tab-pane>
-                                <el-tab-pane label="Current Credits">
+                                <el-tab-pane>
+                                    <span slot="label"><i class="el-icon-odometer"></i> Current Credits</span>
                                     <credits/>
                                 </el-tab-pane>
-                                <el-tab-pane label="Credits History">
+                                <el-tab-pane>
+                                    <span slot="label"><i class="el-icon-time"></i> Credits History</span>
                                     <credits-history/>
                                 </el-tab-pane>
-                                <el-tab-pane label="Platform Numbers">
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="platform-numbers"></svg-icon> Platform Numbers</span>
                                     <platfom-numbers />
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="users"></svg-icon> Users</span>
+                                    <platfom-numbers />
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="integrations"></svg-icon> Integrations</span>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="tags"></svg-icon> Tags</span>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="settings"></svg-icon> Settings</span>
                                 </el-tab-pane>
                             </el-tabs>
                         </el-col>
