@@ -8,7 +8,8 @@
                 <el-col :span="8">
                   <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="top">
                       <el-button
-                      style="margin-left: 10px;"
+                      class="ml-10-px"
+                      @click="addPlatform"
                       type="primary"
                       icon="el-icon-circle-plus-outline"
                       >
@@ -101,6 +102,10 @@
                         :visible.sync="filterLoading"
                         @platformFiltered="platformFiltered"
                     />
+                    <add-platfrom
+                      :visible.sync="addPlatformLoading"
+                      @platformRecord="platformRecord"
+                    />
 
                     <pagination
                     v-show="total>0"
@@ -122,13 +127,15 @@ import { IPlatformNumbersData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import PlatformsTableFilters from './PlatformsTableFilters.vue'
+import AddPlatfrom from './AddPlatfrom.vue'
 
 @Component({
   name: 'PlatformNumbers',
   components: {
     Pagination,
     TableSearchWithFilters,
-    PlatformsTableFilters
+    PlatformsTableFilters,
+    AddPlatfrom
   }
 })
 export default class extends Vue {
@@ -139,6 +146,7 @@ export default class extends Vue {
     private total = 0
     private listLoading = true
     private filterLoading = false
+    private addPlatformLoading = false
     private listQuery = {
       page: 1,
       limit: 20,
@@ -152,6 +160,14 @@ export default class extends Vue {
 
     private handleFilter() {
       this.filterLoading = true
+    }
+
+    private addPlatform() {
+      this.addPlatformLoading = true
+    }
+
+    private platformRecord(data: any) {
+      console.log(data)
     }
 
     private async fetchData(id: number) {
