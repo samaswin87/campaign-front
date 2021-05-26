@@ -30,6 +30,9 @@
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="password"></svg-icon> Change Password</span>
+                                    <update-password
+                                    :userId="userData.id"
+                                    />
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="reset"></svg-icon> Reset Password</span>
@@ -50,13 +53,15 @@ import { getUser, defaultUserData } from '@/api/users'
 import UserDetails from './components/UserDetails.vue'
 import UserSettings from './components/UserSettings.vue'
 import AccessRights from './components/AccessRights.vue'
+import UpdatePassword from './components/UpdatePassword.vue'
 
 @Component({
   name: 'UserShow',
   components: {
     UserDetails,
     UserSettings,
-    AccessRights
+    AccessRights,
+    UpdatePassword
   }
 })
 export default class extends Vue {
