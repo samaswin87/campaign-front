@@ -5,7 +5,7 @@
         </div>
         <div class="user-details">
             <el-row class="mb-10-px">
-                <el-col :span="5" class="text-right fw-b mt-5-px">
+                <el-col :span="8" class="text-right fw-b mt-5-px">
                     <span>Time Zone:</span>
                 </el-col>
                 <el-col :span="12" class="text-left ml-20-px">
@@ -19,7 +19,7 @@
             </el-row>
 
             <el-row class="mb-10-px">
-                <el-col :span="5" class="text-right fw-b mt-7-px">
+                <el-col :span="8" class="text-right fw-b mt-7-px">
                     <span>Campaign Replies:</span>
                 </el-col>
                 <el-col :span="12" class="text-left ml-20-px">
@@ -31,7 +31,7 @@
             </el-row>
 
             <el-row class="mb-10-px">
-                <el-col :span="5" class="text-right fw-b mt-7-px">
+                <el-col :span="8" class="text-right fw-b mt-7-px">
                     <span>Workflow Conversations:</span>
                 </el-col>
                 <el-col :span="12" class="text-left ml-20-px">
@@ -43,7 +43,7 @@
             </el-row>
 
             <el-row class="mb-10-px">
-                <el-col :span="5" class="text-right fw-b mt-7-px">
+                <el-col :span="8" class="text-right fw-b mt-7-px">
                     <span>Menu Conversations:</span>
                 </el-col>
                 <el-col :span="12" class="text-left ml-20-px">
@@ -55,7 +55,7 @@
             </el-row>
 
             <el-row class="mb-10-px">
-                <el-col :span="5" class="text-right fw-b mt-7-px">
+                <el-col :span="8" class="text-right fw-b mt-7-px">
                     <span>Account Threshold:</span>
                 </el-col>
                 <el-col :span="12" class="text-left ml-20-px">
