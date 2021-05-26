@@ -1,17 +1,17 @@
 <template>
-    <el-card class="box-card w-ratio-70">
+    <el-card class="box-card w-ratio-80">
         <div slot="header" class="clearfix">
             <span>Access Rights</span>
             <span class="float-right"><el-button type="primary" @click="updateAccessRights" circle><svg-icon name="save" ></svg-icon></el-button></span>
         </div>
         <div class="user-rights">
-            <el-row :gutter="12">
-                <el-col :span="8" v-for="item in accessRights" :key="item.id">
+            <el-row :gutter="12" class="panel-group">
+                <el-col :xs="12" :sm="12" :lg="6" v-for="item in accessRights" :key="item.id">
                     <el-card shadow="hover" class="mb-10-px">
-                        <span class="ml-25-ratio-i">
+                        <span :class="item.className">
                             <el-checkbox v-model="item.moduleSelected" :label="item.moduleName" border><svg-icon :name="item.logo"></svg-icon> {{item.moduleName}}</el-checkbox>
                         </span>
-                        <span class="mt-10-px ml-5-ratio-i d-flex">
+                        <span class="mt-10-px d-flex" v-if="item.menu">
                             <el-checkbox v-model="item.list" label="List"><svg-icon name="list"></svg-icon></el-checkbox>
                             <el-checkbox v-model="item.show" label="Show"><svg-icon name="eye-on" ></svg-icon></el-checkbox>
                             <el-checkbox v-model="item.create" label="Create"><svg-icon name="add"></svg-icon></el-checkbox>

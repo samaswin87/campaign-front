@@ -263,6 +263,8 @@ export interface IUserAccessRightData {
   show: boolean
   list: boolean
   edit: boolean
+  menu: boolean
+  className: string
   createdOn: string | number
   updatedOn: string | number
 }

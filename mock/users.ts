@@ -17,12 +17,16 @@ const accessRights: IUserAccessRightData[] = []
 
 for (let i = 0; i < userCount; i++) {
   [
-    ['Campaign', 'campaign'],
-    ['Menu', 'menu'],
-    ['Workflow', 'tree'],
-    ['Contact', 'user'],
-    ['User', 'users'],
-    ['Company', 'company']
+    ['Campaign', 'campaign', 'ml-25-ratio-i', true],
+    ['Menu', 'menu', 'ml-25-ratio-i', true],
+    ['Workflow', 'tree', 'ml-25-ratio-i', true],
+    ['Contact', 'user', 'ml-25-ratio-i', true],
+    ['User', 'users', 'ml-25-ratio-i', true],
+    ['Company', 'company', 'ml-25-ratio-i', true],
+    ['User Access Rights', 'access', 'ml-5-ratio-i', false],
+    ['User Settings', 'settings', 'ml-15-ratio-i', false],
+    ['Reset Password', 'reset', 'ml-10-ratio-i', false],
+    ['Company Access Rights', 'access', 'ml-0-ratio-i', false]
   ].forEach((element: any, index: number) => {
     accessRights.push({
       id: index,
@@ -34,6 +38,8 @@ for (let i = 0; i < userCount; i++) {
       show: true,
       list: true,
       edit: true,
+      menu: element[3],
+      className: element[2],
       createdOn: faker.date.future().getTime(),
       updatedOn: faker.date.future().getTime()
     })
