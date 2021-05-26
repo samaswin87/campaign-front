@@ -65,3 +65,9 @@ export default class extends Vue {
     }
 }
 </script>
+
+<style scoped>
+.el-checkbox.is-bordered.is-checked {
+    border-color: red;
+}
+</style>
