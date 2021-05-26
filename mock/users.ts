@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IUserData, ITimeLineData, IUserSettingData } from '../src/api/types'
+import { IUserData, ITimeLineData, IUserAccessRightData } from '../src/api/types'
 
 const timelines:ITimeLineData[] = []
 for (let index = 1; index < 10; index++) {
@@ -10,6 +10,33 @@ for (let index = 1; index < 10; index++) {
     timestamp: faker.date.past().getTime(),
     title: faker.lorem.sentence(6, 12),
     content: faker.lorem.sentence(20, 40)
+  })
+}
+const userCount = 30
+const accessRights: IUserAccessRightData[] = []
+
+for (let i = 0; i < userCount; i++) {
+  [
+    ['Campaign', 'campaign'],
+    ['Menu', 'menu'],
+    ['Workflow', 'tree'],
+    ['Contact', 'user'],
+    ['User', 'users'],
+    ['Company', 'company']
+  ].forEach((element: any, index: number) => {
+    accessRights.push({
+      id: index,
+      userId: i,
+      moduleSelected: true,
+      moduleName: element[0],
+      logo: element[1],
+      create: true,
+      show: true,
+      list: true,
+      edit: true,
+      createdOn: faker.date.future().getTime(),
+      updatedOn: faker.date.future().getTime()
+    })
   })
 }
 
@@ -49,7 +76,6 @@ const userList: IUserData[] = [
     updatedOn: faker.date.future().getTime()
   }
 ]
-const userCount = 30
 
 for (let k = 1; k < 100; k++) {
   for (let i = 2; i < userCount; i++) {
@@ -167,6 +193,16 @@ export const getUser = (req: Request, res: Response) => {
   return res.json({
     code: 70001,
     message: 'User not found'
+  })
+}
+
+export const getAccessRights = (req: Request, res: Response) => {
+  const { id } = req.params
+  return res.json({
+    code: 20000,
+    data: {
+      accessRights: accessRights.filter((_) => _.userId.toString() === id)
+    }
   })
 }
 

@@ -257,10 +257,12 @@ export interface IUserAccessRightData {
   id: number
   userId: number
   moduleName: string
+  moduleSelected: boolean
   logo: string
   create: boolean
   show: boolean
   list: boolean
+  edit: boolean
   createdOn: string | number
   updatedOn: string | number
 }

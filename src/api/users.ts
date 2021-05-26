@@ -57,6 +57,13 @@ export const getUser = (id: number, params: any) =>
     params
   })
 
+export const getAccessRights = (id: number, params: any) =>
+  request({
+    url: `/users/${id}/access_rights`,
+    method: 'get',
+    params
+  })
+
 export const getUserByName = (username: string) =>
   request({
     url: `/users/${username}`,
