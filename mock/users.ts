@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { IUserData, ITimeLineData } from '../src/api/types'
+import { IUserData, ITimeLineData, IUserSettingData } from '../src/api/types'
 
 const timelines:ITimeLineData[] = []
 for (let index = 1; index < 10; index++) {

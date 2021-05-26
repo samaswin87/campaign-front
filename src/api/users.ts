@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { IUserData } from './types'
+import { IUserData, IUserSettingData } from './types'
 
 export const defaultUserData: IUserData = {
   id: 0,
@@ -17,6 +17,16 @@ export const defaultUserData: IUserData = {
   timelines: [],
   createdOn: '',
   updatedOn: ''
+}
+
+export const defaultUserSettingData: IUserSettingData = {
+  id: 0,
+  userId: 0,
+  notifyCampaign: false,
+  notifyCreditLimit: false,
+  notifyMenu: false,
+  notifyWorkflow: false,
+  timeZone: ''
 }
 
 export const getUsers = (params: any) =>

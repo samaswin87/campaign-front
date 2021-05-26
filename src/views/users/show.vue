@@ -18,6 +18,9 @@
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="settings"></svg-icon> Settings</span>
+                                    <user-settings
+                                    :userId="userData.id"
+                                    />
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="access"></svg-icon> Access Rights</span>
@@ -42,11 +45,13 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanyData, getCompany } from '@/api/companies'
 import { getUser, defaultUserData } from '@/api/users'
 import UserDetails from './components/UserDetails.vue'
+import UserSettings from './components/UserSettings.vue'
 
 @Component({
   name: 'UserShow',
   components: {
-    UserDetails
+    UserDetails,
+    UserSettings
   }
 })
 export default class extends Vue {
