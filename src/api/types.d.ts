@@ -252,3 +252,15 @@ export interface IUserSettingData {
   notifyCreditLimit: boolean
   timeZone: string
 }
+
+export interface IUserAccessRightData {
+  id: number
+  userId: number
+  moduleName: string
+  logo: string
+  create: boolean
+  show: boolean
+  list: boolean
+  createdOn: string | number
+  updatedOn: string | number
+}

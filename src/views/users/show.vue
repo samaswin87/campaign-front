@@ -24,6 +24,9 @@
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="access"></svg-icon> Access Rights</span>
+                                    <access-rights
+                                    :userId="userData.id"
+                                    />
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="password"></svg-icon> Change Password</span>
@@ -46,12 +49,14 @@ import { defaultCompanyData, getCompany } from '@/api/companies'
 import { getUser, defaultUserData } from '@/api/users'
 import UserDetails from './components/UserDetails.vue'
 import UserSettings from './components/UserSettings.vue'
+import AccessRights from './components/AccessRights.vue'
 
 @Component({
   name: 'UserShow',
   components: {
     UserDetails,
-    UserSettings
+    UserSettings,
+    AccessRights
   }
 })
 export default class extends Vue {
