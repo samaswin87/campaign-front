@@ -243,7 +243,7 @@ export interface IUserData {
   updatedOn: string | number
 }
 
-export interface IUserSettings {
+export interface IUserSettingData {
   id: number
   userId: number
   notifyWorkflow: boolean

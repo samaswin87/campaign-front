@@ -63,6 +63,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import { RouteConfig } from 'vue-router'
 import { isExternal } from '@/utils/validate'
 import SidebarItemLink from './SidebarItemLink.vue'
+import { UserModule } from '@/store/modules/user'
 
 @Component({
   // Set 'name' here to prevent uglifyjs from causing recursive component not work
@@ -123,6 +124,11 @@ export default class extends Vue {
       return this.basePath
     }
     return path.resolve(this.basePath, routePath)
+  }
+
+  // Need to check page accessibility and show the menu
+  private checkAccessibility() {
+    console.log(UserModule)
   }
 }
 </script>

@@ -11,12 +11,22 @@
                             <el-tabs tab-position="left" class="details-header" type="border-card">
                                 <el-tab-pane>
                                     <span slot="label"><i class="el-icon-info"></i> Details</span>
-                                </el-tab-pane>
-                                <el-tab-pane>
-                                    <span slot="label"><i class="el-icon-odometer"></i> Current Credits</span>
+                                    <user-details
+                                    :user="userData"
+                                    :company="companyData"
+                                    />
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="settings"></svg-icon> Settings</span>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="access"></svg-icon> Access Rights</span>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="password"></svg-icon> Change Password</span>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="reset"></svg-icon> Reset Password</span>
                                 </el-tab-pane>
                             </el-tabs>
                         </el-col>
@@ -31,10 +41,12 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanyData, getCompany } from '@/api/companies'
 import { getUser, defaultUserData } from '@/api/users'
+import UserDetails from './components/UserDetails.vue'
 
 @Component({
   name: 'UserShow',
   components: {
+    UserDetails
   }
 })
 export default class extends Vue {
