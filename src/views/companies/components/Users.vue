@@ -106,7 +106,7 @@
                               >
                               </el-button>
                             </router-link>
-                            <router-link :to="{name: 'UserEdit', params: {id: row.id}}">
+                            <router-link :to="{name: 'UserEdit', params: {id: row.id, companyId: companyData.id}}">
                               <el-button
                                 icon="el-icon-edit-outline"
                                 circle

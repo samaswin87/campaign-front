@@ -509,6 +509,17 @@ export const asyncRoutes: RouteConfig[] = [
           icon: 'users',
           hidden: true
         }
+      },
+      {
+        path: '/companies/:companyId/users/:id/edit',
+        component: () => import('@/views/users/edit.vue'),
+        name: 'UserEdit',
+        meta: {
+          noCache: true,
+          title: 'users',
+          icon: 'users',
+          hidden: true
+        }
       }
     ]
   }
