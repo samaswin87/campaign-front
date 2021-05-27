@@ -299,7 +299,7 @@ export interface ICompanySettingData {
   importUsers: boolean
   importContacts: boolean
   importCampaigns: boolean
-  batchProcessDefaultTime: boolean
+  batchProcessDefaultTime: string
   companylogo: string
   timeZone: string
   createdOn: string | number

@@ -75,7 +75,7 @@ export const defaultCompanySettingData: ICompanySettingData = {
   importUsers: true,
   importContacts: true,
   importCampaigns: true,
-  batchProcessDefaultTime: true,
+  batchProcessDefaultTime: '',
   companylogo: '',
   timeZone: '',
   createdOn: '',

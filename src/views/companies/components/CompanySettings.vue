@@ -14,8 +14,12 @@
             <el-tab-pane label="Notification">
               <company-notify-settings/>
             </el-tab-pane>
-            <el-tab-pane label="Plan">Plan</el-tab-pane>
-            <el-tab-pane label="TimeZone">TimeZone</el-tab-pane>
+            <el-tab-pane label="Plan">
+              <company-plan-settings/>
+            </el-tab-pane>
+            <el-tab-pane label="TimeZone">
+              <company-time-settings/>
+            </el-tab-pane>
           </el-tabs>
         </el-col>
     </el-row>
@@ -28,6 +32,8 @@ import CompanyCommonSettings from './CompanyCommonSettings.vue'
 import CompanyMessageSettings from './CompanyMessageSettings.vue'
 import CompanySsoSettings from './CompanySsoSettings.vue'
 import CompanyNotifySettings from './CompanyNotifySettings.vue'
+import CompanyPlanSettings from './CompanyPlanSettings.vue'
+import CompanyTimeSettings from './CompanyTimeSettings.vue'
 
 @Component({
   name: 'CompanySettings',
@@ -35,7 +41,9 @@ import CompanyNotifySettings from './CompanyNotifySettings.vue'
     CompanyCommonSettings,
     CompanyMessageSettings,
     CompanySsoSettings,
-    CompanyNotifySettings
+    CompanyNotifySettings,
+    CompanyPlanSettings,
+    CompanyTimeSettings
   }
 })
 export default class extends Vue {
