@@ -2,6 +2,10 @@ export interface ITagData {
   id: number
   status: string
   name: string
+  companyId: number
+  archivedAt: string | number
+  createdAt: string | number
+  updatedAt: string | number
 }
 
 export interface IPlatformNumbersData {

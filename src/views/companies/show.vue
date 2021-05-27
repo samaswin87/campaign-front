@@ -35,6 +35,7 @@
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="tags"></svg-icon> Tags</span>
+                                    <tags/>
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="settings"></svg-icon> Settings</span>
@@ -58,6 +59,7 @@ import CompanyDetails from './components/Details.vue'
 import PlatfomNumbers from './components/PlatfomNumbers.vue'
 import Users from './components/Users.vue'
 import Integrations from './components/Integrations.vue'
+import Tags from './components/Tags.vue'
 
 @Component({
   name: 'CompanyShow',
@@ -67,7 +69,8 @@ import Integrations from './components/Integrations.vue'
     CompanyDetails,
     PlatfomNumbers,
     Users,
-    Integrations
+    Integrations,
+    Tags
   }
 })
 export default class extends Vue {

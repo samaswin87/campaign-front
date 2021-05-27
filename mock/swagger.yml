@@ -403,6 +403,58 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Tag'
+  /companies/{id}/tags:
+    get:
+      tags:
+        - tags
+      summary: Get Tag List
+      description: Return a list of tags.
+      operationId: getTagsByCompany
+      parameters:
+        - name: page
+          in: query
+          description: The wanted page number (one page).
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: limit
+          in: query
+          description: The maximum number of tags returned for one page.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+        - name: sort
+          in: query
+          description: Optional sorting order for tags.
+          schema:
+            type: string
+            enum:
+              - +id
+              - -id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Tag'
   /workflows:
     get:
       tags:
