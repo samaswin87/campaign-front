@@ -5,7 +5,9 @@
             <el-tab-pane label="Settings">
               <company-common-settings />
             </el-tab-pane>
-            <el-tab-pane label="Platfrom">Platform</el-tab-pane>
+            <el-tab-pane label="Message">
+              <company-message-settings/>
+            </el-tab-pane>
             <el-tab-pane label="SSO">SSO</el-tab-pane>
             <el-tab-pane label="Notification">Notify</el-tab-pane>
             <el-tab-pane label="Plan">Plan</el-tab-pane>
@@ -19,11 +21,13 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanySettingData, getCompany } from '@/api/companies'
 import CompanyCommonSettings from './CompanyCommonSettings.vue'
+import CompanyMessageSettings from './CompanyMessageSettings.vue'
 
 @Component({
   name: 'CompanySettings',
   components: {
-    CompanyCommonSettings
+    CompanyCommonSettings,
+    CompanyMessageSettings
   }
 })
 export default class extends Vue {
