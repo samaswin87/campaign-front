@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { ICompanyData, IPlanCredits, IPlatformNumbersData } from './types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData } from './types'
 
 export const defaultPlatformData: IPlatformNumbersData = {
   id: 0,
@@ -47,6 +47,39 @@ export const defaultCompanyData: ICompanyData = {
   planCredit: 0,
   usedPercentage: 0,
   platforms: []
+}
+
+export const defaultCompanySettingData: ICompanySettingData = {
+  id: 0,
+  companyId: 1,
+  messagingPlatform: '',
+  messageLength: 0,
+  companyAddress: '',
+  useShortCode: true,
+  useDestinationLink: true,
+  notifyCreditLimit: true,
+  notifyUserAdd: true,
+  notifyCampaignCreation: true,
+  notifyWorkflowCreation: true,
+  notifyMenuCreation: true,
+  maxUser: 0,
+  maxCampaign: 0,
+  maxWorkflow: 0,
+  maxMenu: 0,
+  maxContactsInCampaign: 0,
+  sso: true,
+  importWorkflows: true,
+  planStartDate: '',
+  planEndDate: '',
+  importMenus: true,
+  importUsers: true,
+  importContacts: true,
+  importCampaigns: true,
+  batchProcessDefaultTime: true,
+  companylogo: '',
+  timeZone: '',
+  createdOn: '',
+  updatedOn: ''
 }
 
 export const getCompanies = (params: any) =>

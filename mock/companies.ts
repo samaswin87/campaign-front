@@ -1,12 +1,48 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { ICompanyData, IPlanCredits, IPlatformNumbersData } from '../src/api/types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData } from '../src/api/types'
 
 const companyList: ICompanyData[] = []
+const settings: ICompanySettingData[] = []
 const companyCount = 100
 
 for (let i = 1; i < companyCount; i++) {
   const platforms: IPlatformNumbersData[] = []
+
+  for (let k = 1; k < companyCount; k++) {
+    settings.push({
+      id: k,
+      companyId: k,
+      messagingPlatform: faker.random.arrayElement(['twilio', 'broadcast']),
+      messageLength: 300,
+      companyAddress: faker.address.streetAddress(),
+      useShortCode: true,
+      useDestinationLink: true,
+      notifyCreditLimit: true,
+      notifyUserAdd: true,
+      notifyCampaignCreation: true,
+      notifyWorkflowCreation: true,
+      notifyMenuCreation: true,
+      maxUser: 100,
+      maxCampaign: 100,
+      maxWorkflow: 100,
+      maxMenu: 100,
+      maxContactsInCampaign: 100,
+      sso: true,
+      importWorkflows: true,
+      planStartDate: faker.date.future().getTime(),
+      planEndDate: faker.date.future().getTime(),
+      importMenus: true,
+      importUsers: true,
+      importContacts: true,
+      importCampaigns: true,
+      batchProcessDefaultTime: true,
+      companylogo: faker.image.image(),
+      timeZone: faker.address.timeZone(),
+      createdOn: faker.date.future().getTime(),
+      updatedOn: faker.date.future().getTime()
+    })
+  }
 
   for (let k = 1; k < 25; k++) {
     const phone = faker.random.arrayElement([faker.phone.phoneNumberFormat(2), faker.phone.phoneNumber('#####')])
@@ -138,12 +174,51 @@ export const getPlatforms = (req: Request, res: Response) => {
 
 export const getCompany = (req: Request, res: Response) => {
   const { id } = req.params
+  let companySetting: ICompanySettingData = {
+    id: 0,
+    companyId: 1,
+    messagingPlatform: '',
+    messageLength: 0,
+    companyAddress: '',
+    useShortCode: true,
+    useDestinationLink: true,
+    notifyCreditLimit: true,
+    notifyUserAdd: true,
+    notifyCampaignCreation: true,
+    notifyWorkflowCreation: true,
+    notifyMenuCreation: true,
+    maxUser: 0,
+    maxCampaign: 0,
+    maxWorkflow: 0,
+    maxMenu: 0,
+    maxContactsInCampaign: 0,
+    sso: true,
+    importWorkflows: true,
+    planStartDate: '',
+    planEndDate: '',
+    importMenus: true,
+    importUsers: true,
+    importContacts: true,
+    importCampaigns: true,
+    batchProcessDefaultTime: true,
+    companylogo: '',
+    timeZone: '',
+    createdOn: '',
+    updatedOn: ''
+  }
+  for (const setting of settings) {
+    if (setting.companyId.toString() === id) {
+      companySetting = setting
+    }
+  }
+
   for (const company of companyList) {
     if (company.id.toString() === id) {
       return res.json({
         code: 20000,
         data: {
-          company
+          company,
+          companySetting
         }
       })
     }
