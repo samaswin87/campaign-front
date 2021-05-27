@@ -203,6 +203,43 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Company'
+  /companies/{id}/access_rights:
+    get:
+      tags:
+        - access_rights
+      summary: Get access_rights Detail
+      description: Get access_rights detail by ID.
+      operationId: getCompanyAccessRights
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/Company'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /companies/{id}:
     get:
       tags:

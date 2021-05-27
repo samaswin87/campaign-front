@@ -43,6 +43,7 @@
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="access"></svg-icon> Access Rights</span>
+                                    <company-access-rights/>
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="referal"></svg-icon> Referal Program</span>
@@ -68,6 +69,7 @@ import Users from './components/Users.vue'
 import Integrations from './components/Integrations.vue'
 import Tags from './components/Tags.vue'
 import CompanySettings from './components/CompanySettings.vue'
+import CompanyAccessRights from './components/CompanyAccessRights.vue'
 
 @Component({
   name: 'CompanyShow',
@@ -79,7 +81,8 @@ import CompanySettings from './components/CompanySettings.vue'
     Users,
     Integrations,
     Tags,
-    CompanySettings
+    CompanySettings,
+    CompanyAccessRights
   }
 })
 export default class extends Vue {

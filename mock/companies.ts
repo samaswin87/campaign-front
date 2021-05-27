@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData } from '../src/api/types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData, ICompanyAccessRightData } from '../src/api/types'
 
 const companyList: ICompanyData[] = []
 const settings: ICompanySettingData[] = []
@@ -97,6 +97,32 @@ for (let i = 1; i < companyCount; i++) {
     planCredit: 1000,
     usedPercentage: 40,
     platforms: platforms
+  })
+}
+
+const accessRights: ICompanyAccessRightData[] = []
+for (let i = 0; i < companyCount; i++) {
+  [
+    ['Campaign', 'campaign', 'ml-25-ratio-i', true],
+    ['Menu', 'menu', 'ml-25-ratio-i', true],
+    ['Workflow', 'tree', 'ml-25-ratio-i', true],
+    ['Contact', 'user', 'ml-25-ratio-i', true]
+  ].forEach((element: any, index: number) => {
+    accessRights.push({
+      id: index,
+      companyId: i,
+      moduleSelected: true,
+      moduleName: element[0],
+      logo: element[1],
+      create: true,
+      show: true,
+      list: true,
+      edit: true,
+      menu: element[3],
+      className: element[2],
+      createdOn: faker.date.future().getTime(),
+      updatedOn: faker.date.future().getTime()
+    })
   })
 }
 
@@ -226,5 +252,15 @@ export const getCompany = (req: Request, res: Response) => {
   return res.json({
     code: 70001,
     message: 'Company not found'
+  })
+}
+
+export const getCompanyAccessRights = (req: Request, res: Response) => {
+  const { id } = req.params
+  return res.json({
+    code: 20000,
+    data: {
+      accessRights: accessRights.filter((_) => _.companyId.toString() === id)
+    }
   })
 }

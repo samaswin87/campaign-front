@@ -109,3 +109,10 @@ export const getPlatforms = (id: number, params: any) =>
     method: 'get',
     params
   })
+
+export const getCompanyAccessRights = (id: number, params: any) =>
+  request({
+    url: `/companies/${id}/access_rights`,
+    method: 'get',
+    params
+  })
