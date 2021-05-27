@@ -73,7 +73,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanySettingData, getCompany } from '@/api/companies'
 
 @Component({
-  name: 'CompanyCommonSettings',
+  name: 'CompanyMessageSettings',
   components: {
   }
 })
