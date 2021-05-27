@@ -46,7 +46,8 @@
                                     <company-access-rights/>
                                 </el-tab-pane>
                                 <el-tab-pane>
-                                    <span slot="label"><svg-icon name="referal"></svg-icon> Referal Program</span>
+                                    <span slot="label"><svg-icon name="referral"></svg-icon> Referral Program</span>
+                                    <referral-program/>
                                 </el-tab-pane>
                             </el-tabs>
                         </el-col>
@@ -70,6 +71,7 @@ import Integrations from './components/Integrations.vue'
 import Tags from './components/Tags.vue'
 import CompanySettings from './components/CompanySettings.vue'
 import CompanyAccessRights from './components/CompanyAccessRights.vue'
+import ReferralProgram from './components/ReferralProgram.vue'
 
 @Component({
   name: 'CompanyShow',
@@ -82,7 +84,8 @@ import CompanyAccessRights from './components/CompanyAccessRights.vue'
     Integrations,
     Tags,
     CompanySettings,
-    CompanyAccessRights
+    CompanyAccessRights,
+    ReferralProgram
   }
 })
 export default class extends Vue {

@@ -3,7 +3,7 @@
 // @ts-ignore
 import icon from 'vue-svgicon'
 icon.register({
-  'referal': {
+  'referral': {
     width: 16,
     height: 16,
     viewBox: '0 0 1000 1000',

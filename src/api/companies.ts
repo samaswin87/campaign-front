@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData } from './types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData, ICompanyReferralsData } from './types'
 
 export const defaultPlatformData: IPlatformNumbersData = {
   id: 0,
@@ -82,6 +82,20 @@ export const defaultCompanySettingData: ICompanySettingData = {
   updatedOn: ''
 }
 
+export const defaultCompanyReferralsData: ICompanyReferralsData = {
+  id: 0,
+  companyId: 1,
+  createdOn: '',
+  name: '',
+  phone: '',
+  email: '',
+  description: '',
+  status: '',
+  referralCode: '',
+  contactPerson: '',
+  freeCredits: 0
+}
+
 export const getCompanies = (params: any) =>
   request({
     url: '/companies',
@@ -99,6 +113,13 @@ export const getCompany = (id: number, params: any) =>
 export const getCredits = (id: number, params: any) =>
   request({
     url: `/companies/${id}/credits`,
+    method: 'get',
+    params
+  })
+
+export const getReferrals = (id: number, params: any) =>
+  request({
+    url: `/companies/${id}/referrals`,
     method: 'get',
     params
   })

@@ -321,3 +321,17 @@ export interface ICompanyAccessRightData {
   createdOn: string | number
   updatedOn: string | number
 }
+
+export interface ICompanyReferralsData {
+  id: number
+  companyId: number
+  name: string
+  email: string
+  freeCredits: number
+  phone: string
+  description: string
+  status: string
+  contactPerson: string
+  referralCode: string
+  createdOn: string | number
+}

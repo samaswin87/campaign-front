@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { Response, Request } from 'express'
-import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData, ICompanyAccessRightData } from '../src/api/types'
+import { ICompanyData, IPlanCredits, IPlatformNumbersData, ICompanySettingData, ICompanyAccessRightData, ICompanyReferralsData } from '../src/api/types'
 
 const companyList: ICompanyData[] = []
 const settings: ICompanySettingData[] = []
@@ -126,6 +126,32 @@ for (let i = 0; i < companyCount; i++) {
   })
 }
 
+const referrals: ICompanyReferralsData[] = []
+for (let i = 0; i < companyCount; i++) {
+  let freeCredits = 0
+  const status = faker.random.arrayElement(['referred', 'initiated', 'completed'])
+  if (status === 'initiated') {
+    freeCredits = 100
+  } else if (status === 'completed') {
+    freeCredits = 500
+  }
+  for (let j = 0; j < 25; j++) {
+    referrals.push({
+      id: j,
+      companyId: i,
+      name: faker.company.companyName(),
+      phone: faker.phone.phoneNumberFormat(2),
+      email: faker.internet.email(),
+      description: faker.lorem.sentence(20, 40),
+      referralCode: faker.datatype.uuid(),
+      freeCredits: freeCredits,
+      status: faker.random.arrayElement(['referred', 'initiated', 'completed']),
+      createdOn: faker.date.future().getTime(),
+      contactPerson: faker.name.findName()
+    })
+  }
+}
+
 export const getCompanies = (req: Request, res: Response) => {
   const { page = 1, limit = 20, sort } = req.query
 
@@ -154,6 +180,32 @@ export const getCredits = (req: Request, res: Response) => {
   for (const company of companyList) {
     if (company.id.toString() === id) {
       mockList = company.planCredits
+    }
+  }
+
+  if (sort === '-id') {
+    mockList = mockList.reverse()
+  }
+
+  const pageList = mockList.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
+
+  return res.json({
+    code: 20000,
+    data: {
+      total: mockList.length,
+      items: pageList
+    }
+  })
+}
+
+export const getReferrals = (req: Request, res: Response) => {
+  const { id } = req.params
+  const { page = 1, limit = 20, sort } = req.query
+
+  let mockList: ICompanyReferralsData[] = []
+  for (const referral of referrals) {
+    if (referral.companyId.toString() === id) {
+      mockList.push(referral)
     }
   }
 

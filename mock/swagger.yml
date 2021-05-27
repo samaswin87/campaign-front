@@ -314,6 +314,43 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+  /companies/{id}/referrals:
+    get:
+      tags:
+        - company Referrals
+      summary: Get Company Referrals
+      description: Get company detail by ID.
+      operationId: getReferrals
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Company id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      company:
+                        $ref: '#/components/schemas/Company'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /companies/{id}/platforms:
     get:
       tags:
