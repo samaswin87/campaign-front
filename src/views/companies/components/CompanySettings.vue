@@ -11,7 +11,9 @@
             <el-tab-pane label="SSO">
               <company-sso-settings/>
             </el-tab-pane>
-            <el-tab-pane label="Notification">Notify</el-tab-pane>
+            <el-tab-pane label="Notification">
+              <company-notify-settings/>
+            </el-tab-pane>
             <el-tab-pane label="Plan">Plan</el-tab-pane>
             <el-tab-pane label="TimeZone">TimeZone</el-tab-pane>
           </el-tabs>
@@ -24,14 +26,16 @@ import { Component, Vue } from 'vue-property-decorator'
 import { defaultCompanySettingData, getCompany } from '@/api/companies'
 import CompanyCommonSettings from './CompanyCommonSettings.vue'
 import CompanyMessageSettings from './CompanyMessageSettings.vue'
-import CompanySsoSettings from './CompanySSOSettings.vue'
+import CompanySsoSettings from './CompanySsoSettings.vue'
+import CompanyNotifySettings from './CompanyNotifySettings.vue'
 
 @Component({
   name: 'CompanySettings',
   components: {
     CompanyCommonSettings,
     CompanyMessageSettings,
-    CompanySsoSettings
+    CompanySsoSettings,
+    CompanyNotifySettings
   }
 })
 export default class extends Vue {
