@@ -39,6 +39,13 @@
                                 </el-tab-pane>
                                 <el-tab-pane>
                                     <span slot="label"><svg-icon name="settings"></svg-icon> Settings</span>
+                                    <company-settings/>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="access"></svg-icon> Access Rights</span>
+                                </el-tab-pane>
+                                <el-tab-pane>
+                                    <span slot="label"><svg-icon name="referal"></svg-icon> Referal Program</span>
                                 </el-tab-pane>
                             </el-tabs>
                         </el-col>
@@ -60,6 +67,7 @@ import PlatfomNumbers from './components/PlatfomNumbers.vue'
 import Users from './components/Users.vue'
 import Integrations from './components/Integrations.vue'
 import Tags from './components/Tags.vue'
+import CompanySettings from './components/CompanySettings.vue'
 
 @Component({
   name: 'CompanyShow',
@@ -70,7 +78,8 @@ import Tags from './components/Tags.vue'
     PlatfomNumbers,
     Users,
     Integrations,
-    Tags
+    Tags,
+    CompanySettings
   }
 })
 export default class extends Vue {

@@ -71,7 +71,7 @@
 
                         <el-row class="content-row">
                             <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.tags')}}: </label></div>
+                                <div class="grid-content"><label class="label-space">{{$t('table.tags')}}: </label></div>
                             </el-col>
                             <el-col :span="10" class="content-vlaue">
                                 <div class="grid-content">

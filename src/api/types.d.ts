@@ -272,3 +272,52 @@ export interface IUserAccessRightData {
   createdOn: string | number
   updatedOn: string | number
 }
+
+export interface ICompanySettingData {
+  id: number
+  companyId: number
+  messagingPlatform: string
+  messageLength: number
+  companyAddress: string
+  useShortCode: boolean
+  useDestinationLink: boolean
+  notifyCreditLimit: boolean
+  notifyUserAdd: boolean
+  notifyCampaignCreation: boolean
+  notifyWorkflowCreation: boolean
+  notifyMenuCreation: boolean
+  maxUser: number
+  maxCampaign: number
+  maxWorkflow: number
+  maxMenu: number
+  maxContactsInCampaign: number
+  sso: boolean
+  importWorkflows: boolean
+  planStartDate: string | number
+  planEndDate: string | number
+  importMenus: boolean
+  importUsers: boolean
+  importContacts: boolean
+  importCampaigns: boolean
+  batchProcessDefaultTime: boolean
+  companylogo: string
+  timeZone: string
+  createdOn: string | number
+  updatedOn: string | number
+}
+
+export interface ICompanyAccessRightData {
+  id: number
+  companyId: number
+  moduleName: string
+  moduleSelected: boolean
+  logo: string
+  create: boolean
+  show: boolean
+  list: boolean
+  edit: boolean
+  menu: boolean
+  className: string
+  createdOn: string | number
+  updatedOn: string | number
+}

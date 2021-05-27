@@ -17,7 +17,7 @@
             >
             </el-button>
           </el-tooltip>
-          <el-tooltip class="item" effect="dark" :content="$t('table.contact.tags')" placement="bottom">
+          <el-tooltip class="item" effect="dark" :content="$t('table.tags')" placement="bottom">
             <el-button
               style="margin-left: 10px;"
               type="primary"
