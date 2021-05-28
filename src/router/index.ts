@@ -476,6 +476,7 @@ export const asyncRoutes: RouteConfig[] = [
     component: Layout,
     redirect: '/users/index',
     meta: {
+      hidden: true,
       roles: ['admin', 'editor']
     },
     children: [
