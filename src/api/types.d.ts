@@ -357,7 +357,6 @@ export interface ISurveyQuestData {
   choice3: string
   choice4: string
   choice5: string
-  results: ISurveyResultsData[]
   createdOn: string | number
 }
 export interface ICompanySurveyData {
@@ -366,7 +365,6 @@ export interface ICompanySurveyData {
   status: string
   name: string
   description: string
-  quests: ICompanySurveyData[]
   createdOn: string | number
   updatedOn: string | number
 }

@@ -15,7 +15,7 @@
     </div>
 
     <el-table
-      ref="menuTable"
+      ref="surveyTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -38,15 +38,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.name')"
-        min-width="150px"
-      >
-        <template slot-scope="{row}">
-          <span
-          >{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
         :label="$t('table.company')"
         min-width="150px"
       >
@@ -56,12 +47,12 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.phone')"
+        :label="$t('table.name')"
         min-width="150px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.phone }}</span>
+          >{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -90,14 +81,14 @@
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
-          <router-link :to="{name: 'MenuView', params: {id: row.id}}">
+          <router-link :to="{name: 'SurveyView', params: {id: row.id}}">
             <el-button
               icon="el-icon-view"
               circle
             >
             </el-button>
           </router-link>
-          <router-link :to="{name: 'MenuEdit', params: {id: row.id}}">
+          <router-link :to="{name: 'SurveyEdit', params: {id: row.id}}">
             <el-button
               icon="el-icon-edit-outline"
               circle
@@ -123,36 +114,35 @@
       @pagination="getList"
     />
 
-    <MenuTableFilters
+    <SurveyTableFilters
       :visible.sync="filterLoading"
-      @menuFiltered="menuFiltered"
+      @surveyFiltered="surveyFiltered"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator'
-import { getMenus, defaultMenuData } from '@/api/menus'
-import MenuTableFilters from './components/MenuTableFilters.vue'
-import { IMenuData } from '@/api/types'
+import { Component, Vue } from 'vue-property-decorator'
+import { getSurveys, defaultSurveyData } from '@/api/surveys'
+import SurveyTableFilters from './components/SurveyTableFilters.vue'
+import { ICompanySurveyData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 
 @Component({
-  name: 'MenuTable',
+  name: 'SurveyTable',
   components: {
     Pagination,
-    MenuTableFilters,
+    SurveyTableFilters,
     TableDefaultActions,
     TableSearchWithFilters
   }
 })
 
 export default class extends Vue {
-  @Ref('menuTable') readonly menuTable!: any;
   private tableKey = 0
-  private list: IMenuData[] = []
+  private list: ICompanySurveyData[] = []
   private total = 0
   private listLoading = true
   private filterLoading = false
@@ -163,46 +153,37 @@ export default class extends Vue {
     sort: '+id'
   }
 
-  private createRoute = 'MenuCreate'
-  private importRoute = 'UploadMenus'
-  private statusOptions = ['active', 'inactive']
+  private createRoute = 'SurveyCreate'
+  private importRoute = 'UploadSurveys'
+  private statusOptions = ['published', 'unpublished']
   private showReviewer = false
   private dialogFormVisible = false
   private dialogStatus = ''
-  private menuRow = defaultMenuData
+  private surveyRow = defaultSurveyData
   private textMap = {
     update: 'Edit',
     create: 'Create'
   }
 
-  private dialogPageviewsVisible = false
-  private pageviewsData = []
-
-  private downloadLoading = false
-  private tempMenuData = defaultMenuData
-
   created() {
     this.getList()
   }
 
-  private menuFiltered(data: any) {
+  private surveyFiltered(data: any) {
     console.log(data)
   }
 
-  private dialogVisiblity() {
-    return this.filterLoading
-  }
-
-  private viewMenu(row: any) {
-    this.menuRow = Object.assign({}, row)
+  private viewSurvey(row: any) {
+    this.surveyRow = Object.assign({}, row)
     this.dialogLoading = true
   }
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getMenus(this.listQuery)
+    const { data } = await getSurveys(this.listQuery)
     this.list = data.items
     this.total = data.total
+    this.listLoading = false
     // Just to simulate the time of the request
     setTimeout(() => {
       this.listLoading = false
@@ -265,14 +246,3 @@ export default class extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.float-right {
-  float: right;
-}
-
-.tags {
-  margin-left: 3px;
-  margin-bottom: 3px;
-}
-</style>

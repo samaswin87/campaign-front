@@ -24,7 +24,6 @@ export const defaultSurveyQuestData: ISurveyQuestData = {
   choice3: '',
   choice4: '',
   choice5: '',
-  results: [],
   createdOn: ''
 }
 
@@ -34,7 +33,6 @@ export const defaultSurveyData: ICompanySurveyData = {
   status: '',
   name: '',
   description: '',
-  quests: [],
   createdOn: '',
   updatedOn: ''
 }
@@ -53,9 +51,16 @@ export const getSurvey = (id: number, params: any) =>
     params
   })
 
-export const getSurveyConversations = (id: number, params: any) =>
+export const getSurveyQuests = (id: number, params: any) =>
   request({
-    url: `/surveys/${id}/conversations`,
+    url: `/surveys/${id}/quests`,
+    method: 'get',
+    params
+  })
+
+export const getSurveyResults = (id: number, params: any) =>
+  request({
+    url: `/surveys/quests/${id}/results`,
     method: 'get',
     params
   })

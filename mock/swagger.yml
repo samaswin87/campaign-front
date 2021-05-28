@@ -801,6 +801,179 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+  /surveys:
+    get:
+      tags:
+        - surveys
+      summary: Get Survey List
+      description: Return a list of surveys.
+      operationId: getSurveys
+      parameters:
+        - name: name
+          in: query
+          description: Used to filter surveys by matched title substring.
+          schema:
+            $ref: '#/components/schemas/Survey/properties/name'
+        - name: company
+          in: query
+          description: Used to filter surveys by company.
+          schema:
+            $ref: '#/components/schemas/Survey/properties/company'
+        - name: page
+          in: query
+          description: The wanted page number (one page).
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+        - name: limit
+          in: query
+          description: The maximum number of surveys returned for one page.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+        - name: sort
+          in: query
+          description: Optional sorting order for surveys.
+          schema:
+            type: string
+            enum:
+              - +id
+              - -id
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Survey'
+  /surveys/{id}:
+    get:
+      tags:
+        - surveys
+      summary: Get Survey Detail
+      description: Get survey detail by ID.
+      operationId: getSurvey
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Survey id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/Survey'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  /surveys/{id}/quests:
+    get:
+      tags:
+        - quests
+      summary: Get quests Detail
+      description: Get quests detail by ID.
+      operationId: getSurveyQuests
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: quests id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/Survey'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+  /surveys/quests/{id}/results:
+    get:
+      tags:
+        - results
+      summary: Get results Detail
+      description: Get results detail by ID.
+      operationId: getSurveyResults
+      security:
+        - AccessTokenAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: results id.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/Survey'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
   /conversations:
     get:
       tags:
@@ -1989,6 +2162,31 @@ components:
        - company
        - date
     Workflow:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+            - deleted
+        name:
+          type: string
+          example: IG Won World Championship
+        company:
+          type: string
+          example: Company name
+        date:
+          $ref: '#/components/schemas/Timestamp'
+      required:
+       - id
+       - status
+       - name
+       - company
+    Survey:
       type: object
       properties:
         id:
