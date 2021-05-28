@@ -335,3 +335,38 @@ export interface ICompanyReferralsData {
   referralCode: string
   createdOn: string | number
 }
+export interface ISurveyResultsData {
+  id: number
+  surveyQuestId: number
+  choice1: string
+  choice2: string
+  choice3: string
+  choice4: string
+  choice5: string
+  description: string
+  contact: string
+  createdOn: string | number
+}
+export interface ISurveyQuestData {
+  id: number
+  surveyId: number
+  order: number
+  description: string
+  choice1: string
+  choice2: string
+  choice3: string
+  choice4: string
+  choice5: string
+  results: ISurveyResultsData[]
+  createdOn: string | number
+}
+export interface ICompanySurveyData {
+  id: number
+  company: string
+  status: string
+  name: string
+  description: string
+  quests: ICompanySurveyData[]
+  createdOn: string | number
+  updatedOn: string | number
+}
