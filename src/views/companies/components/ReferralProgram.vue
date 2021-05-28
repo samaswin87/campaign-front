@@ -1,5 +1,5 @@
 <template>
-    <el-card class="box-card w-ratio-70">
+    <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span>Referrals</span>
         </div>
@@ -92,13 +92,100 @@
                 </el-row>
             </el-form>
 
-            <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                    <span>Referral History</span>
-                </div>
-                <div class="history">
-                </div>
-            </el-card>
+            <el-divider>History</el-divider>
+            <el-table
+            ref="referralTable"
+            :key="tableKey"
+            v-loading="listLoading"
+            :data.sync="list"
+            border
+            fit
+            highlight-current-row
+            style="width: 100%;"
+            @sort-change="sortChange"
+            >
+                <el-table-column
+                :label="$t('table.id')"
+                prop="id"
+                sortable="custom"
+                align="center"
+                width="80"
+                :class-name="getSortClass('id')"
+                >
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.name')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.name }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.email')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.email }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                label="Contact Person"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.contactPerson }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.phone')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <el-tag effect="dark" :type="row.phone | shortcodeFilter">
+                    {{ row.phone }}
+                    </el-tag>
+                </template>
+                </el-table-column>
+                <el-table-column
+                label="Credits"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.freeCredits }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.createdOn')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <span
+                    >{{ row.createdOn | parseDate}}</span>
+                </template>
+                </el-table-column>
+                <el-table-column
+                :label="$t('table.status')"
+                min-width="150px"
+                >
+                <template slot-scope="{row}">
+                    <el-tag effect="dark" :type="row.status | statusFilter">
+                        {{ row.status | uppercaseFirstChar}}
+                    </el-tag>
+                </template>
+                </el-table-column>
+            </el-table>
+            <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="listQuery.page"
+            :limit.sync="listQuery.limit"
+            @pagination="fetchData"
+            />
         </div>
     </el-card>
 </template>
@@ -107,10 +194,12 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { getReferrals, defaultCompanyReferralsData } from '@/api/companies'
 import { ICompanyReferralsData } from '@/api/types'
+import Pagination from '@/components/Pagination/index.vue'
 
 @Component({
   name: 'ReferralProgram',
   components: {
+    Pagination
   }
 })
 export default class extends Vue {
@@ -118,6 +207,7 @@ export default class extends Vue {
     private tableKey = 0
     private list: ICompanyReferralsData[] = []
     private total = 0
+    private companyId = 0
     private listLoading = true
     private listQuery = {
       page: 1,
@@ -127,13 +217,14 @@ export default class extends Vue {
 
     created() {
       const id = this.$route.params && this.$route.params.id
-      this.fetchData(parseInt(id))
+      this.companyId = parseInt(id)
+      this.fetchData()
     }
 
-    private async fetchData(id: number) {
+    private async fetchData() {
       try {
         this.listLoading = true
-        const { data } = await getReferrals(id, this.listQuery)
+        const { data } = await getReferrals(this.companyId, this.listQuery)
         this.list = data.items
         this.total = data.total
         // Just to simulate the time of the request

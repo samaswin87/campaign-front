@@ -128,10 +128,10 @@ for (let i = 0; i < companyCount; i++) {
 
 const referrals: ICompanyReferralsData[] = []
 for (let i = 0; i < companyCount; i++) {
-  let freeCredits = 0
+  let freeCredits = 100
   const status = faker.random.arrayElement(['referred', 'initiated', 'completed'])
   if (status === 'initiated') {
-    freeCredits = 100
+    freeCredits = 200
   } else if (status === 'completed') {
     freeCredits = 500
   }
@@ -145,7 +145,7 @@ for (let i = 0; i < companyCount; i++) {
       description: faker.lorem.sentence(20, 40),
       referralCode: faker.datatype.uuid(),
       freeCredits: freeCredits,
-      status: faker.random.arrayElement(['referred', 'initiated', 'completed']),
+      status: status,
       createdOn: faker.date.future().getTime(),
       contactPerson: faker.name.findName()
     })
