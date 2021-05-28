@@ -1,11 +1,11 @@
 <template>
     <el-dialog
-      title="Menu Filter"
+      title="Survey Filter"
       :visible.sync="visible"
       :before-close="handleClose"
     >
       <el-form
-        ref="menuFilterForm"
+        ref="surveyFilterForm"
         :model="filterRecord"
         label-position="left"
         label-width="30%"
@@ -17,14 +17,14 @@
               <el-radio label="In Active" name="status"></el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item label="Keywords">
-            <el-radio-group v-model="filterRecord.menuOption">
+        <el-form-item label="Name">
+            <el-radio-group v-model="filterRecord.surveyOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
               <el-radio label="In Not Empty"></el-radio>
               <el-radio label="Is Empty"></el-radio>
             </el-radio-group>
-            <el-input type="textarea" v-model="filterRecord.keywords"></el-input>
+            <el-input type="text" v-model="filterRecord.name"></el-input>
         </el-form-item>
         <el-form-item label="Posted">
             <el-radio-group v-model="filterRecord.posted">
@@ -32,13 +32,6 @@
               <el-radio label="Twitter"></el-radio>
               <el-radio label="Facebook"></el-radio>
             </el-radio-group>
-        </el-form-item>
-        <el-form-item label="Phone Number">
-            <el-radio-group v-model="filterRecord.phoneOption">
-              <el-radio label="In Equal"></el-radio>
-              <el-radio label="Is Not Equal"></el-radio>
-            </el-radio-group>
-            <el-input type="text" v-model="filterRecord.phoneNumber"></el-input>
         </el-form-item>
       </el-form>
       <div
@@ -50,7 +43,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="filterMenu"
+          @click="filterSurvey"
         >
           {{ $t('table.apply') }}
         </el-button>
@@ -64,7 +57,7 @@ import { Form } from 'element-ui'
 import Multiselect from 'vue-multiselect'
 
 @Component({
-  name: 'MenuTableFilter',
+  name: 'SurveyTableFilter',
   components: { Multiselect }
 })
 export default class extends Vue {
@@ -74,21 +67,16 @@ export default class extends Vue {
 
     private filterRecord = {
       status: 'Active',
-      keywords: '',
-      menus: '',
+      name: '',
       schduledOn: '',
-      tags: null,
-      phoneNumber: null,
-      tagOption: 'In Equal',
       posted: 'Twitter',
-      menuOption: 'In Equal',
-      phoneOption: 'In Equal'
+      surveyOption: 'In Equal'
     }
 
-    private filterMenu() {
-      (this.$refs.menuFilterForm as Form).validate(async(valid) => {
+    private filterSurvey() {
+      (this.$refs.surveyFilterForm as Form).validate(async(valid) => {
         if (valid) {
-          this.$emit('menuFiltered', this.filterRecord)
+          this.$emit('surveyFiltered', this.filterRecord)
         }
       })
       this.$emit('update:visible', false)

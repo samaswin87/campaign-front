@@ -3,13 +3,13 @@
     <div class="filter-container">
       <el-row>
         <el-col :span="16">
-          <TableDefaultActions
+          <table-default-actions
             :createRoute="createRoute"
             :importRoute="importRoute"
           />
         </el-col>
         <el-col :span="8" class="float-right">
-          <TableSearchWithFilters @handleFilter="handleFilter" />
+          <table-search-with-filters @handleFilter="handleFilter" />
         </el-col>
       </el-row>
     </div>
@@ -114,7 +114,7 @@
       @pagination="getList"
     />
 
-    <SurveyTableFilters
+    <survey-table-filters
       :visible.sync="filterLoading"
       @surveyFiltered="surveyFiltered"
     />
