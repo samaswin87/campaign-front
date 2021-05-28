@@ -82,6 +82,8 @@ export default {
     companies: 'Companies',
     integrations: 'Integrations',
     users: 'Users',
+    surveys: 'Surveys',
+    survey: 'Survey',
     tags: 'Tags',
     trackingLinks: 'Tracking Links',
     platformNumbers: 'Platform Numbers',

@@ -384,6 +384,66 @@ export const constantRoutes: RouteConfig[] = [
     ]
   },
   {
+    path: '/surveys',
+    component: Layout,
+    redirect: '/surveys/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/surveys/index.vue'),
+        name: 'Surveys',
+        meta: {
+          title: 'surveys',
+          icon: 'survey'
+        }
+      },
+      {
+        path: '/surveys/:id/show',
+        component: () => import('@/views/surveys/show.vue'),
+        name: 'SurveyView',
+        meta: {
+          noCache: true,
+          title: 'survey',
+          icon: 'survey',
+          hidden: true
+        }
+      },
+      {
+        path: '/surveys/:id/edit',
+        component: () => import('@/views/surveys/edit.vue'),
+        name: 'SurveyEdit',
+        meta: {
+          noCache: true,
+          title: 'survey',
+          icon: 'survey',
+          hidden: true
+        }
+      },
+      {
+        path: '/surveys/new',
+        component: () => import('@/views/surveys/new.vue'),
+        name: 'SurveyCreate',
+        meta: {
+          noCache: true,
+          title: 'survey',
+          icon: 'survey',
+          hidden: true
+        }
+      },
+      {
+        path: 'import-surveys',
+        component: () => import('@/views/surveys/import-surveys.vue'),
+        name: 'UploadSurveys',
+        meta: {
+          noCache: true,
+          title: 'survey',
+          icon: 'survey',
+          hidden: true
+        }
+      }
+    ]
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
