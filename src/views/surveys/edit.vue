@@ -175,13 +175,17 @@ export default class extends Vue {
       this.fetchQuestData(parseInt(id))
     }
 
-    private showSave(row) {
+    private showSave(row: any) {
       row.display = (row.display && row.display === 'block') ? 'none' : 'block'
     }
 
-    private updateItemOrder(event, row) {
+    private updateItemOrder(event: any, row: any) {
       this.selectedRow = []
       this.selectedRow.push(row.id)
+      const oldIndex = row['choice' + (event.oldIndex + 1)]
+      const newIndex = row['choice' + (event.newIndex + 1)]
+      row['choice' + (event.oldIndex + 1)] = newIndex
+      row['choice' + (event.newIndex + 1)] = oldIndex
     }
 
     private async fetchCompanies() {
