@@ -11,7 +11,7 @@
                             <el-row>
                                 <el-card class="box-card survey-details">
                                     <div slot="header" class="clearfix">
-                                        <span>Details</span>
+                                        <el-button type="success"><svg-icon name="published" /></el-button>
                                         <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
                                     </div>
                                     <el-form
