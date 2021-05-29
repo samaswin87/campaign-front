@@ -9,17 +9,18 @@ const surveyCount = 100
 
 for (let i = 0; i < surveyCount; i++) {
   for (let k = 0; k < 100; k++) {
+    const contact = faker.phone.phoneNumberFormat(2)
     for (let j = 0; j < 20; j++) {
       const conversation: ISurveyResultsData = {
         id: k,
-        surveyQuestId: j,
-        choice1: faker.lorem.sentence(5, 10),
-        choice2: faker.lorem.sentence(5, 10),
-        choice3: faker.lorem.sentence(5, 10),
-        choice4: faker.lorem.sentence(5, 10),
-        choice5: faker.lorem.sentence(5, 10),
-        description: faker.lorem.sentence(20, 30),
-        contact: faker.phone.phoneNumberFormat(2),
+        surveyId: i,
+        surveyQuest: faker.lorem.sentence(10, 20),
+        choice1: faker.random.arrayElement([faker.lorem.sentence(10, 20), '']),
+        choice2: faker.random.arrayElement([faker.lorem.sentence(10, 20), '']),
+        choice3: faker.random.arrayElement([faker.lorem.sentence(10, 20), '']),
+        choice4: faker.random.arrayElement([faker.lorem.sentence(10, 20), '']),
+        choice5: faker.random.arrayElement([faker.lorem.sentence(10, 20), '']),
+        contact: contact,
         createdOn: faker.date.past().getTime()
       }
       conversations.push(conversation)
@@ -105,7 +106,7 @@ export const getSurveyQuests = (req: Request, res: Response) => {
 export const getSurveyResults = (req: Request, res: Response) => {
   const { id } = req.params
   const { page = 1, limit = 20, sort } = req.query
-  let mockresults = conversations.filter((_) => _.surveyQuestId.toString() === id)
+  let mockresults = conversations.filter((_) => _.surveyId.toString() === id)
   if (sort === '-id') {
     mockresults = mockresults.reverse()
   }
@@ -116,7 +117,7 @@ export const getSurveyResults = (req: Request, res: Response) => {
     code: 20000,
     data: {
       total: mockresults.length,
-      items: pageList
+      items: pageList.sort((result, _) => (result.contact < _.contact ? -1 : 1))
     }
   })
 }

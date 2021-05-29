@@ -9,7 +9,7 @@
                     <el-row>
                         <el-col :span="24" class="mb-20-px">
                             <el-button :disabled="surveySelected" @click.native="selectSurvey"><svg-icon name="nested" /> Survey</el-button>
-                            <el-button :disabled="conversationsSelected" @click.native="selectConversation"><svg-icon name="message" /> Conversations</el-button>
+                            <el-button :disabled="resultsSelected" @click.native="selectConversation"><svg-icon name="message" /> Conversations</el-button>
                         </el-col>
                     </el-row>
                     <el-row>
@@ -93,7 +93,8 @@
                                 </el-table>
                             </el-card>
                         </el-col>
-                        <el-col :span="16" v-show="conversationsSelected">
+                        <el-col :span="16" v-show="resultsSelected">
+                            <survey-results />
                         </el-col>
                     </el-row>
                 </el-card>
@@ -106,10 +107,12 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultSurveyData, getSurvey, getSurveyQuests } from '@/api/surveys'
 import { ISurveyQuestData } from '@/api/types'
+import SurveyResults from './components/SurveyResults.vue'
 
 @Component({
-  name: 'SurveyCreate',
+  name: 'SurveyView',
   components: {
+    SurveyResults
   }
 })
 export default class extends Vue {
@@ -118,7 +121,7 @@ export default class extends Vue {
     private tableKey = 0
     private listLoading = true
 
-    private conversationsSelected = false
+    private resultsSelected = false
     private surveySelected = true
 
     created() {
@@ -129,12 +132,12 @@ export default class extends Vue {
 
     private selectSurvey() {
       this.surveySelected = true
-      this.conversationsSelected = false
+      this.resultsSelected = false
     }
 
     private selectConversation() {
       this.surveySelected = false
-      this.conversationsSelected = true
+      this.resultsSelected = true
     }
 
     private async fetchData(id: number) {

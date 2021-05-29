@@ -3,13 +3,13 @@ import { ICompanySurveyData, ISurveyQuestData, ISurveyResultsData } from './type
 
 export const defaultSurveyResultsData: ISurveyResultsData = {
   id: 0,
-  surveyQuestId: 0,
+  surveyId: 0,
+  surveyQuest: '',
   choice1: '',
   choice2: '',
   choice3: '',
   choice4: '',
   choice5: '',
-  description: '',
   contact: '',
   createdOn: ''
 }
@@ -60,7 +60,7 @@ export const getSurveyQuests = (id: number, params: any) =>
 
 export const getSurveyResults = (id: number, params: any) =>
   request({
-    url: `/surveys/quests/${id}/results`,
+    url: `/surveys/${id}/quests/results`,
     method: 'get',
     params
   })

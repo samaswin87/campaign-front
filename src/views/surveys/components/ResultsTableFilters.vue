@@ -1,24 +1,33 @@
 <template>
     <el-dialog
-      title="Conversation Filter"
+      title="Results Filter"
       :visible.sync="visible"
       :before-close="handleClose"
     >
       <el-form
-        ref="conversationFilterForm"
+        ref="resultFilterForm"
         :model="filterRecord"
         label-position="left"
         label-width="30%"
         style="width: 80%; margin-left:10%;"
       >
-        <el-form-item label="Phone Number">
-            <el-radio-group v-model="filterRecord.phoneOption">
+        <el-form-item label="Contact">
+            <el-radio-group v-model="filterRecord.contactOption">
               <el-radio label="In Equal"></el-radio>
               <el-radio label="Is Not Equal"></el-radio>
               <el-radio label="Strat With"></el-radio>
               <el-radio label="End With"></el-radio>
             </el-radio-group>
-            <el-input type="textarea" v-model="filterRecord.phoneNumber"></el-input>
+            <el-input type="text" v-model="filterRecord.contact"></el-input>
+        </el-form-item>
+        <el-form-item label="Description">
+            <el-radio-group v-model="filterRecord.descriptionOption">
+              <el-radio label="In Equal"></el-radio>
+              <el-radio label="Is Not Equal"></el-radio>
+              <el-radio label="Strat With"></el-radio>
+              <el-radio label="End With"></el-radio>
+            </el-radio-group>
+            <el-input type="text" v-model="filterRecord.description"></el-input>
         </el-form-item>
       </el-form>
       <div
@@ -30,7 +39,7 @@
         </el-button>
         <el-button
           type="primary"
-          @click="filterConversation"
+          @click="filterResults"
         >
           {{ $t('table.apply') }}
         </el-button>
@@ -44,22 +53,21 @@ import { Form } from 'element-ui'
 import Multiselect from 'vue-multiselect'
 
 @Component({
-  name: 'ConversationTableFilter',
+  name: 'ResultsTableFilter',
   components: { Multiselect }
 })
 export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
 
-    private tags = ['vue', 'element', 'cooking', 'mint-ui', 'vuex', 'vue-router', 'babel']
-
     private filterRecord = {
-      phoneNumber: null
+      contact: null,
+      description: null
     }
 
-    private filterConversation() {
-      (this.$refs.conversationFilterForm as Form).validate(async(valid) => {
+    private filterResults() {
+      (this.$refs.resultFilterForm as Form).validate(async(valid) => {
         if (valid) {
-          this.$emit('conversationFiltered', this.filterRecord)
+          this.$emit('resultFiltered', this.filterRecord)
         }
       })
       this.$emit('update:visible', false)

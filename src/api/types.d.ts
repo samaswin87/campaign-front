@@ -337,13 +337,13 @@ export interface ICompanyReferralsData {
 }
 export interface ISurveyResultsData {
   id: number
-  surveyQuestId: number
+  surveyId: number
+  surveyQuest: string
   choice1: string
   choice2: string
   choice3: string
   choice4: string
   choice5: string
-  description: string
   contact: string
   createdOn: string | number
 }
