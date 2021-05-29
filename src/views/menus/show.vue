@@ -7,7 +7,7 @@
                         <span>Show Menu</span>
                     </div>
                     <el-row>
-                        <el-col :span="24" class="margin-bottom-20">
+                        <el-col :span="24" class="mb-20-px">
                             <el-button :disabled="menuSelected" @click.native="selectMenu"><svg-icon name="nested" /> Menu</el-button>
                             <el-button :disabled="conversationsSelected" @click.native="selectConversation"><svg-icon name="message" /> Conversations</el-button>
                         </el-col>
@@ -21,7 +21,7 @@
                                     :model="menuData"
                                     class="form-container"
                                     >
-                                        <el-row class="content-row">
+                                        <el-row class="mb-5-ratio">
                                             <el-col :span="2">
                                                 <svg-icon name="company"/>
                                             </el-col>
@@ -32,7 +32,7 @@
                                             </el-col>
                                         </el-row>
 
-                                        <el-row class="content-row">
+                                        <el-row class="mb-5-ratio">
                                             <el-col :span="2">
                                                 <svg-icon name="keyword"/>
                                             </el-col>
@@ -47,7 +47,7 @@
                                             </el-col>
                                         </el-row>
 
-                                        <el-row class="content-row">
+                                        <el-row class="mb-5-ratio">
                                             <el-col :span="2">
                                                 <svg-icon name="phone"/>
                                             </el-col>
@@ -60,7 +60,7 @@
                                             </el-col>
                                         </el-row>
 
-                                        <el-row class="content-row">
+                                        <el-row class="mb-5-ratio">
                                             <el-col :span="2">
                                                 <svg-icon :name="menuData.confidential ? 'eye-cross' : 'eye-on'"/>
                                             </el-col>
@@ -73,7 +73,7 @@
                                             </el-col>
                                         </el-row>
 
-                                        <el-row class="content-row">
+                                        <el-row class="mb-5-ratio">
                                             <el-col :span="2">
                                                 <svg-icon :name="menuData.status"/>
                                             </el-col>
@@ -93,7 +93,7 @@
                             <el-card class="box-card menu-promt content-card">
                                 <div slot="header" class="clearfix">
                                     <i class="el-icon-s-order" />
-                                    <span class="content-space">PROMTS</span>
+                                    <span class="ml-10-px">PROMTS</span>
                                 </div>
                                 <draggable
                                     :list="promtList"
@@ -190,32 +190,3 @@ export default class extends Vue {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.content-card {
-    margin-bottom: 2%;
-}
-
-.content-row {
-    margin-bottom: 5%;
-}
-
-.content-space {
-    margin-left: 10px;
-}
-
-.content-button {
-    margin-left: 28px;
-}
-
-.content-vlaue {
-    padding-left: 50px;
-}
-
-.svg-icon-botton {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 8px;
-}
-</style>
