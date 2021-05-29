@@ -165,15 +165,7 @@ export default class extends Vue {
     private addFormLoading = false
     private selectedRow :number[] = []
     private tableKey = 0
-    private total = 0
     private listLoading = true
-    private listQuery = {
-      page: 1,
-      limit: 20,
-      title: undefined,
-      type: undefined,
-      sort: '+id'
-    }
 
     created() {
       const id = this.$route.params && this.$route.params.id

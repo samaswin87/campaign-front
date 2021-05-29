@@ -1,122 +1,99 @@
 <template>
     <div class="app-container">
-        <div class="menu-container">
+        <div class="survey-container">
             <el-row>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>Show Menu</span>
+                        <span>Show Survey</span>
                     </div>
                     <el-row>
-                        <el-col :span="24" class="margin-bottom-20">
-                            <el-button :disabled="menuSelected" @click.native="selectMenu"><svg-icon name="nested" /> Menu</el-button>
+                        <el-col :span="24" class="mb-20-px">
+                            <el-button :disabled="surveySelected" @click.native="selectSurvey"><svg-icon name="nested" /> Survey</el-button>
                             <el-button :disabled="conversationsSelected" @click.native="selectConversation"><svg-icon name="message" /> Conversations</el-button>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="8">
                             <el-row>
-                                <el-card class="box-card menu-details">
-                                    <el-form
-                                    ref="menuForm"
-                                    :model="menuData"
-                                    class="form-container"
-                                    >
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="company"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    {{menuData.company}}
-                                                </div>
-                                            </el-col>
-                                        </el-row>
+                                <el-card class="box-card survey-details">
+                                    <el-row class="mb-10-px">
+                                        <el-col :span="6">
+                                            <label class="float-right">Company: </label>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <div class="ml-10-px">
+                                                {{surveyData.company}}
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="keyword"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <span>
-                                                        <el-tag effect="plain">
-                                                            {{menuData.name}}
-                                                        </el-tag>
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
+                                    <el-row class="mb-10-px">
+                                        <el-col :span="6">
+                                            <label class="float-right">Name: </label>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <div class="ml-10-px">
+                                                <span>
+                                                    {{surveyData.name}}
+                                                </span>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="phone"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <span>
-                                                        {{menuData.phone}}
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon :name="menuData.confidential ? 'eye-cross' : 'eye-on'"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <span>
-                                                        {{menuData.confidential ? 'Confidential' : 'Non Confidential'}}
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon :name="menuData.status"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <span>
-                                                        {{menuData.status | uppercaseFirstChar}}
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-                                    </el-form>
+                                        <el-row class="mb-10-px">
+                                        <el-col :span="6">
+                                            <label class="float-right">Description: </label>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <div class="ml-10-px">
+                                                <span>
+                                                    {{surveyData.description}}
+                                                </span>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </el-card>
                             </el-row>
                         </el-col>
-                        <el-col :span="16" v-show="menuSelected">
-                            <el-card class="box-card menu-promt content-card">
+                        <el-col :span="16" v-show="surveySelected">
+                            <el-card class="box-card survey-promt content-card">
                                 <div slot="header" class="clearfix">
                                     <i class="el-icon-s-order" />
-                                    <span class="content-space">PROMTS</span>
+                                    <span class="ml-10-px">QUESTS</span>
                                 </div>
-                                <draggable
-                                    :list="promtList"
-                                    :key.sync="draggableList"
-                                    class="dragArea"
+                                <el-table
+                                :key="tableKey"
+                                ref="listQuests"
+                                v-loading="listLoading"
+                                :data="list"
+                                row-key="id"
+                                border
+                                :show-header="false"
+                                fit
+                                highlight-current-row
+                                style="width: 100%;"
                                 >
-                                    <div
-                                    v-for="element in promtList"
-                                    :key="element.order"
-                                    class="list-complete-item"
+                                    <el-table-column type="expand">
+                                        <template slot-scope="props">
+                                            <p><svg-icon name="skill" /> {{ props.row.choice1 }}</p>
+                                            <p><svg-icon name="skill" /> {{ props.row.choice2 }}</p>
+                                            <p><svg-icon name="skill" /> {{ props.row.choice3 }}</p>
+                                            <p><svg-icon name="skill" /> {{ props.row.choice4 }}</p>
+                                            <p><svg-icon name="skill" /> {{ props.row.choice5 }}</p>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                        label="Description"
+                                        min-width="150px"
                                     >
-                                        <el-card shadow="hover" class="all-scroll">
-                                            <i class="el-icon-s-promotion margin-right-10" />
-                                            <span>{{ element.body }}</span>
-                                        </el-card>
-                                    </div>
-                                </draggable>
+                                        <template slot-scope="{row}">
+                                        <span>{{ row.description }}</span>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
                             </el-card>
                         </el-col>
                         <el-col :span="16" v-show="conversationsSelected">
-                            <Conversations
-                                :menuId.sync="menuId"
-                            />
                         </el-col>
                     </el-row>
                 </el-card>
@@ -127,95 +104,59 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultMenuData, getMenu } from '@/api/menus'
-import { getCompanies } from '@/api/companies'
-import { map } from 'lodash'
-import Conversations from './components/MenuConversations.vue'
-import Draggable from 'vuedraggable'
+import { defaultSurveyData, getSurvey, getSurveyQuests } from '@/api/surveys'
+import { ISurveyQuestData } from '@/api/types'
 
 @Component({
-  name: 'MenuCreate',
+  name: 'SurveyCreate',
   components: {
-    Draggable,
-    Conversations
   }
 })
 export default class extends Vue {
-    private menuData = defaultMenuData
-    private companies :string[] = []
-    private promtList:any[] = []
-    private conversationList:any[] = []
-    private draggableList = 0
-    private order = 0
+    private surveyData = defaultSurveyData
+    private list: ISurveyQuestData[] = []
+    private tableKey = 0
+    private listLoading = true
+
     private conversationsSelected = false
-    private menuSelected = true
-    private menuId = 0
+    private surveySelected = true
 
     created() {
-      this.fetchCompanies()
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
-      this.menuId = parseInt(id)
+      this.fetchQuestData(parseInt(id))
     }
 
-    private async fetchCompanies() {
-      try {
-        const { data } = await getCompanies({})
-        this.companies = map(data.items, 'name')
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    private selectMenu() {
-      this.menuSelected = true
+    private selectSurvey() {
+      this.surveySelected = true
       this.conversationsSelected = false
     }
 
     private selectConversation() {
-      this.menuSelected = false
+      this.surveySelected = false
       this.conversationsSelected = true
     }
 
     private async fetchData(id: number) {
       try {
-        const { data } = await getMenu(id, { /* Your params here */ })
-        this.menuData = data.menu
-        this.promtList = data.menu.promts
-        this.order = this.promtList.length
-        this.conversationList = data.menu.conversations
+        const { data } = await getSurvey(id, {})
+        this.surveyData = data.survey
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    private async fetchQuestData(id: number) {
+      try {
+        this.listLoading = true
+        const { data } = await getSurveyQuests(id, {})
+        this.list = data.surveyQuests
+        setTimeout(() => {
+          this.listLoading = false
+        }, 0.5 * 1000)
       } catch (err) {
         console.error(err)
       }
     }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.content-card {
-    margin-bottom: 2%;
-}
-
-.content-row {
-    margin-bottom: 5%;
-}
-
-.content-space {
-    margin-left: 10px;
-}
-
-.content-button {
-    margin-left: 28px;
-}
-
-.content-vlaue {
-    padding-left: 50px;
-}
-
-.svg-icon-botton {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 8px;
-}
-</style>

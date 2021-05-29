@@ -106,7 +106,7 @@ import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.v
 import ConversationTableFilters from './ConversationTableFilters.vue'
 
 @Component({
-  name: 'WorkflowConversations',
+  name: 'SurveyConversations',
   components: {
     Pagination,
     TableSearchWithFilters,
