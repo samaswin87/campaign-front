@@ -28,6 +28,7 @@
         "driver.js": "^0.9.8",
         "echarts": "^4.9.0",
         "element-ui": "^2.14.0",
+        "element-ui-el-table-draggable": "^1.2.10",
         "faker": "^5.1.0",
         "file-saver": "^2.0.2",
         "fuse.js": "^6.4.3",

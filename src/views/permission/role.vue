@@ -331,8 +331,8 @@ export default class extends Vue {
 
   // Reference: src/layout/components/Sidebar/SidebarItem.vue
   private onlyOneShowingChild(children: RouteConfig[] = [], parent: RouteConfig) {
-    let onlyOneChild = null
     const showingChildren = children.filter(item => !item.meta || !item.meta.hidden)
+    let onlyOneChild: any = null
     // When there is only one child route, the child route is displayed by default
     if (showingChildren.length === 1) {
       onlyOneChild = showingChildren[0]

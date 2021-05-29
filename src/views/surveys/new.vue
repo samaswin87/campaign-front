@@ -1,147 +1,85 @@
 <template>
     <div class="app-container">
-        <div class="menu-container">
+        <div class="survey-container">
             <el-row>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>New Menu</span>
-                        <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
+                        <span>New Survey</span>
                     </div>
                     <el-row>
-                        <el-col :span="8">
+                        <el-col :span="24">
                             <el-row>
-                                <el-card class="box-card menu-details">
-                                    <el-form
-                                    ref="menuForm"
-                                    :model="menuData"
-                                    class="form-container"
-                                    >
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="company" class="svg-icon-botton"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <multiselect
-                                                    v-model="menuData.company"
-                                                    placeholder="Search one company"
-                                                    :options="companies"
-                                                    :clear-on-select="false"
-                                                    :close-on-select="false"
-                                                    >
-                                                    </multiselect>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="keyword" class="svg-icon-botton"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <span>
-                                                        <el-input
-                                                        placeholder="Please add keyword"
-                                                        v-model="menuData.name"
-                                                        clearable>
-                                                        </el-input>
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="phone" class="svg-icon-botton"/>
-                                            </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
-                                                    <span>
-                                                        <el-input
-                                                        placeholder="Please add phone"
-                                                        v-model="menuData.phone"
-                                                        clearable>
-                                                        </el-input>
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row class="content-row">
-                                            <el-col :span="20" class="content-vlaue">
-                                                <div class="grid-content">
-                                                    <span>
-                                                        <el-switch
-                                                        v-model="menuData.confidential"
-                                                        active-text="Confidential"
-                                                        active-color="#ff4949"
-                                                        inactive-color="#13ce66"
-                                                        inactive-text="Non Confidential">
-                                                        </el-switch>
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-                                    </el-form>
-                                </el-card>
-                            </el-row>
-                        </el-col>
-                        <el-col :span="16">
-                            <el-card class="box-card menu-promt content-card">
-                                <div slot="header" class="clearfix">
-                                    <svg-icon
-                                    class="margin-right-10"
-                                    name="list"
-                                    width="20"
-                                    height="20"
-                                    />
-                                    <span class="content-space">PROMTS</span>
-                                </div>
-                                <draggable
-                                    :list="promtList"
-                                    :key.sync="draggableList"
-                                    class="dragArea"
-                                    @end="updateItemOrder($event)"
+                                <el-form
+                                ref="surveyForm"
+                                :model="surveyData"
+                                class="form-container"
                                 >
-                                    <div
-                                    v-for="element in promtList"
-                                    :key="element.order"
-                                    class="list-complete-item"
-                                    >
-                                        <el-card shadow="hover" class="all-scroll">
-                                            <svg-icon
-                                            class="margin-right-10"
-                                            name="drag"
-                                            width="20"
-                                            height="20"
-                                            />
-                                            <span>Text
-                                                <el-tag
-                                                    type="primary"
-                                                    effect="dark"
-                                                    size="mini"
+                                    <el-row class="mb-10-px">
+                                        <el-col :span="8">
+                                            <label class="float-right mt-6-px">Company: </label>
+                                        </el-col>
+                                        <el-col :span="6">
+                                            <div class="ml-10-px">
+                                                <multiselect
+                                                v-model="surveyData.company"
+                                                placeholder="Search one company"
+                                                :options="companies"
+                                                :clear-on-select="false"
+                                                :close-on-select="false"
                                                 >
-                                                {{ element.body }}
-                                                </el-tag>
-                                            </span>
-                                            <i class="el-icon-delete-solid float-right pointer" @click="removePromt(element)"/>
-                                        </el-card>
-                                    </div>
-                                </draggable>
-                            </el-card>
-                                <el-card class="box-card menu-promt">
-                                    <div slot="header" class="clearfix">
-                                        <svg-icon
-                                            class="margin-right-10"
-                                            name="tree"
-                                            width="20"
-                                            height="20"
-                                        />
-                                        <span class="content-space">AVAILABLE WORKFLOWS</span>
-                                    </div>
-                                    <workflows-table :dashboard=false :action=true />
-                                </el-card>
+                                                </multiselect>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row class="mb-10-px">
+                                        <el-col :span="8">
+                                            <label class="float-right mt-6-px">Name: </label>
+                                        </el-col>
+                                        <el-col :span="6">
+                                            <div class="ml-10-px">
+                                                <span>
+                                                    <el-input
+                                                    placeholder="Please add name"
+                                                    v-model="surveyData.name"
+                                                    clearable>
+                                                    </el-input>
+                                                </span>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                        <el-row class="mb-10-px">
+                                        <el-col :span="8">
+                                            <label class="float-right mt-6-px">Description: </label>
+                                        </el-col>
+                                        <el-col :span="6">
+                                            <div class="ml-10-px">
+                                                <span>
+                                                    <el-input
+                                                    placeholder="Please add description"
+                                                    v-model="surveyData.description"
+                                                    type="textarea"
+                                                    rows="5"
+                                                    >
+                                                    </el-input>
+                                                </span>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row class="mb-10-px">
+                                        <el-col :span="14">
+                                            <div class="ml-10-px">
+                                                <span class="float-right">
+                                                    <el-button >Cancel</el-button>
+                                                    <el-button type="primary">Primary</el-button>
+                                                </span>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                </el-form>
+                            </el-row>
                         </el-col>
                     </el-row>
                 </el-card>
@@ -152,24 +90,21 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultMenuData, defaultFinalResponseData } from '@/api/menus'
+import { defaultSurveyData } from '@/api/surveys'
 import { getCompanies } from '@/api/companies'
 import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
 import Draggable from 'vuedraggable'
-import WorkflowsTable from '@/components/common/WorkflowsTable.vue'
 
 @Component({
-  name: 'MenuCreate',
+  name: 'SurveyCreate',
   components: {
     Multiselect,
-    Draggable,
-    WorkflowsTable
+    Draggable
   }
 })
 export default class extends Vue {
-    private menuData = defaultMenuData
-    private finalResponseData = defaultFinalResponseData
+    private surveyData = defaultSurveyData
     private companies :string[] = []
     private destinationLoading = false
     private promtList:any[] = []
@@ -228,40 +163,3 @@ export default class extends Vue {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.content-card {
-    margin-bottom: 2%;
-}
-
-.content-row {
-    margin-bottom: 5%;
-}
-
-.content-space {
-    margin-left: 10px;
-}
-
-.content-button {
-    margin-left: 28px;
-}
-
-.content-vlaue {
-    padding-left: 50px;
-}
-
-.svg-icon-botton {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 8px;
-}
-
-.all-scroll {
-    cursor: all-scroll;
-}
-
-.pointer {
-    cursor: pointer;
-}
-</style>
