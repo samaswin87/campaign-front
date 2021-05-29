@@ -78,6 +78,9 @@
                         </el-col>
                         <el-col :span="16">
                             <el-card class="box-card survey-promt content-card">
+                                <add-quest
+                                :visible.sync="addFormLoading"
+                                @addQuest="addQuest"/>
                                 <div slot="header" class="clearfix">
                                     <svg-icon
                                     class="mr-10-px"
@@ -86,7 +89,7 @@
                                     height="20"
                                     />
                                     <span class="mr-10-px">QUESTS</span>
-                                    <el-button type="primary" icon="el-icon-circle-plus" circle class="mb-10-px"></el-button>
+                                    <el-button type="primary" icon="el-icon-circle-plus" circle class="mb-10-px" @click="addQuestData"></el-button>
                                     <el-table-draggable>
                                         <el-table
                                         :key="tableKey"
@@ -144,19 +147,22 @@ import { getCompanies } from '@/api/companies'
 import { map } from 'lodash'
 import Draggable from 'vuedraggable'
 import ElTableDraggable from 'element-ui-el-table-draggable'
+import AddQuest from './admin/components/AddQuest.vue'
 
 @Component({
   name: 'SurveyEdit',
   components: {
     Multiselect,
     Draggable,
-    ElTableDraggable
+    ElTableDraggable,
+    AddQuest
   }
 })
 export default class extends Vue {
     private surveyData = defaultSurveyData
     private list: ISurveyQuestData[] = []
     private companies :string[] = []
+    private addFormLoading = false
     private selectedRow :number[] = []
     private tableKey = 0
     private total = 0
@@ -186,6 +192,14 @@ export default class extends Vue {
       const newIndex = row['choice' + (event.newIndex + 1)]
       row['choice' + (event.oldIndex + 1)] = newIndex
       row['choice' + (event.newIndex + 1)] = oldIndex
+    }
+
+    private addQuest(data: any) {
+      console.log(data)
+    }
+
+    private addQuestData() {
+      this.addFormLoading = true
     }
 
     private async fetchCompanies() {
