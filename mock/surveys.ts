@@ -93,21 +93,11 @@ export const getSurvey = (req: Request, res: Response) => {
 
 export const getSurveyQuests = (req: Request, res: Response) => {
   const { id } = req.params
-  const { page = 1, limit = 20, sort } = req.query
-
-  let mockQuests = quests.filter((_) => _.surveyId.toString() === id)
-
-  if (sort === '-id') {
-    mockQuests = mockQuests.reverse()
-  }
-
-  const pageList = mockQuests.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
-
+  const surveyQuests = quests.filter((_) => _.surveyId.toString() === id)
   return res.json({
     code: 20000,
     data: {
-      total: mockQuests.length,
-      items: pageList
+      surveyQuests
     }
   })
 }

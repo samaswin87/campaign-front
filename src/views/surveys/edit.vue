@@ -1,29 +1,32 @@
 <template>
     <div class="app-container">
-        <div class="menu-container">
+        <div class="survey-container">
             <el-row>
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span>Edit Menu</span>
-                        <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
+                        <span>Edit Survey</span>
                     </div>
                     <el-row>
                         <el-col :span="8">
                             <el-row>
-                                <el-card class="box-card menu-details">
+                                <el-card class="box-card survey-details">
+                                    <div slot="header" class="clearfix">
+                                        <span>Details</span>
+                                        <el-button type="primary" class="float-right"><svg-icon name="save" /></el-button>
+                                    </div>
                                     <el-form
-                                    ref="menuForm"
-                                    :model="menuData"
+                                    ref="surveyForm"
+                                    :model="surveyData"
                                     class="form-container"
                                     >
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="company" class="svg-icon-botton"/>
+                                        <el-row class="mb-10-px">
+                                            <el-col :span="6">
+                                                <label class="float-right mt-6-px">Company: </label>
                                             </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
+                                            <el-col :span="16">
+                                                <div class="ml-10-px">
                                                     <multiselect
-                                                    v-model="menuData.company"
+                                                    v-model="surveyData.company"
                                                     placeholder="Search one company"
                                                     :options="companies"
                                                     :clear-on-select="false"
@@ -34,16 +37,16 @@
                                             </el-col>
                                         </el-row>
 
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="keyword" class="svg-icon-botton"/>
+                                        <el-row class="mb-10-px">
+                                            <el-col :span="6">
+                                                <label class="float-right mt-6-px">Name: </label>
                                             </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
+                                            <el-col :span="16">
+                                                <div class="ml-10-px">
                                                     <span>
                                                         <el-input
-                                                        placeholder="Please add keyword"
-                                                        v-model="menuData.name"
+                                                        placeholder="Please add name"
+                                                        v-model="surveyData.name"
                                                         clearable>
                                                         </el-input>
                                                     </span>
@@ -51,34 +54,20 @@
                                             </el-col>
                                         </el-row>
 
-                                        <el-row class="content-row">
-                                            <el-col :span="2">
-                                                <svg-icon name="phone" class="svg-icon-botton"/>
+                                            <el-row class="mb-10-px">
+                                            <el-col :span="6">
+                                                <label class="float-right mt-6-px">Description: </label>
                                             </el-col>
-                                            <el-col :span="20">
-                                                <div class="grid-value">
+                                            <el-col :span="16">
+                                                <div class="ml-10-px">
                                                     <span>
                                                         <el-input
-                                                        placeholder="Please add phone"
-                                                        v-model="menuData.phone"
-                                                        clearable>
+                                                        placeholder="Please add description"
+                                                        v-model="surveyData.description"
+                                                        type="textarea"
+                                                        rows="5"
+                                                        >
                                                         </el-input>
-                                                    </span>
-                                                </div>
-                                            </el-col>
-                                        </el-row>
-
-                                        <el-row class="content-row">
-                                            <el-col :span="20" class="content-vlaue">
-                                                <div class="grid-content">
-                                                    <span>
-                                                        <el-switch
-                                                        v-model="menuData.confidential"
-                                                        active-text="Confidential"
-                                                        active-color="#ff4949"
-                                                        inactive-color="#13ce66"
-                                                        inactive-text="Non Confidential">
-                                                        </el-switch>
                                                     </span>
                                                 </div>
                                             </el-col>
@@ -88,60 +77,56 @@
                             </el-row>
                         </el-col>
                         <el-col :span="16">
-                            <el-card class="box-card menu-promt content-card">
+                            <el-card class="box-card survey-promt content-card">
                                 <div slot="header" class="clearfix">
                                     <svg-icon
-                                    class="margin-right-10"
+                                    class="mr-10-px"
                                     name="list"
                                     width="20"
                                     height="20"
                                     />
-                                    <span class="content-space">PROMTS</span>
+                                    <span class="mr-10-px">QUESTS</span>
+                                    <el-button type="primary" icon="el-icon-circle-plus" circle class="mb-10-px"></el-button>
+                                    <el-table-draggable>
+                                        <el-table
+                                        :key="tableKey"
+                                        ref="listQuests"
+                                        v-loading="listLoading"
+                                        :data="list"
+                                        row-key="id"
+                                        @expand-change="showSave"
+                                        :expand-row-keys.sync="selectedRow"
+                                        border
+                                        :show-header="false"
+                                        fit
+                                        highlight-current-row
+                                        style="width: 100%;"
+                                        >
+                                            <el-table-column type="expand">
+                                                <template slot-scope="props">
+                                                    <draggable @end="updateItemOrder($event, props.row)" class="c-all-scroll">
+                                                        <p><svg-icon name="skill" /> {{ props.row.choice1 }}</p>
+                                                        <p><svg-icon name="skill" /> {{ props.row.choice2 }}</p>
+                                                        <p><svg-icon name="skill" /> {{ props.row.choice3 }}</p>
+                                                        <p><svg-icon name="skill" /> {{ props.row.choice4 }}</p>
+                                                        <p><svg-icon name="skill" /> {{ props.row.choice5 }}</p>
+                                                    </draggable>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column
+                                                label="Description"
+                                                min-width="150px"
+                                            >
+                                                <template slot-scope="{row}">
+                                                <el-button type="primary" :style="{'display': row.display || 'none'}" class="float-right" circle><svg-icon name="save"></svg-icon></el-button>
+                                                <span class="c-all-scroll"
+                                                >{{ row.description }}</span>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </el-table-draggable>
                                 </div>
-                                <draggable
-                                    :list="promtList"
-                                    :key.sync="draggableList"
-                                    class="dragArea"
-                                    @end="updateItemOrder($event)"
-                                >
-                                    <div
-                                    v-for="element in promtList"
-                                    :key="element.order"
-                                    class="list-complete-item"
-                                    >
-                                        <el-card shadow="hover" class="all-scroll">
-                                            <svg-icon
-                                            class="margin-right-10"
-                                            name="drag"
-                                            width="20"
-                                            height="20"
-                                            />
-                                            <span>Text
-                                                <el-tag
-                                                    type="primary"
-                                                    effect="dark"
-                                                    size="mini"
-                                                >
-                                                {{ element.body }}
-                                                </el-tag>
-                                            </span>
-                                            <i class="el-icon-delete-solid float-right pointer" @click="removePromt(element)"/>
-                                        </el-card>
-                                    </div>
-                                </draggable>
                             </el-card>
-                                <el-card class="box-card menu-promt">
-                                    <div slot="header" class="clearfix">
-                                        <svg-icon
-                                            class="margin-right-10"
-                                            name="tree"
-                                            width="20"
-                                            height="20"
-                                        />
-                                        <span class="content-space">AVAILABLE WORKFLOWS</span>
-                                    </div>
-                                    <workflows-table :dashboard=false :action=true />
-                                </el-card>
                         </el-col>
                     </el-row>
                 </el-card>
@@ -152,33 +137,51 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultMenuData, defaultFinalResponseData, getMenu } from '@/api/menus'
-import { getCompanies } from '@/api/companies'
+import { defaultSurveyData, getSurvey, getSurveyQuests } from '@/api/surveys'
 import Multiselect from 'vue-multiselect'
+import { ISurveyQuestData } from '@/api/types'
+import { getCompanies } from '@/api/companies'
 import { map } from 'lodash'
 import Draggable from 'vuedraggable'
-import WorkflowsTable from '@/components/common/WorkflowsTable.vue'
+import ElTableDraggable from 'element-ui-el-table-draggable'
 
 @Component({
-  name: 'MenuEdit',
+  name: 'SurveyEdit',
   components: {
     Multiselect,
     Draggable,
-    WorkflowsTable
+    ElTableDraggable
   }
 })
 export default class extends Vue {
-    private menuData = defaultMenuData
-    private finalResponseData = defaultFinalResponseData
+    private surveyData = defaultSurveyData
+    private list: ISurveyQuestData[] = []
     private companies :string[] = []
-    private promtList:any[] = []
-    private draggableList = 0
-    private order = 0
+    private selectedRow :number[] = []
+    private tableKey = 0
+    private total = 0
+    private listLoading = true
+    private listQuery = {
+      page: 1,
+      limit: 20,
+      title: undefined,
+      type: undefined,
+      sort: '+id'
+    }
 
     created() {
-      this.fetchCompanies()
       const id = this.$route.params && this.$route.params.id
       this.fetchData(parseInt(id))
+      this.fetchQuestData(parseInt(id))
+    }
+
+    private showSave(row) {
+      row.display = (row.display && row.display === 'block') ? 'none' : 'block'
+    }
+
+    private updateItemOrder(event, row) {
+      this.selectedRow = []
+      this.selectedRow.push(row.id)
     }
 
     private async fetchCompanies() {
@@ -190,70 +193,26 @@ export default class extends Vue {
       }
     }
 
-    private addPromtRecord(data: any) {
-      this.promtList.push(data)
-      this.order = this.promtList.length
-      this.draggableList += 1
-    }
-
-    private removePromt(element: any) {
-      const index = this.promtList.indexOf(element)
-      this.promtList.splice(index, 1)
-      this.order = this.promtList.length
-    }
-
-    private updateItemOrder(event: any) {
-      console.log('Old Index: ' + event.oldIndex)
-      console.log('New Index: ' + event.newIndex)
-    }
-
     private async fetchData(id: number) {
       try {
-        const { data } = await getMenu(id, { /* Your params here */ })
-        this.menuData = data.menu
-        this.finalResponseData = data.menu.finalResponse
-        this.promtList = data.menu.promts
-        this.order = this.promtList.length
+        const { data } = await getSurvey(id, {})
+        this.surveyData = data.survey
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    private async fetchQuestData(id: number) {
+      try {
+        this.listLoading = true
+        const { data } = await getSurveyQuests(id, {})
+        this.list = data.surveyQuests
+        setTimeout(() => {
+          this.listLoading = false
+        }, 0.5 * 1000)
       } catch (err) {
         console.error(err)
       }
     }
 }
 </script>
-
-<style lang="scss" scoped>
-
-.content-card {
-    margin-bottom: 2%;
-}
-
-.content-row {
-    margin-bottom: 5%;
-}
-
-.content-space {
-    margin-left: 10px;
-}
-
-.content-button {
-    margin-left: 28px;
-}
-
-.content-vlaue {
-    padding-left: 50px;
-}
-
-.svg-icon-botton {
-    width: 30px !important;
-    height: 30px !important;
-    margin-top: 8px;
-}
-
-.all-scroll {
-    cursor: all-scroll;
-}
-
-.pointer {
-    cursor: pointer;
-}
-</style>
