@@ -9,7 +9,7 @@
                     <el-row>
                         <el-col :span="24" class="mb-20-px">
                             <el-button :disabled="surveySelected" @click.native="selectSurvey"><svg-icon name="nested" /> Survey</el-button>
-                            <el-button :disabled="resultsSelected" @click.native="selectConversation"><svg-icon name="message" /> Conversations</el-button>
+                            <el-button :disabled="resultsSelected" @click.native="selectConversation"><svg-icon name="message" /> Results</el-button>
                         </el-col>
                     </el-row>
                     <el-row>
