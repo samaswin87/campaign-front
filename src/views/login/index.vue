@@ -14,15 +14,15 @@
         </h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon name="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          :placeholder="$t('login.username')"
-          name="username"
+          ref="email"
+          v-model="loginForm.email"
+          :placeholder="$t('login.email')"
+          name="email"
           type="text"
           tabindex="1"
           autocomplete="on"
@@ -72,11 +72,11 @@
 
       <div style="position:relative">
         <div class="tips">
-          <span>{{ $t('login.username') }} : admin </span>
+          <span>{{ $t('login.email') }} : admin </span>
           <span>{{ $t('login.password') }} : {{ $t('login.any') }} </span>
         </div>
         <div class="tips">
-          <span>{{ $t('login.username') }} : editor </span>
+          <span>{{ $t('login.email') }} : editor </span>
           <span>{{ $t('login.password') }} : {{ $t('login.any') }} </span>
         </div>
 
@@ -118,12 +118,12 @@ export default class extends Vue {
   }
 
   private loginForm = {
-    username: 'admin',
-    password: '111111'
+    email: 'aswin@test.com',
+    password: 'password'
   }
 
   private loginRules = {
-    username: [{ validator: this.validateUsername, trigger: 'blur' }],
+    email: [{ validator: this.validateUsername, trigger: 'blur' }],
     password: [{ validator: this.validatePassword, trigger: 'blur' }]
   }
 
@@ -146,8 +146,8 @@ export default class extends Vue {
   }
 
   mounted() {
-    if (this.loginForm.username === '') {
-      (this.$refs.username as Input).focus()
+    if (this.loginForm.email === '') {
+      (this.$refs.email as Input).focus()
     } else if (this.loginForm.password === '') {
       (this.$refs.password as Input).focus()
     }

@@ -1,4 +1,8 @@
-export const isValidUsername = (str: string) => ['admin', 'editor'].indexOf(str.trim()) >= 0
+export const isValidUsername = (email: string) => {
+  // const regularExpression = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+  // return regularExpression.test(String(email).toLowerCase())
+  return true // fix later
+}
 
 export const isExternal = (path: string) => /^(https?:|mailto:|tel:)/.test(path)
 
