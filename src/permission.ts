@@ -24,7 +24,6 @@ const getPageTitle = (key: string) => {
 router.beforeEach(async(to: Route, _: Route, next: any) => {
   // Start progress bar
   NProgress.start()
-
   // Determine whether the user has logged in
   if (UserModule.token) {
     if (to.path === '/login') {
@@ -33,13 +32,13 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
       NProgress.done()
     } else {
       // Check whether the user has obtained his permission roles
-      if (UserModule.roles.length === 0) {
+      if (!UserModule.role) {
         try {
           // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
           await UserModule.GetUserInfo()
-          const roles = UserModule.roles
+          const role = UserModule.role
           // Generate accessible routes map based on role
-          PermissionModule.GenerateRoutes(roles)
+          PermissionModule.GenerateRoutes(role)
           // Dynamically add accessible routes
           router.addRoutes(PermissionModule.dynamicRoutes)
           // Hack: ensure addRoutes is complete

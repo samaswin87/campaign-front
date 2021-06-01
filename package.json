@@ -4,8 +4,7 @@
     "private": true,
     "author": "Aswin R <aswin.r312@outlook.com>",
     "scripts": {
-        "serve": "concurrently \"npm:mock\" \"vue-cli-service serve\"",
-        "rails": "vue-cli-service serve",
+        "serve": "vue-cli-service serve",
         "test:unit": "jest --clearCache && vue-cli-service test:unit",
         "lint": "vue-cli-service lint",
         "build:prod": "vue-cli-service build",

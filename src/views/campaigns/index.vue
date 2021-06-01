@@ -20,12 +20,12 @@ import EditorCampaign from './editor/index.vue'
 export default class extends Vue {
   private currentRole = 'admin-campaign'
 
-  get roles() {
-    return UserModule.roles
+  get role() {
+    return UserModule.role
   }
 
   created() {
-    if (!this.roles.includes('admin')) {
+    if (this.role !== 'admin') {
       this.currentRole = 'editor-campaign'
     }
   }

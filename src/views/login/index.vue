@@ -69,18 +69,6 @@
       >
         {{ $t('login.logIn') }}
       </el-button>
-
-      <div style="position:relative">
-        <div class="tips">
-          <span>{{ $t('login.email') }} : admin </span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }} </span>
-        </div>
-        <div class="tips">
-          <span>{{ $t('login.email') }} : editor </span>
-          <span>{{ $t('login.password') }} : {{ $t('login.any') }} </span>
-        </div>
-
-      </div>
     </el-form>
   </div>
 </template>

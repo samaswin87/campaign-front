@@ -6,11 +6,7 @@
         style="float: left"
       >
         Your roles:
-        <span
-          v-for="item in roles"
-          :key="item"
-          class="info-roles"
-        >{{ item }}</span>
+        <span class="info-roles">{{ role }}</span>
       </pan-thumb>
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
@@ -49,8 +45,8 @@ export default class extends Vue {
     return UserModule.avatar
   }
 
-  get roles() {
-    return UserModule.roles
+  get role() {
+    return UserModule.role
   }
 }
 </script>

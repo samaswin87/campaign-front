@@ -1,5 +1,5 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login, logout, getUserInfo } from '@/api/users'
+import { login, logout, getUser } from '@/api/users'
 import { getToken, setToken, removeToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
 import { PermissionModule } from './permission'
@@ -7,12 +7,13 @@ import { TagsViewModule } from './tags-view'
 import store from '@/store'
 
 export interface IUserState {
+  id: number
   token: string
   firstName: string
   lastName: string
   avatar: string
   introduction: string
-  roles: string[]
+  role: string
   email: string
   companyId: number
   phone: number
@@ -20,15 +21,21 @@ export interface IUserState {
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
+  public id = 0
   public token = getToken() || ''
   public firstName = ''
   public lastName = ''
   public avatar = ''
   public introduction = ''
-  public roles: string[] = []
+  public role = ''
   public email = ''
   public companyId = 0
   public phone = 0
+
+  @Mutation
+  private SET_ID(id: number) {
+    this.id = id
+  }
 
   @Mutation
   private SET_TOKEN(token: string) {
@@ -56,8 +63,8 @@ class User extends VuexModule implements IUserState {
   }
 
   @Mutation
-  private SET_ROLES(roles: string[]) {
-    this.roles = roles
+  private SET_ROLE(role: string) {
+    this.role = role
   }
 
   @Mutation
@@ -80,15 +87,18 @@ class User extends VuexModule implements IUserState {
     let { email, password } = userInfo
     email = email.trim()
     const { data, headers } = await login({ email, password })
+    const { role, id } = data.data
     setToken(headers.accesstoken)
-    this.SET_TOKEN(data.accesstoken)
+    this.SET_ID(id)
+    this.SET_TOKEN(headers.accesstoken)
+    this.SET_ROLE(role)
   }
 
   @Action
   public ResetToken() {
     removeToken()
     this.SET_TOKEN('')
-    this.SET_ROLES([])
+    this.SET_ROLE('')
   }
 
   @Action
@@ -96,16 +106,14 @@ class User extends VuexModule implements IUserState {
     if (this.token === '') {
       throw Error('GetUserInfo: token is undefined!')
     }
-    const { data } = await getUserInfo({ /* Your params here */ })
+    const { data } = await getUser(this.id, {})
     if (!data) {
       throw Error('Verification failed, please Login again.')
     }
-    const { roles, firstName, lastName, avatar, introduction, email, companyId, phone } = data.user
-    // roles must be a non-empty array
-    if (!roles || roles.length <= 0) {
-      throw Error('GetUserInfo: roles must be a non-null array!')
+    const { role, firstName, lastName, avatar, introduction, email, companyId, phone } = data.user
+    if (!role) {
+      throw Error('GetUserInfo: role must be a non-null')
     }
-    this.SET_ROLES(roles)
     this.SET_FIRST_NAME(firstName)
     this.SET_LAST_NAME(lastName)
     this.SET_AVATAR(avatar)
@@ -124,7 +132,7 @@ class User extends VuexModule implements IUserState {
     await this.GetUserInfo()
     resetRouter()
     // Generate dynamic accessible routes based on roles
-    PermissionModule.GenerateRoutes(this.roles)
+    PermissionModule.GenerateRoutes(this.role)
     // Add generated routes
     router.addRoutes(PermissionModule.dynamicRoutes)
     // Reset visited views and cached views
@@ -143,7 +151,7 @@ class User extends VuexModule implements IUserState {
     // Reset visited views and cached views
     TagsViewModule.delAllViews()
     this.SET_TOKEN('')
-    this.SET_ROLES([])
+    this.SET_ROLE('')
   }
 }
 
