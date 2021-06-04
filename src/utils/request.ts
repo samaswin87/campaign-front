@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
+import { getToken, setToken, removeToken, getKey, setKey, removeKey } from '@/utils/cookies'
+import { isEmpty } from 'lodash'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -12,8 +14,17 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // Add X-Access-Token header to every request, you can add other custom headers here
-    if (UserModule.token) {
-      config.headers['X-Access-Token'] = UserModule.token
+    if (UserModule.email) {
+      config.headers['X-UID'] = UserModule.email
+    }
+    const client = getKey()
+    const access = getToken()
+    if (isEmpty(client)) {
+      config.headers['X-Access-Token'] = getKey()
+    }
+
+    if (isEmpty(access)) {
+      config.headers['X-Client'] = getToken()
     }
     return config
   },
@@ -41,12 +52,15 @@ service.interceptors.response.use(
             type: 'warning'
           }
         ).then(() => {
-          UserModule.ResetToken()
+          removeToken()
+          removeKey()
           location.reload() // To prevent bugs from vue-router
         })
       }
       return Promise.reject(new Error(response.statusText || 'Error'))
     } else {
+      setToken(response.headers['x-access-token'])
+      setKey(response.headers['x-client'])
       return response
     }
   },

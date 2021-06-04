@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import { isEmpty } from 'lodash'
 
 // App
 const sidebarStatusKey = 'sidebar_status'
@@ -16,5 +17,11 @@ export const setSize = (size: string) => Cookies.set(sizeKey, size)
 // User
 const tokenKey = 'access_token'
 export const getToken = () => Cookies.get(tokenKey)
-export const setToken = (token: string) => Cookies.set(tokenKey, token)
+export const setToken = (token: string) => { if (!isEmpty(token)) { Cookies.set(tokenKey, token) } }
 export const removeToken = () => Cookies.remove(tokenKey)
+
+// Access
+const clientKey = 'client_key'
+export const getKey = () => Cookies.get(clientKey)
+export const setKey = (client: string) => { if (!isEmpty(client)) { Cookies.set(clientKey, client) } }
+export const removeKey = () => Cookies.remove(clientKey)

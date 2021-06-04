@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData, IWorkflowConversationsData } from './types'
 
+const BASE_API = 'workflows'
+
 export const defaultFinalResponseData: IWorkflowFinalResponseData = {
   id: 0,
   workflowId: 1,
@@ -46,21 +48,21 @@ export const defaultWorkflowData: IWorkflowData = {
 
 export const getWorkflows = (params: any) =>
   request({
-    url: '/workflows',
+    url: BASE_API,
     method: 'get',
     params
   })
 
 export const getWorkflow = (id: number, params: any) =>
   request({
-    url: `/workflows/${id}`,
+    url: BASE_API + `/${id}`,
     method: 'get',
     params
   })
 
 export const getWorkflowConversations = (id: number, params: any) =>
   request({
-    url: `/workflows/${id}/conversations`,
+    url: BASE_API + `/${id}/conversations`,
     method: 'get',
     params
   })

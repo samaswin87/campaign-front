@@ -7,6 +7,7 @@ import { UserModule } from '@/store/modules/user'
 import { PermissionModule } from '@/store/modules/permission'
 import i18n from '@/lang' // Internationalization
 import settings from './settings'
+import { getToken, getKey } from '@/utils/cookies'
 
 NProgress.configure({ showSpinner: false })
 
@@ -25,7 +26,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
   // Start progress bar
   NProgress.start()
   // Determine whether the user has logged in
-  if (UserModule.token) {
+  if (getToken() && getKey()) {
     if (to.path === '/login') {
       // If is logged in, redirect to the home page
       next({ path: '/' })

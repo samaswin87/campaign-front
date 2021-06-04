@@ -1,18 +1,15 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
 import { login, logout, getUser } from '@/api/users'
-import { getToken, setToken, removeToken } from '@/utils/cookies'
+import { getToken, removeKey, removeToken } from '@/utils/cookies'
 import router, { resetRouter } from '@/router'
 import { PermissionModule } from './permission'
 import { TagsViewModule } from './tags-view'
 import store from '@/store'
-
+import VueEasySession from 'vue-easysession'
 export interface IUserState {
-  id: number
-  token: string
   firstName: string
   lastName: string
   avatar: string
-  introduction: string
   role: string
   email: string
   companyId: number
@@ -21,26 +18,14 @@ export interface IUserState {
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-  public id = 0
-  public token = getToken() || ''
+  public session = VueEasySession.getInstance()
   public firstName = ''
   public lastName = ''
   public avatar = ''
-  public introduction = ''
   public role = ''
   public email = ''
   public companyId = 0
   public phone = 0
-
-  @Mutation
-  private SET_ID(id: number) {
-    this.id = id
-  }
-
-  @Mutation
-  private SET_TOKEN(token: string) {
-    this.token = token
-  }
 
   @Mutation
   private SET_FIRST_NAME(firstName: string) {
@@ -55,11 +40,6 @@ class User extends VuexModule implements IUserState {
   @Mutation
   private SET_AVATAR(avatar: string) {
     this.avatar = avatar
-  }
-
-  @Mutation
-  private SET_INTRODUCTION(introduction: string) {
-    this.introduction = introduction
   }
 
   @Mutation
@@ -86,49 +66,44 @@ class User extends VuexModule implements IUserState {
   public async Login(userInfo: { email: string, password: string}) {
     let { email, password } = userInfo
     email = email.trim()
-    const { data, headers } = await login({ email, password })
+    const { data } = await login({ email, password })
     const { role, id } = data.data
-    setToken(headers.accesstoken)
-    this.SET_ID(id)
-    this.SET_TOKEN(headers.accesstoken)
-    this.SET_ROLE(role)
+    this.session.set('user_id', id)
+    this.session.set('user_role', role)
   }
 
   @Action
   public ResetToken() {
     removeToken()
-    this.SET_TOKEN('')
+    removeKey()
     this.SET_ROLE('')
+    this.session.destroy()
   }
 
   @Action
   public async GetUserInfo() {
-    if (this.token === '') {
+    if (getToken() === '') {
       throw Error('GetUserInfo: token is undefined!')
     }
-    const { data } = await getUser(this.id, {})
+    const { data } = await getUser(this.session.get('user_id'), {})
     if (!data) {
       throw Error('Verification failed, please Login again.')
     }
-    const { role, firstName, lastName, avatar, introduction, email, companyId, phone } = data.user
-    if (!role) {
+    if (!data.role) {
       throw Error('GetUserInfo: role must be a non-null')
     }
-    this.SET_FIRST_NAME(firstName)
-    this.SET_LAST_NAME(lastName)
-    this.SET_AVATAR(avatar)
-    this.SET_INTRODUCTION(introduction)
-    this.SET_EMAIL(email)
-    this.SET_COMPANY_ID(companyId)
-    this.SET_PHONE(phone)
+    this.SET_FIRST_NAME(data.first_name)
+    this.SET_LAST_NAME(data.last_name)
+    this.SET_AVATAR(data.avatar)
+    this.SET_EMAIL(data.email)
+    this.SET_COMPANY_ID(data.company_id)
+    this.SET_PHONE(data.phone)
+    this.SET_ROLE(data.role)
   }
 
   @Action
   public async ChangeRoles(role: string) {
     // Dynamically modify permissions
-    const token = role + '-token'
-    this.SET_TOKEN(token)
-    setToken(token)
     await this.GetUserInfo()
     resetRouter()
     // Generate dynamic accessible routes based on roles
@@ -141,16 +116,16 @@ class User extends VuexModule implements IUserState {
 
   @Action
   public async LogOut() {
-    if (this.token === '') {
+    if (getToken() === '') {
       throw Error('LogOut: token is undefined!')
     }
     await logout()
     removeToken()
+    removeKey()
     resetRouter()
-
+    this.session.destroy()
     // Reset visited views and cached views
     TagsViewModule.delAllViews()
-    this.SET_TOKEN('')
     this.SET_ROLE('')
   }
 }

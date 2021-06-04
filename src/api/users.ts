@@ -45,7 +45,7 @@ export const getUsersByCompany = (id: number, params: any) =>
 
 export const getUser = (id: number, params: any) =>
   request({
-    url: `api/v1/users/${id}`,
+    url: `users/${id}`,
     method: 'get',
     params
   })
@@ -78,20 +78,20 @@ export const deleteUser = (username: string) =>
 
 export const login = (data: any) =>
   request({
-    url: '/auth/sign_in',
+    url: 'auth/sign_in',
     method: 'post',
     data
   })
 
 export const logout = () =>
   request({
-    url: '/auth/sign_out',
+    url: 'auth/sign_out',
     method: 'post'
   })
 
 export const register = (data: any) =>
   request({
-    url: '/auth/sign_up',
+    url: 'auth/sign_up',
     method: 'post',
     data
   })

@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 import { ICampaignData } from './types'
 
+const BASE_API = 'campaigns'
+
 export const defaultCampaignData: ICampaignData = {
   id: 0,
   status: 'draft',
@@ -18,34 +20,34 @@ export const defaultCampaignData: ICampaignData = {
 
 export const getCampaigns = (params: any) =>
   request({
-    url: '/campaigns',
+    url: BASE_API,
     method: 'get',
     params
   })
 
 export const getCampaign = (id: number, params: any) =>
   request({
-    url: `/campaigns/${id}`,
+    url: BASE_API + `/${id}`,
     method: 'get',
     params
   })
 
 export const createCampaign = (data: any) =>
   request({
-    url: '/campaigns',
+    url: BASE_API,
     method: 'post',
     data
   })
 
 export const updateCampaign = (id: number, data: any) =>
   request({
-    url: `/campaigns/${id}`,
+    url: BASE_API + `/${id}`,
     method: 'put',
     data
   })
 
 export const deleteCampaign = (id: number) =>
   request({
-    url: `/campaigns/${id}`,
+    url: BASE_API + `/${id}`,
     method: 'delete'
   })
