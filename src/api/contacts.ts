@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 import { IContactData } from './types'
 
+const BASE_URL = 'platforms/recipients'
+
 export const defaultContactData: IContactData = {
   id: 0,
   status: 'active',
@@ -20,34 +22,34 @@ export const defaultContactData: IContactData = {
 
 export const getContacts = (params: any) =>
   request({
-    url: '/contacts',
+    url: BASE_URL,
     method: 'get',
     params
   })
 
 export const getContact = (id: number, params: any) =>
   request({
-    url: `/contacts/${id}`,
+    url: `${BASE_URL}/${id}`,
     method: 'get',
     params
   })
 
 export const createContact = (data: any) =>
   request({
-    url: '/contacts',
+    url: BASE_URL,
     method: 'post',
     data
   })
 
 export const updateContact = (id: number, data: any) =>
   request({
-    url: `/contacts/${id}`,
+    url: `${BASE_URL}/${id}`,
     method: 'put',
     data
   })
 
 export const deleteContact = (id: number) =>
   request({
-    url: `/contacts/${id}`,
+    url: `${BASE_URL}/${id}`,
     method: 'delete'
   })
