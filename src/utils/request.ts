@@ -19,12 +19,12 @@ service.interceptors.request.use(
     }
     const client = getKey()
     const access = getToken()
-    if (isEmpty(client)) {
-      config.headers['X-Access-Token'] = getKey()
+    if (!isEmpty(client)) {
+      config.headers['X-Access-Token'] = access
     }
 
-    if (isEmpty(access)) {
-      config.headers['X-Client'] = getToken()
+    if (!isEmpty(access)) {
+      config.headers['X-Client'] = client
     }
     return config
   },
@@ -59,8 +59,8 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(response.statusText || 'Error'))
     } else {
-      setToken(response.headers['x-access-token'])
-      setKey(response.headers['x-client'])
+      setToken(response.headers['x-access-token'] || response.config.headers['X-Access-Token'])
+      setKey(response.headers['x-client'] || response.config.headers['X-Client'])
       return response
     }
   },

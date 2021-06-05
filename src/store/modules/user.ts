@@ -1,8 +1,7 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
 import { login, logout, getUser } from '@/api/users'
 import { getToken, removeKey, removeToken } from '@/utils/cookies'
-import router, { resetRouter } from '@/router'
-import { PermissionModule } from './permission'
+import { resetRouter } from '@/router'
 import { TagsViewModule } from './tags-view'
 import store from '@/store'
 import VueEasySession from 'vue-easysession'
@@ -94,24 +93,11 @@ class User extends VuexModule implements IUserState {
     }
     this.SET_FIRST_NAME(data.first_name)
     this.SET_LAST_NAME(data.last_name)
-    this.SET_AVATAR(data.avatar)
+    this.SET_AVATAR(data.avatar || '/img/icons/logo.png')
     this.SET_EMAIL(data.email)
     this.SET_COMPANY_ID(data.company_id)
     this.SET_PHONE(data.phone)
     this.SET_ROLE(data.role)
-  }
-
-  @Action
-  public async ChangeRoles(role: string) {
-    // Dynamically modify permissions
-    await this.GetUserInfo()
-    resetRouter()
-    // Generate dynamic accessible routes based on roles
-    PermissionModule.GenerateRoutes(this.role)
-    // Add generated routes
-    router.addRoutes(PermissionModule.dynamicRoutes)
-    // Reset visited views and cached views
-    TagsViewModule.delAllViews()
   }
 
   @Action

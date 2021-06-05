@@ -86,7 +86,7 @@ export const login = (data: any) =>
 export const logout = () =>
   request({
     url: 'auth/sign_out',
-    method: 'post'
+    method: 'delete'
   })
 
 export const register = (data: any) =>

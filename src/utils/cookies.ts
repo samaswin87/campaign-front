@@ -17,7 +17,12 @@ export const setSize = (size: string) => Cookies.set(sizeKey, size)
 // User
 const tokenKey = 'access_token'
 export const getToken = () => Cookies.get(tokenKey)
-export const setToken = (token: string) => { if (!isEmpty(token)) { Cookies.set(tokenKey, token) } }
+export const setToken = (token: string) => {
+  console.log(token)
+  if (!isEmpty(token)) {
+    Cookies.set(tokenKey, token)
+  }
+}
 export const removeToken = () => Cookies.remove(tokenKey)
 
 // Access
