@@ -72,7 +72,7 @@
         >
           <template slot-scope="{row}">
             <span
-            >{{ row.firstName }}</span>
+            >{{ row.first_name }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -81,7 +81,7 @@
         >
           <template slot-scope="{row}">
             <span
-            >{{ row.lastName }}</span>
+            >{{ row.last_name }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -90,7 +90,7 @@
         >
           <template slot-scope="{row}">
             <span
-            >{{ row.company }}</span>
+            >{{ row.company_name }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -107,7 +107,7 @@
           min-width="150px"
         >
           <template slot-scope="{row}">
-            <span>{{ row.noOfCampaigns }}</span>
+            <span>{{ row.no_of_campaigns }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -277,7 +277,7 @@ export default class extends Vue {
   private async getList() {
     this.listLoading = true
     const { data } = await getContacts(this.listQuery)
-    this.list = data.items
+    this.list = data
     this.total = data.total
     // Just to simulate the time of the request
     setTimeout(() => {
