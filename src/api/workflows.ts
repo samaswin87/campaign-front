@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { IWorkflowData, IWorkflowFinalResponseData, IWorkflowPromtData, IWorkflowConversationsData } from './types'
 
-const BASE_API = 'workflows'
+const BASE_API = 'workflows/depositories'
 
 export const defaultFinalResponseData: IWorkflowFinalResponseData = {
   id: 0,

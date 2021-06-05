@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { ICampaignData } from './types'
 
-const BASE_API = 'campaigns'
+const BASE_API = 'campaigns/depositories'
 
 export const defaultCampaignData: ICampaignData = {
   id: 0,
