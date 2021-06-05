@@ -28,7 +28,7 @@
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.createdOn | parseDate }}</span>
+          <span>{{ row.created_on }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -47,7 +47,7 @@
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.company }}</span>
+          <span>{{ row.company_name }}</span>
         </template>
       </el-table-column>
 
@@ -95,7 +95,7 @@ export default class extends Vue {
   private async getList() {
     this.listLoading = true
     const { data } = await getCampaigns(this.listQuery)
-    this.list = data.items
+    this.list = data
     this.total = data.total
     // Just to simulate the time of the request
     setTimeout(() => {

@@ -69,6 +69,7 @@ class User extends VuexModule implements IUserState {
     const { role, id } = data.data
     this.session.set('user_id', id)
     this.session.set('user_role', role)
+    this.session.set('email', email)
   }
 
   @Action

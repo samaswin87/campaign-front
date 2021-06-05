@@ -14,8 +14,8 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // Add X-Access-Token header to every request, you can add other custom headers here
-    if (UserModule.email) {
-      config.headers['X-UID'] = UserModule.email
+    if (UserModule.session) {
+      config.headers['X-UID'] = UserModule.session.get('email')
     }
     const client = getKey()
     const access = getToken()
