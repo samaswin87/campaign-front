@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('table.company')"
-        width="180px"
+        width="280px"
         align="center"
       >
         <template slot-scope="{row}">

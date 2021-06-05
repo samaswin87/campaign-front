@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('table.createdOn')"
-        width="180px"
+        width="110px"
         align="center"
       >
         <template slot-scope="{row}">
@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('table.keyword')"
-        min-width="150px"
+        min-width="100px"
       >
         <template slot-scope="{row}">
           <span
@@ -54,7 +54,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('table.company')"
-        width="180px"
+        width="280px"
         align="center"
       >
         <template slot-scope="{row}">
@@ -63,7 +63,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('table.status')"
-        min-width="150px"
+        min-width="110px"
       >
         <template slot-scope="{row}">
           <el-tag effect="dark" :type="row.status | statusFilter">
