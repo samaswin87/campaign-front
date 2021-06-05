@@ -1,18 +1,15 @@
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
-import { login, logout, getUserInfo } from '@/api/users'
-import { getToken, setToken, removeToken } from '@/utils/cookies'
-import router, { resetRouter } from '@/router'
-import { PermissionModule } from './permission'
+import { login, logout, getUser } from '@/api/users'
+import { getToken, removeKey, removeToken } from '@/utils/cookies'
+import { resetRouter } from '@/router'
 import { TagsViewModule } from './tags-view'
 import store from '@/store'
-
+import VueEasySession from 'vue-easysession'
 export interface IUserState {
-  token: string
   firstName: string
   lastName: string
   avatar: string
-  introduction: string
-  roles: string[]
+  role: string
   email: string
   companyId: number
   phone: number
@@ -20,20 +17,14 @@ export interface IUserState {
 
 @Module({ dynamic: true, store, name: 'user' })
 class User extends VuexModule implements IUserState {
-  public token = getToken() || ''
+  public session = VueEasySession.getInstance()
   public firstName = ''
   public lastName = ''
   public avatar = ''
-  public introduction = ''
-  public roles: string[] = []
+  public role = ''
   public email = ''
   public companyId = 0
   public phone = 0
-
-  @Mutation
-  private SET_TOKEN(token: string) {
-    this.token = token
-  }
 
   @Mutation
   private SET_FIRST_NAME(firstName: string) {
@@ -51,13 +42,8 @@ class User extends VuexModule implements IUserState {
   }
 
   @Mutation
-  private SET_INTRODUCTION(introduction: string) {
-    this.introduction = introduction
-  }
-
-  @Mutation
-  private SET_ROLES(roles: string[]) {
-    this.roles = roles
+  private SET_ROLE(role: string) {
+    this.role = role
   }
 
   @Mutation
@@ -76,74 +62,58 @@ class User extends VuexModule implements IUserState {
   }
 
   @Action
-  public async Login(userInfo: { username: string, password: string}) {
-    let { username, password } = userInfo
-    username = username.trim()
-    const { data } = await login({ username, password })
-    setToken(data.accessToken)
-    this.SET_TOKEN(data.accessToken)
+  public async Login(userInfo: { email: string, password: string}) {
+    let { email, password } = userInfo
+    email = email.trim()
+    const { data } = await login({ email, password })
+    const { role, id } = data.data
+    this.session.set('user_id', id)
+    this.session.set('user_role', role)
+    this.session.set('email', email)
   }
 
   @Action
   public ResetToken() {
     removeToken()
-    this.SET_TOKEN('')
-    this.SET_ROLES([])
+    removeKey()
+    this.SET_ROLE('')
+    this.session.destroy()
   }
 
   @Action
   public async GetUserInfo() {
-    if (this.token === '') {
+    if (getToken() === '') {
       throw Error('GetUserInfo: token is undefined!')
     }
-    const { data } = await getUserInfo({ /* Your params here */ })
+    const { data } = await getUser(this.session.get('user_id'), {})
     if (!data) {
       throw Error('Verification failed, please Login again.')
     }
-    const { roles, firstName, lastName, avatar, introduction, email, companyId, phone } = data.user
-    // roles must be a non-empty array
-    if (!roles || roles.length <= 0) {
-      throw Error('GetUserInfo: roles must be a non-null array!')
+    if (!data.role) {
+      throw Error('GetUserInfo: role must be a non-null')
     }
-    this.SET_ROLES(roles)
-    this.SET_FIRST_NAME(firstName)
-    this.SET_LAST_NAME(lastName)
-    this.SET_AVATAR(avatar)
-    this.SET_INTRODUCTION(introduction)
-    this.SET_EMAIL(email)
-    this.SET_COMPANY_ID(companyId)
-    this.SET_PHONE(phone)
-  }
-
-  @Action
-  public async ChangeRoles(role: string) {
-    // Dynamically modify permissions
-    const token = role + '-token'
-    this.SET_TOKEN(token)
-    setToken(token)
-    await this.GetUserInfo()
-    resetRouter()
-    // Generate dynamic accessible routes based on roles
-    PermissionModule.GenerateRoutes(this.roles)
-    // Add generated routes
-    router.addRoutes(PermissionModule.dynamicRoutes)
-    // Reset visited views and cached views
-    TagsViewModule.delAllViews()
+    this.SET_FIRST_NAME(data.first_name)
+    this.SET_LAST_NAME(data.last_name)
+    this.SET_AVATAR(data.avatar || '/img/icons/logo.png')
+    this.SET_EMAIL(data.email)
+    this.SET_COMPANY_ID(data.company_id)
+    this.SET_PHONE(data.phone)
+    this.SET_ROLE(data.role)
   }
 
   @Action
   public async LogOut() {
-    if (this.token === '') {
+    if (getToken() === '') {
       throw Error('LogOut: token is undefined!')
     }
     await logout()
     removeToken()
+    removeKey()
     resetRouter()
-
+    this.session.destroy()
     // Reset visited views and cached views
     TagsViewModule.delAllViews()
-    this.SET_TOKEN('')
-    this.SET_ROLES([])
+    this.SET_ROLE('')
   }
 }
 

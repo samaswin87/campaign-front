@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
+import { getToken, setToken, removeToken, getKey, setKey, removeKey } from '@/utils/cookies'
+import { isEmpty } from 'lodash'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -12,8 +14,17 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // Add X-Access-Token header to every request, you can add other custom headers here
-    if (UserModule.token) {
-      config.headers['X-Access-Token'] = UserModule.token
+    if (UserModule.session) {
+      config.headers['X-UID'] = UserModule.session.get('email')
+    }
+    const client = getKey()
+    const access = getToken()
+    if (!isEmpty(client)) {
+      config.headers['X-Access-Token'] = access
+    }
+
+    if (!isEmpty(access)) {
+      config.headers['X-Client'] = client
     }
     return config
   },
@@ -25,38 +36,32 @@ service.interceptors.request.use(
 // Response interceptors
 service.interceptors.response.use(
   (response) => {
-    // Some example codes here:
-    // code == 20000: success
-    // code == 50001: invalid access token
-    // code == 50002: already login in other place
-    // code == 50003: access token expired
-    // code == 50004: invalid user (user not exist)
-    // code == 50005: username or password is incorrect
-    // You can change this part for your own usage.
-    const res = response.data
-    if (res.code !== 20000) {
+    if (response.status !== 200) {
       Message({
-        message: res.message || 'Error',
+        message: response.statusText || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (response.status === 401 || response.status === 403 || response.status === 406) {
         MessageBox.confirm(
-          '你已被登出，可以取消继续留在该页面，或者重新登录',
-          '确定登出',
+          'You have been logged out. Try log in again',
+          'Log out',
           {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
+            confirmButtonText: 'Login Again',
+            cancelButtonText: 'Cancel',
             type: 'warning'
           }
         ).then(() => {
-          UserModule.ResetToken()
+          removeToken()
+          removeKey()
           location.reload() // To prevent bugs from vue-router
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(response.statusText || 'Error'))
     } else {
-      return response.data
+      setToken(response.headers['x-access-token'] || response.config.headers['X-Access-Token'])
+      setKey(response.headers['x-client'] || response.config.headers['X-Client'])
+      return response
     }
   },
   (error) => {

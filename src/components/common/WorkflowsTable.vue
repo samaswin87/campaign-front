@@ -28,7 +28,7 @@
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.createdOn | parseTime }}</span>
+          <span>{{ row.created_on }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -38,7 +38,7 @@
         <template slot-scope="{row}">
           <span
             class="link-type"
-          >{{ row.name }}</span>
+          >{{ row.keyword }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -58,7 +58,7 @@
         align="center"
       >
         <template slot-scope="{row}">
-          <span>{{ row.company }}</span>
+          <span>{{ row.company_name }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -132,8 +132,7 @@ export default class extends Vue {
   private async getList() {
     this.listLoading = true
     const { data } = await getWorkflows(this.listQuery)
-    this.list = data.items
-    this.total = data.total
+    this.list = data
     // Just to simulate the time of the request
     setTimeout(() => {
       this.listLoading = false
