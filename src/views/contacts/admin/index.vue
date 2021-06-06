@@ -48,12 +48,17 @@
         :key="tableKey"
         v-loading="listLoading"
         :data="list"
+        @selection-change="handleSelectionChange"
         border
         fit
         highlight-current-row
         style="width: 100%;"
         @sort-change="sortChange"
       >
+        <el-table-column
+          type="selection"
+          width="55">
+        </el-table-column>
         <el-table-column
           :label="$t('table.id')"
           prop="row_id"
@@ -223,7 +228,7 @@ import TableMixin from '@/views/mixins/TableMixin'
   }
 })
 export default class Contact extends Mixins(TableMixin) {
-  private reloadTable = true
+  private multipleSelection = []
   private list: IContactData[] = []
   private tagsLoading = false
   private moveLoading = false
@@ -238,6 +243,10 @@ export default class Contact extends Mixins(TableMixin) {
 
   private contactFiltered(data: any) {
     console.log(data)
+  }
+
+  private handleSelectionChange(value) {
+    this.multipleSelection = value
   }
 
   private toggleTags() {
