@@ -56,14 +56,14 @@
       >
         <el-table-column
           :label="$t('table.id')"
-          prop="id"
+          prop="row_id"
           sortable="custom"
           align="center"
           width="80"
           :class-name="getSortClass('id')"
         >
           <template slot-scope="{row}">
-            <span>{{ row.id }}</span>
+            <span>{{ row.row_id }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -132,7 +132,7 @@
         min-width="150px"
         >
           <template slot-scope="{row}">
-            <el-tag effect="dark" :type="row.status | statusFilter">
+            <el-tag effect="dark" :type="row.status | statusFilter" >
               {{ row.status | uppercaseFirstChar}}
             </el-tag>
           </template>
@@ -144,27 +144,37 @@
           class-name="fixed-width"
         >
           <template slot-scope="{row}">
-            <router-link :to="{name: 'ContactView', params: {id: row.id}}">
+            <el-tooltip class="item" effect="dark" :content="$t('table.action.show')" placement="bottom">
+              <router-link :to="{name: 'ContactView', params: {id: row.id}}">
+                <el-button
+                  icon="el-icon-view"
+                  circle
+                  class="mr-3-px"
+                >
+                </el-button>
+              </router-link>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" :content="$t('table.action.edit')" placement="bottom">
+              <router-link :to="{name: 'ContactEdit', params: {id: row.id}}">
+                <el-button
+                  icon="el-icon-edit-outline"
+                  circle
+                  class="mr-3-px"
+                >
+                </el-button>
+              </router-link>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" :content="$t('table.action.' + row.status)" placement="bottom">
               <el-button
-                icon="el-icon-view"
+                v-if="row.status !== 'deleted'"
+                :icon="iconStatus(row.status)"
+                @click="handleActivation(row)"
                 circle
+                class="mr-3-px"
+                :type="row.status === 'active' ? 'danger' : 'success'"
               >
               </el-button>
-            </router-link>
-            <router-link :to="{name: 'ContactEdit', params: {id: row.id}}">
-              <el-button
-                icon="el-icon-edit-outline"
-                circle
-              >
-              </el-button>
-            </router-link>
-            <el-button
-              v-if="row.status!=='deleted'"
-              :icon="iconStatus(row.status)"
-              @click="handleDelete(row)"
-              circle
-            >
-            </el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -196,62 +206,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import { getContacts, updateContact, defaultContactData } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import TagsDialog from './components/TagsDialog.vue'
 import MoveDialog from './components/MoveDialog.vue'
 import { IContactData } from '@/api/types'
-import Pagination from '@/components/Pagination/index.vue'
-import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
-import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
-import UploadExcelComponent from '@/components/UploadExcel/index.vue'
+import TableMixin from '@/views/mixins/TableMixin'
 
 @Component({
   name: 'ContactTable',
   components: {
-    Pagination,
     ContactTableFilters,
     TagsDialog,
-    MoveDialog,
-    TableDefaultActions,
-    TableSearchWithFilters,
-    UploadExcelComponent
+    MoveDialog
   }
 })
-
-export default class extends Vue {
-  @Ref('contactTable') readonly contactTable!: any;
-  private tableKey = 0
+export default class Contact extends Mixins(TableMixin) {
+  private reloadTable = true
   private list: IContactData[] = []
-  private total = 0
-  private listLoading = true
-  private filterLoading = false
   private tagsLoading = false
   private moveLoading = false
   private createRoute = 'ContactCreate'
   private importRoute = 'UploadContacts'
-  private listQuery = {
-    page: 1,
-    limit: 20,
-    sort: '+id'
-  }
-
-  private statusOptions = ['active', 'inactive']
-  private showReviewer = false
-  private dialogFormVisible = false
-  private dialogStatus = ''
   private contactRow = defaultContactData
-  private textMap = {
-    update: 'Edit',
-    create: 'Create'
-  }
-
-  private dialogPageviewsVisible = false
-  private pageviewsData = []
   private tagList:string[][] = []
-  private downloadLoading = false
-  private tempContactData = defaultContactData
 
   created() {
     this.getList()
@@ -276,9 +255,9 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getContacts(this.listQuery)
+    const { data, headers } = await getContacts(this.listQuery)
     this.list = data
-    this.total = data.total
+    this.total = parseInt(headers.count)
     // Just to simulate the time of the request
     setTimeout(() => {
       this.listLoading = false
@@ -305,38 +284,21 @@ export default class extends Vue {
     row.status = status
   }
 
-  private sortChange(data: any) {
-    const { prop, order } = data
-    if (prop === 'id') {
-      this.sortByID(order)
-    }
-  }
-
-  private sortByID(order: string) {
-    if (order === 'ascending') {
-      this.listQuery.sort = '+id'
-    } else {
-      this.listQuery.sort = '-id'
-    }
-  }
-
-  private getSortClass(key: string) {
-    const sort = this.listQuery.sort
-    return sort === `+${key}` ? 'ascending' : 'descending'
-  }
-
-  private handleDelete(row: any) {
+  private handleActivation(row: any) {
     this.$confirm('Are you sure?', 'Warning', {
       confirmButtonText: 'OK',
       cancelButtonText: 'Cancel',
       type: 'warning'
     }).then(() => {
-      updateContact(row.id, { status: 'inactive' })
+      const status = row.status === 'active' ? 'inactive' : 'active'
+      updateContact(row.id, { status: status })
       this.$message({
         type: 'success',
         message: 'Contact opted out'
       })
-    }).catch(() => {
+      this.getList()
+    }).catch((err) => {
+      console.log(err)
       this.$message({
         type: 'info',
         message: 'Contact not opted out'

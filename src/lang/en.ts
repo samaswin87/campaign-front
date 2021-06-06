@@ -173,12 +173,20 @@ export default {
     updatedAt: 'Updated On',
     archivedAt: 'Archived On',
     email: 'Email',
+    action: {
+      show: 'View',
+      edit: 'Edit',
+      delete: 'Delete',
+      inactive: 'Activate',
+      active: 'In Activate'
+    },
     user: {
       username: 'User Name',
       password: 'Password'
     },
     contact: {
       optOut: 'Opted Out',
+      optIn: 'Opted In',
       firstName: 'First Name',
       lastName: 'Last Name',
       middleName: 'Middle Name',

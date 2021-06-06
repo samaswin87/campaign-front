@@ -19,11 +19,11 @@ service.interceptors.request.use(
     }
     const client = getKey()
     const access = getToken()
-    if (!isEmpty(client)) {
+    if (!isEmpty(access)) {
       config.headers['X-Access-Token'] = access
     }
 
-    if (!isEmpty(access)) {
+    if (!isEmpty(client)) {
       config.headers['X-Client'] = client
     }
     return config
