@@ -48,6 +48,13 @@ export const updateContact = (id: number, data: any) =>
     data
   })
 
+export const updateStatuses = (data: any) =>
+  request({
+    url: `${BASE_URL}/statuses`,
+    method: 'put',
+    data
+  })
+
 export const deleteContact = (id: number) =>
   request({
     url: `${BASE_URL}/${id}`,

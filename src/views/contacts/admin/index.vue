@@ -13,7 +13,9 @@
             <el-button
               style="margin-left: 10px;"
               type="danger"
+              :disabled="contactBulkOpt"
               icon="el-icon-turn-off"
+              @click="toggleStatus"
             >
             </el-button>
           </el-tooltip>
@@ -212,12 +214,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { getContacts, updateContact, defaultContactData } from '@/api/contacts'
+import { getContacts, updateContact, defaultContactData, updateStatuses } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import TagsDialog from './components/TagsDialog.vue'
 import MoveDialog from './components/MoveDialog.vue'
 import { IContactData } from '@/api/types'
 import TableMixin from '@/views/mixins/TableMixin'
+import { isEmpty, map } from 'lodash'
 
 @Component({
   name: 'ContactTable',
@@ -228,14 +231,17 @@ import TableMixin from '@/views/mixins/TableMixin'
   }
 })
 export default class Contact extends Mixins(TableMixin) {
-  private multipleSelection = []
+  private multipleSelection: IContactData[] = []
   private list: IContactData[] = []
   private tagsLoading = false
   private moveLoading = false
   private createRoute = 'ContactCreate'
   private importRoute = 'UploadContacts'
   private contactRow = defaultContactData
+  private activeContacts:IContactData[] = []
+  private inActiveContacts:IContactData[] = []
   private tagList:string[][] = []
+  private contactBulkOpt = true
 
   created() {
     this.getList()
@@ -247,11 +253,32 @@ export default class Contact extends Mixins(TableMixin) {
 
   private handleSelectionChange(value) {
     this.multipleSelection = value
+    if (!isEmpty(this.multipleSelection)) {
+      this.activeContacts = this.multipleSelection.filter((value) => { return value.status === 'active' })
+      this.inActiveContacts = this.multipleSelection.filter((value) => { return value.status === 'inactive' })
+      if (!isEmpty(this.activeContacts) && !isEmpty(this.inActiveContacts)) {
+        this.contactBulkOpt = true
+      } else if (!isEmpty(this.activeContacts) || !isEmpty(this.inActiveContacts)) {
+        this.contactBulkOpt = false
+      }
+    } else {
+      this.contactBulkOpt = true
+    }
   }
 
   private toggleTags() {
     this.tagsLoading = true
     this.tagList = [...new Set(this.list.map((result) => result.tags))]
+  }
+
+  private async toggleStatus() {
+    if (!isEmpty(this.multipleSelection)) {
+      const contactIds = map(this.multipleSelection, 'id')
+      let status = isEmpty(this.activeContacts) ? 'active' : 'inactive'
+      status = isEmpty(this.inActiveContacts) ? 'inactive' : 'active'
+      await updateStatuses({ contacts: contactIds, status: status })
+    }
+    this.getList()
   }
 
   private toggleMove() {
@@ -267,10 +294,7 @@ export default class Contact extends Mixins(TableMixin) {
     const { data, headers } = await getContacts(this.listQuery)
     this.list = data
     this.total = parseInt(headers.count)
-    // Just to simulate the time of the request
-    setTimeout(() => {
-      this.listLoading = false
-    }, 0.5 * 1000)
+    this.listLoading = false
   }
 
   private handleFilter() {
