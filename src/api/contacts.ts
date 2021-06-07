@@ -34,6 +34,13 @@ export const getContact = (id: number, params: any) =>
     params
   })
 
+export const getTags = (params: any) =>
+  request({
+    url: `${BASE_URL}/tags`,
+    method: 'get',
+    params
+  })
+
 export const createContact = (data: any) =>
   request({
     url: BASE_URL,

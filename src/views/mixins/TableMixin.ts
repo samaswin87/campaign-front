@@ -21,7 +21,8 @@ export default class extends Vue {
   public listQuery = {
     page: 1,
     limit: 20,
-    sort: 'asc'
+    sort: 'asc',
+    searchparam: ''
   }
 
   public forceRerender() {

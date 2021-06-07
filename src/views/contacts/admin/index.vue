@@ -39,7 +39,7 @@
           </el-tooltip>
         </el-col>
         <el-col :span="8" class="float-right">
-            <TableSearchWithFilters @handleFilter="handleFilter" />
+            <TableSearchWithFilters @handleFilter="handleFilter" @handleSearchFilter="handleSearchFilter"/>
         </el-col>
       </el-row>
     </div>
@@ -59,7 +59,7 @@
       >
         <el-table-column
           type="selection"
-          width="55">
+          width="30">
         </el-table-column>
         <el-table-column
           :label="$t('table.id')"
@@ -93,7 +93,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('table.company')"
-          min-width="150px"
+          min-width="200px"
         >
           <template slot-scope="{row}">
             <span
@@ -111,7 +111,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('table.contact.noOfCampaigns')"
-          min-width="150px"
+          min-width="110px"
         >
           <template slot-scope="{row}">
             <span>{{ row.no_of_campaigns }}</span>
@@ -136,7 +136,7 @@
         </el-table-column>
         <el-table-column
         :label="$t('table.status')"
-        min-width="150px"
+        min-width="100px"
         >
           <template slot-scope="{row}">
             <el-tag effect="dark" :type="row.status | statusFilter" >
@@ -147,7 +147,7 @@
         <el-table-column
           :label="$t('table.actions')"
           align="center"
-          width="230"
+          width="150"
           class-name="fixed-width"
         >
           <template slot-scope="{row}">
@@ -299,6 +299,20 @@ export default class Contact extends Mixins(TableMixin) {
 
   private handleFilter() {
     this.filterLoading = true
+  }
+
+  private async handleSearchFilter(searchData: string) {
+    if (!isEmpty(searchData)) {
+      this.listLoading = true
+      this.listQuery.searchparam = searchData
+      const { data, headers } = await getContacts(this.listQuery)
+      this.list = data
+      this.total = parseInt(headers.count)
+      this.listLoading = false
+    } else {
+      this.listQuery.searchparam = ''
+      this.getList()
+    }
   }
 
   private iconStatus(status: string) {

@@ -7,9 +7,8 @@
       <el-form
         ref="contactFilterForm"
         :model="filterRecord"
-        label-position="left"
+        label-position="right"
         label-width="30%"
-        style="width: 80%; margin-left:10%;"
       >
         <el-form-item label="Status">
             <el-radio-group v-model="filterRecord.status">
@@ -43,7 +42,7 @@
               <el-radio label="Is Empty"></el-radio>
             </el-radio-group>
             <multiselect
-              v-model="filterRecord.tags"
+              v-model="filterRecord.tagName"
               :options="tags"
               :multiple="true"
               :clear-on-select="false"
@@ -82,6 +81,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import Multiselect from 'vue-multiselect'
+import { getTags } from '@/api/contacts'
+import { map } from 'lodash'
 
 @Component({
   name: 'ContactTableFilter',
@@ -90,19 +91,28 @@ import Multiselect from 'vue-multiselect'
 export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
 
-    private tags = ['vue', 'element', 'cooking', 'mint-ui', 'vuex', 'vue-router', 'babel']
+    private tags:string[] = []
 
     private filterRecord = {
       status: 'Active',
       keywords: '',
       campaigns: '',
       schduledOn: '',
-      tags: null,
-      phoneNumber: null,
+      tagName: '',
+      phoneNumber: '',
       tagOption: 'In Equal',
       campaignOption: 'In Equal',
       workflowOption: 'In Equal',
       phoneOption: 'In Equal'
+    }
+
+    created() {
+      this.fetchTags()
+    }
+
+    private async fetchTags() {
+      const { data } = await getTags({})
+      this.tags = map(data, 'name')
     }
 
     private filterContact() {

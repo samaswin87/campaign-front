@@ -4,6 +4,8 @@
           :placeholder="$t('table.search')"
           style="width: 75%;"
           class="filter-item"
+          type="text"
+          v-model="searchKeyword"
         />
 
         <el-button
@@ -11,6 +13,7 @@
           class="filter-item"
           type="primary"
           icon="el-icon-search"
+          @click="handleSearchFilter"
         >
         </el-button>
 
@@ -32,8 +35,13 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({
   name: 'TableSearchWithFilters'
 })
-
 export default class extends Vue {
+  private searchKeyword = ''
+
+  private handleSearchFilter() {
+    this.$emit('handleSearchFilter', this.searchKeyword)
+  }
+
   private handleFilter() {
     this.$emit('handleFilter')
   }
