@@ -1,16 +1,6 @@
 // Set utils function parseTime to filter
 export { parseTime, parseDate } from '@/utils'
 
-// Filter for article status
-export const articleStatusFilter = (status: string) => {
-  const statusMap: { [key: string]: string } = {
-    published: 'success',
-    draft: 'info',
-    deleted: 'danger'
-  }
-  return statusMap[status]
-}
-
 // Filter for contact number
 export const shortcodeFilter = (phone: string) => {
   return (phone.length === 5) ? 'warning' : 'success'

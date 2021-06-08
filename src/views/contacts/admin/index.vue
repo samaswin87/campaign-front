@@ -195,6 +195,7 @@
     <ContactTableFilters
       :visible.sync="filterLoading"
       @contactFiltered="contactFiltered"
+      @clearFilter="clearFilter"
     />
 
     <TagsDialog
@@ -248,7 +249,15 @@ export default class Contact extends Mixins(TableMixin) {
   }
 
   private contactFiltered(data: any) {
-    console.log(data)
+    if (!isEmpty(data)) {
+      this.listQuery.filters = data
+      this.getList()
+    }
+  }
+
+  private clearFilter() {
+    this.listQuery.filters = ''
+    this.getList()
   }
 
   private handleSelectionChange(value) {

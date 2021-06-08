@@ -22,7 +22,8 @@ export default class extends Vue {
     page: 1,
     limit: 20,
     sort: 'asc',
-    searchparam: ''
+    searchparam: '',
+    filters: ''
   }
 
   public forceRerender() {
