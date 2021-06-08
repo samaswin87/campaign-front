@@ -55,28 +55,14 @@
         border
         fit
         highlight-current-row
-        style="width: 100%;"
-        @sort-change="sortChange"
       >
         <el-table-column
           type="selection"
           width="30">
         </el-table-column>
         <el-table-column
-          :label="$t('table.id')"
-          prop="row_id"
-          sortable="custom"
-          align="center"
-          width="80"
-          :class-name="getSortClass('id')"
-        >
-          <template slot-scope="{row}">
-            <span>{{ row.row_id }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
           :label="$t('table.contact.firstName')"
-          min-width="150px"
+          min-width="130px"
         >
           <template slot-scope="{row}">
             <span
@@ -85,7 +71,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('table.contact.lastName')"
-          min-width="150px"
+          min-width="130px"
         >
           <template slot-scope="{row}">
             <span
@@ -103,7 +89,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('table.phone')"
-          min-width="150px"
+          min-width="120px"
         >
           <template slot-scope="{row}">
             <span
@@ -129,7 +115,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('table.contact.tags')"
-          min-width="150px"
+          min-width="200px"
         >
           <template slot-scope="{row}">
 
