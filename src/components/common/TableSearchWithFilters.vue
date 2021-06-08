@@ -5,6 +5,8 @@
           style="width: 75%;"
           class="filter-item"
           type="text"
+          @keyup.enter.native="handleSearchFilter"
+          @keyup.delete.native="handleSearchFilter"
           v-model="searchKeyword"
         />
 
