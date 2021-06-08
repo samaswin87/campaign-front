@@ -193,6 +193,7 @@ export default {
       email: 'Email',
       noOfCampaigns: '# of Campaign',
       keywords: 'Keywords',
+      tags: 'Tags',
       notes: 'Notes',
       gender: 'Gender',
       moveContacts: 'Move Contacts to workflow / campaigns'

@@ -68,7 +68,7 @@ export interface IContactData {
   phone: string
   notes: string
   gender: string
-  company: string
+  companyId: number
   customColumns: {}
 }
 

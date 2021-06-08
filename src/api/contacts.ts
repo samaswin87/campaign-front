@@ -16,7 +16,7 @@ export const defaultContactData: IContactData = {
   phone: '',
   notes: '',
   gender: '',
-  company: '',
+  companyId: 0,
   customColumns: {}
 }
 
@@ -39,6 +39,13 @@ export const getTags = (params: any) =>
     url: `${BASE_URL}/tags`,
     method: 'get',
     params
+  })
+
+export const updateTags = (data: any) =>
+  request({
+    url: `${BASE_URL}/update_tags`,
+    method: 'put',
+    data
   })
 
 export const createContact = (data: any) =>

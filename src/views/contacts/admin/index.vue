@@ -23,6 +23,7 @@
             <el-button
               style="margin-left: 10px;"
               type="primary"
+              :disabled="contactBulkTags"
               icon="el-icon-price-tag"
               @click="toggleTags"
             >
@@ -110,14 +111,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          :label="$t('table.contact.noOfCampaigns')"
-          min-width="110px"
-        >
-          <template slot-scope="{row}">
-            <span>{{ row.no_of_campaigns }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
           :label="$t('table.contact.keywords')"
           min-width="150px"
         >
@@ -126,6 +119,23 @@
             <span>
               <el-tag
                 v-for="item in row.keywords"
+                class="tags"
+                :key="item"
+              >
+                {{ item }}
+              </el-tag>
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('table.contact.tags')"
+          min-width="150px"
+        >
+          <template slot-scope="{row}">
+
+            <span>
+              <el-tag
+                v-for="item in row.tags"
                 class="tags"
                 :key="item"
               >
@@ -203,7 +213,9 @@
 
     <TagsDialog
       :visible.sync="tagsLoading"
-      :tagList.sync="tagList"
+      :companyId.sync="companyId"
+      :tags.sync="tags"
+      @updateTags="updateTags"
     />
 
     <MoveDialog
@@ -214,13 +226,13 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { getContacts, updateContact, defaultContactData, updateStatuses } from '@/api/contacts'
+import { getContacts, updateContact, defaultContactData, updateStatuses, updateTags } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import TagsDialog from './components/TagsDialog.vue'
 import MoveDialog from './components/MoveDialog.vue'
 import { IContactData } from '@/api/types'
 import TableMixin from '@/views/mixins/TableMixin'
-import { isEmpty, map } from 'lodash'
+import { isEmpty, map, uniq, flattenDeep, compact } from 'lodash'
 
 @Component({
   name: 'ContactTable',
@@ -235,13 +247,15 @@ export default class Contact extends Mixins(TableMixin) {
   private list: IContactData[] = []
   private tagsLoading = false
   private moveLoading = false
+  private tags: string[] = []
   private createRoute = 'ContactCreate'
   private importRoute = 'UploadContacts'
   private contactRow = defaultContactData
   private activeContacts:IContactData[] = []
   private inActiveContacts:IContactData[] = []
-  private tagList:string[][] = []
+  private companyId = 0
   private contactBulkOpt = true
+  private contactBulkTags = true
 
   created() {
     this.getList()
@@ -256,6 +270,8 @@ export default class Contact extends Mixins(TableMixin) {
     if (!isEmpty(this.multipleSelection)) {
       this.activeContacts = this.multipleSelection.filter((value) => { return value.status === 'active' })
       this.inActiveContacts = this.multipleSelection.filter((value) => { return value.status === 'inactive' })
+
+      this.contactBulkTags = !(uniq(map(this.multipleSelection, 'company_id')).length === 1)
       if (!isEmpty(this.activeContacts) && !isEmpty(this.inActiveContacts)) {
         this.contactBulkOpt = true
       } else if (!isEmpty(this.activeContacts) || !isEmpty(this.inActiveContacts)) {
@@ -263,12 +279,22 @@ export default class Contact extends Mixins(TableMixin) {
       }
     } else {
       this.contactBulkOpt = true
+      this.contactBulkTags = true
     }
   }
 
   private toggleTags() {
     this.tagsLoading = true
-    this.tagList = [...new Set(this.list.map((result) => result.tags))]
+    this.tags = uniq(compact(flattenDeep(map(this.multipleSelection, 'tags'))))
+    this.companyId = uniq(map(this.multipleSelection, 'company_id'))[0]
+  }
+
+  private async updateTags(data: any) {
+    if (!isEmpty(data) && !isEmpty(this.multipleSelection)) {
+      const contactIds = map(this.multipleSelection, 'id')
+      await updateTags({ tags: data, contacts: contactIds })
+    }
+    this.getList()
   }
 
   private async toggleStatus() {
@@ -290,6 +316,7 @@ export default class Contact extends Mixins(TableMixin) {
   }
 
   private async getList() {
+    this.companyId = 0
     this.listLoading = true
     const { data, headers } = await getContacts(this.listQuery)
     this.list = data

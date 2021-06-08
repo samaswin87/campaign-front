@@ -6,10 +6,10 @@
       :before-close="handleClose"
     >
       <multiselect
-        v-model="tags"
+        v-model="existingTags"
         tag-placeholder="Add this as new tag"
         placeholder="Search or add a tag"
-        :options="tagsAvailable"
+        :options="tagsApplicable"
         :multiple="true"
         :clear-on-select="false"
         :close-on-select="false"
@@ -26,6 +26,7 @@
         </el-button>
         <el-button
           type="primary"
+          @click="handleSubmit"
         >
           {{ $t('table.apply') }}
         </el-button>
@@ -36,8 +37,8 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import Multiselect from 'vue-multiselect'
-import { map } from 'lodash'
-import { getTags } from '@/api/tags'
+import { map, difference } from 'lodash'
+import { getTagsByCompany } from '@/api/tags'
 
 @Component({
   name: 'TagsDialog',
@@ -45,10 +46,12 @@ import { getTags } from '@/api/tags'
 })
 export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
-    @Prop() private tagList!: string[]
+    @Prop() private companyId!: number
+    @Prop() private tags!: string[]
 
-    private tags: string[] = []
     private tagsAvailable: string[] = []
+    private existingTags: string[] = []
+    private tagsApplicable: string[] = []
 
     private close() {
       this.$emit('update:visible', false)
@@ -58,26 +61,35 @@ export default class extends Vue {
       this.$emit('update:visible', false)
     }
 
-    @Watch('tagList')
-    setTagList() {
-      this.tags = [...new Set(this.tagList.flat())]
-    }
-
-    addTag(newTag: string) {
-      this.tags.push(newTag)
-    }
-
     created() {
       this.fetchTags()
     }
 
+    @Watch('companyId')
+    setCompanyId() {
+      this.tagsAvailable = this.tags
+      this.existingTags = this.tags
+      this.fetchTags()
+    }
+
+    addTag(newTag: string) {
+      this.existingTags.push(newTag)
+    }
+
     private async fetchTags() {
       try {
-        // const { data } = await getTags({})
-        // this.tagsAvailable = map(data.items, 'name')
+        const { data } = await getTagsByCompany(this.companyId, {})
+        this.tagsApplicable = difference(map(data, 'name'), this.existingTags)
       } catch (err) {
         console.error(err)
       }
+    }
+
+    private handleSubmit() {
+      const addedTags: string[] = difference(this.existingTags, this.tagsAvailable)
+      const removedTags: string[] = difference(this.tagsAvailable, this.existingTags)
+      this.$emit('updateTags', { added: addedTags, removed: removedTags })
+      this.$emit('update:visible', false)
     }
 }
 </script>
