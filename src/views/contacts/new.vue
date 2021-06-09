@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <div class="contact-container">
-            <el-row>
+            <el-row class="mb-10-px">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>New contact</span>
@@ -9,188 +9,113 @@
                     <el-form
                     ref="contactForm"
                     :model="contactData"
+                    :rules="rules"
+                    label-width="40%"
                     class="form-container"
                     >
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.company')}}:</label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <multiselect
-                                    v-model="contactData.company"
-                                    placeholder="Search one company"
-                                    :options="companies"
-                                    :clear-on-select="false"
-                                    :close-on-select="false"
-                                    >
-                                    </multiselect>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.company')" label-position="right" prop="company">
+                            <el-select v-model="contactData.company" placeholder="Select a company" class="w-30-ratio">
+                                <el-option
+                                v-for="item in companies"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.firstName')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add first name"
-                                        v-model="contactData.firstName"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.contact.firstName')" label-position="right" prop="firstName">
+                            <el-input
+                            placeholder="Please add first name"
+                            v-model="contactData.firstName"
+                            class="w-30-ratio"
+                            clearable>
+                            </el-input>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.lastName')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add last name"
-                                        v-model="contactData.lastName"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.contact.lastName')" label-position="right" prop="lastName">
+                            <el-input
+                            placeholder="Please add last name"
+                            v-model="contactData.lastName"
+                            class="w-30-ratio"
+                            clearable>
+                            </el-input>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.middleName')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                         <el-input
-                                        placeholder="Please add middle name"
-                                        v-model="contactData.middleName"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.contact.middleName')" label-position="right" prop="middleName">
+                            <el-input
+                            placeholder="Please add middle name"
+                            v-model="contactData.middleName"
+                            class="w-30-ratio"
+                            clearable>
+                            </el-input>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.gender')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-switch
-                                        v-model="contactData.gender"
-                                        active-text="Male"
-                                        active-color="#13ce66"
-                                        inactive-color="#ff4949"
-                                        inactive-text="Female">
-                                        </el-switch>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.contact.email')" label-position="right" prop="email">
+                            <el-input
+                            placeholder="Please add email"
+                            v-model="contactData.email"
+                            class="w-30-ratio"
+                            clearable>
+                            </el-input>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.email')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add email"
-                                        v-model="contactData.email"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.phone')" label-position="right" prop="phone">
+                            <el-input
+                            class="w-30-ratio"
+                            placeholder="Please add phone"
+                            v-model="contactData.phone"
+                            clearable>
+                            </el-input>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.tags')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <multiselect
-                                        v-model="contactData.tags"
-                                        tag-placeholder="Add this as new tag"
-                                        placeholder="Search or add a tag"
-                                        :options="tags"
-                                        :multiple="true"
-                                        :clear-on-select="false"
-                                        :close-on-select="false"
-                                        :taggable="true"
-                                        @tag="addTag"
-                                        >
-                                        </multiselect>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.contact.gender')" label-position="right" prop="gender">
+                            <el-switch
+                            v-model="contactData.gender"
+                            active-text="Male"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949"
+                            inactive-text="Female">
+                            </el-switch>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.phone')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        placeholder="Please add phone"
-                                        v-model="contactData.phone"
-                                        clearable>
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.tags')" label-position="right" prop="tags">
+                            <multiselect
+                            v-model="contactData.tags"
+                            class="w-30-ratio"
+                            tag-placeholder="Add this as new tag"
+                            placeholder="Search or add a tag"
+                            :options="tags"
+                            :multiple="true"
+                            :clear-on-select="false"
+                            :close-on-select="false"
+                            :taggable="true"
+                            @tag="addTag"
+                            >
+                            </multiselect>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.notes')}}: </label></div>
-                            </el-col>
-                            <el-col :span="5" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-input
-                                        type="textarea"
-                                        :rows="2"
-                                        placeholder="Notes"
-                                        v-model="contactData.notes">
-                                        </el-input>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <el-form-item :label="$t('table.contact.notes')" label-position="right" prop="notes">
+                            <el-input
+                            class="w-30-ratio"
+                            type="textarea"
+                            :rows="2"
+                            placeholder="Please add notes"
+                            v-model="contactData.notes"
+                            clearable>
+                            </el-input>
+                        </el-form-item>
 
-                        <el-row class="content-row">
-                            <el-col :span="14"  class="content-label">
-                                <div class="grid-content">
-                                    <router-link :to="'/contacts'">
-                                        <el-button>
-                                            Cancel
-                                        </el-button>
-                                    </router-link>
-                                </div>
-                            </el-col>
-                            <el-col :span="2"  class="content-button">
-                                <el-button type="primary">
-                                    Submit
+                        <el-form-item size="large">
+                            <router-link :to="'/contacts'">
+                                <el-button class="ml-11-ratio mr-10-px">
+                                    Cancel
                                 </el-button>
-                            </el-col>
-                        </el-row>
+                            </router-link>
+                            <el-button type="primary" @click="submitForm()">
+                                Submit
+                            </el-button>
+                        </el-form-item>
                     </el-form>
                 </el-card>
             </el-row>
@@ -202,6 +127,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultContactData } from '@/api/contacts'
 import { getCompanies } from '@/api/companies'
+import { Form } from 'element-ui'
 import { getTags } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
 import { map } from 'lodash'
@@ -214,6 +140,25 @@ export default class extends Vue {
     private contactData = defaultContactData
     private companies :string[] = []
     private tags :string[] = []
+    private rules = {
+      company: [
+        { required: true, message: 'Please select one company', trigger: 'blur' }
+      ],
+      firstName: [
+        { required: true, message: 'Please input first name', trigger: 'blur' },
+        { min: 3, message: 'Length should be more than 3', trigger: 'blur' }
+      ],
+      lastName: [
+        { required: true, message: 'Please input last name', trigger: 'blur' },
+        { min: 3, message: 'Length should be more than 3', trigger: 'blur' }
+      ],
+      email: [
+        { required: true, message: 'Please input email', trigger: 'blur' }
+      ],
+      phone: [
+        { required: true, message: 'Please input phone', trigger: 'blur' }
+      ]
+    }
 
     created() {
       this.fetchCompanies()
@@ -222,7 +167,7 @@ export default class extends Vue {
 
     private async fetchCompanies() {
       try {
-        const { data } = await getCompanies({ /* Your params here */ })
+        const { data } = await getCompanies({ })
         this.companies = map(data.items, 'name')
       } catch (err) {
         console.error(err)
@@ -231,11 +176,19 @@ export default class extends Vue {
 
     private async fetchTags() {
       try {
-        const { data } = await getTags({ /* Your params here */ })
-        this.tags = map(data.items, 'name')
+        // const { data } = await getTags({ })
+        // this.tags = map(data.items, 'name')
       } catch (err) {
         console.error(err)
       }
+    }
+
+    private submitForm() {
+      (this.$refs.contactForm as Form).validate(async(valid) => {
+        if (valid) {
+          alert('submit!')
+        }
+      })
     }
 
     addTag(newTag: string) {
@@ -244,25 +197,3 @@ export default class extends Vue {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.content-label {
-    text-align: end;
-}
-
-.content-vlaue {
-    margin-left: 3%;
-}
-
-.content-row {
-    margin-bottom: 1%;
-}
-
-.tags {
-  margin-left: 6px;
-}
-
-.content-button {
-    margin-left: 28px;
-}
-</style>
