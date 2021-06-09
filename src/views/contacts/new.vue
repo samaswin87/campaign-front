@@ -91,7 +91,7 @@
                             placeholder="Search or add a tag"
                             :options="tags"
                             label="name"
-                            track-by="id"
+                            track-by="name"
                             :multiple="true"
                             :clear-on-select="false"
                             :close-on-select="false"
@@ -136,7 +136,6 @@ import { getCompanyNames } from '@/api/companies'
 import { Form } from 'element-ui'
 import { getTagNames } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
-import { forEach } from 'lodash'
 
 @Component({
   name: 'ContactView',
@@ -146,6 +145,8 @@ export default class extends Vue {
     private contactData = defaultContactData
     private companies :string[] = []
     private tags :any[] = []
+
+    // Validation reference: https://programmer.help/blogs/three-ways-of-form-validation-in-element-ui.html
     private rules = {
       company: [
         { required: true, message: 'Please select one company', trigger: 'blur' }
@@ -159,7 +160,7 @@ export default class extends Vue {
         { min: 3, message: 'Length should be more than 3', trigger: 'blur' }
       ],
       email: [
-        { required: true, message: 'Please input email', trigger: 'blur' }
+        { required: true, message: 'Please input valid email', trigger: 'blur', pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ }
       ],
       phone: [
         { required: true, message: 'Please input phone', trigger: 'blur' }
@@ -192,10 +193,15 @@ export default class extends Vue {
       }
     }
 
+    private validEmail(email) {
+      var format = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return format.test(email)
+    }
+
     private submitForm() {
       (this.$refs.contactForm as Form).validate(async(valid) => {
         if (valid) {
-          alert('submit!')
+          console.log(this.contactData)
         }
       })
     }
