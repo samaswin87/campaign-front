@@ -135,7 +135,8 @@ import { Form } from 'element-ui'
 import { convertToHash } from '@/utils/json'
 import { getTagNames } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
-import { map, isEmpty } from 'lodash'
+import { map, isEmpty, filter } from 'lodash'
+import { TagsViewModule } from '@/store/modules/tags-view'
 
 @Component({
   name: 'ContactView',
@@ -203,6 +204,8 @@ export default class extends Vue {
         if (valid) {
           const { data } = await createContact({ recipient: convertToHash(this.contactData) })
           if (!isEmpty(data)) {
+            const view = filter(TagsViewModule.visitedViews, ['name', 'ContactCreate'])
+            TagsViewModule.delView(view[0])
             this.$router.push({ path: '/contacts' })
           }
         }
