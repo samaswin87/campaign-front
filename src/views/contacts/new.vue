@@ -15,7 +15,7 @@
                     >
                         <el-form-item :label="$t('table.company')" label-position="right" prop="company">
                             <el-select
-                                v-model="contactData.company"
+                                v-model="contactData.companyId"
                                 placeholder="Select a company"
                                 @change="changeCompany"
                                 class="w-30-ratio">
@@ -90,8 +90,6 @@
                             tag-placeholder="Add this as new tag"
                             placeholder="Search or add a tag"
                             :options="tags"
-                            label="name"
-                            track-by="name"
                             :multiple="true"
                             :clear-on-select="false"
                             :close-on-select="false"
@@ -131,11 +129,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultContactData } from '@/api/contacts'
+import { defaultContactData, createContact } from '@/api/contacts'
 import { getCompanyNames } from '@/api/companies'
 import { Form } from 'element-ui'
+import { convertToHash } from '@/utils/json'
 import { getTagNames } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
+import { map, isEmpty } from 'lodash'
 
 @Component({
   name: 'ContactView',
@@ -148,7 +148,7 @@ export default class extends Vue {
 
     // Validation reference: https://programmer.help/blogs/three-ways-of-form-validation-in-element-ui.html
     private rules = {
-      company: [
+      companyId: [
         { required: true, message: 'Please select one company', trigger: 'blur' }
       ],
       firstName: [
@@ -187,7 +187,7 @@ export default class extends Vue {
     private async fetchTags(id: number) {
       try {
         const { data } = await getTagNames(id, { })
-        this.tags = data
+        this.tags = map(data, 'name')
       } catch (err) {
         console.error(err)
       }
@@ -198,10 +198,13 @@ export default class extends Vue {
       return format.test(email)
     }
 
-    private submitForm() {
+    private async submitForm() {
       (this.$refs.contactForm as Form).validate(async(valid) => {
         if (valid) {
-          console.log(this.contactData)
+          const { data } = await createContact({ recipient: convertToHash(this.contactData) })
+          if (!isEmpty(data)) {
+            this.$router.push({ path: '/contacts' })
+          }
         }
       })
     }

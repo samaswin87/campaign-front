@@ -4,7 +4,6 @@ import { IContactData } from './types'
 const BASE_URL = 'platforms/recipients'
 
 export const defaultContactData: IContactData = {
-  id: 0,
   status: 'active',
   firstName: '',
   lastName: '',
@@ -12,12 +11,9 @@ export const defaultContactData: IContactData = {
   email: '',
   tags: [],
   noOfCampaigns: 0,
-  keywords: [''],
   phone: '',
   notes: '',
-  gender: '',
-  companyId: 0,
-  customColumns: {}
+  gender: true
 }
 
 export const getContacts = (params: any) =>

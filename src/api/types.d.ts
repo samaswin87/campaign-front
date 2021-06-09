@@ -56,7 +56,6 @@ export interface ICompanyData {
 }
 
 export interface IContactData {
-  id: number
   status: string
   firstName: string
   lastName: string
@@ -64,12 +63,9 @@ export interface IContactData {
   email: string
   tags: string[]
   noOfCampaigns: number
-  keywords: string[]
   phone: string
   notes: string
-  gender: string
-  companyId: number
-  customColumns: {}
+  gender: boolean
 }
 
 export interface IWorkflowFinalResponseData {

@@ -36,7 +36,7 @@ service.interceptors.request.use(
 // Response interceptors
 service.interceptors.response.use(
   (response) => {
-    if (response.status !== 200) {
+    if (![200, 201].includes(response.status)) {
       Message({
         message: response.statusText || 'Error',
         type: 'error',
