@@ -41,6 +41,13 @@ export const getTags = (params: any) =>
     params
   })
 
+export const getKeywords = (params: any) =>
+  request({
+    url: `${BASE_URL}/keywords`,
+    method: 'get',
+    params
+  })
+
 export const updateTags = (data: any) =>
   request({
     url: `${BASE_URL}/update_tags`,

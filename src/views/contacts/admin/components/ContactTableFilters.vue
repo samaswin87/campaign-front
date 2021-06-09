@@ -18,9 +18,21 @@
         </el-form-item>
         <el-form-item label="Tags">
             <multiselect
-              v-model="filterRecord.tagName"
+              v-model="filterRecord.tagNames"
               :options="tags"
               placeholder="Select tags"
+              :multiple="true"
+              :clear-on-select="false"
+              :close-on-select="false"
+              class="w-60-ratio"
+            >
+            </multiselect>
+        </el-form-item>
+        <el-form-item label="Keywords">
+            <multiselect
+              v-model="filterRecord.keywords"
+              :options="keywords"
+              placeholder="Select keywords"
               :multiple="true"
               :clear-on-select="false"
               :close-on-select="false"
@@ -84,8 +96,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Form } from 'element-ui'
 import Multiselect from 'vue-multiselect'
-import { getTags } from '@/api/contacts'
-import { isEmpty, map } from 'lodash'
+import { getTags, getKeywords } from '@/api/contacts'
+import { isEmpty } from 'lodash'
 
 @Component({
   name: 'ContactTableFilter',
@@ -95,12 +107,13 @@ export default class extends Vue {
     @Prop({ required: true }) private visible!: boolean
 
     private tags:string[] = []
+    private keywords:string[] = []
 
     private filterRecord = {
       status: '',
-      keywords: '',
+      keywords: [],
       schduledOn: '',
-      tagName: '',
+      tagNames: [],
       phoneNumber: '',
       email: '',
       sortedBy: '',
@@ -122,11 +135,17 @@ export default class extends Vue {
 
     created() {
       this.fetchTags()
+      this.fetchKeywords()
     }
 
     private async fetchTags() {
       const { data } = await getTags({})
-      this.tags = map(data, 'name')
+      this.tags = data
+    }
+
+    private async fetchKeywords() {
+      const { data } = await getKeywords({})
+      this.keywords = data
     }
 
     private filterContact() {
@@ -144,6 +163,15 @@ export default class extends Vue {
           if (!isEmpty(this.filterRecord.emailOption) && !isEmpty(this.filterRecord.email)) {
             this.filterrific.with_email = this.filterRecord.emailOption + '_eq_' + this.filterRecord.email
           }
+
+          if (!isEmpty(this.filterRecord.tagNames)) {
+            this.filterrific.with_tags = this.filterRecord.tagNames.join('_')
+          }
+
+          if (!isEmpty(this.filterRecord.keywords)) {
+            this.filterrific.with_keywords = this.filterRecord.keywords.join('_')
+          }
+
           this.$emit('contactFiltered', this.filterrific)
         }
       })
@@ -159,6 +187,21 @@ export default class extends Vue {
     }
 
     private clearFilter() {
+      this.filterRecord = {
+        status: '',
+        schduledOn: '',
+        tagNames: [],
+        keywords: [],
+        phoneNumber: '',
+        email: '',
+        sortedBy: '',
+        sortedOption: '',
+        tagOption: '',
+        workflowOption: '',
+        phoneOption: '',
+        emailOption: ''
+      }
+
       this.filterrific = {
         status_by: '',
         with_phone: '',
