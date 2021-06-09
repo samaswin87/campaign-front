@@ -33,6 +33,7 @@
             <el-button
               style="margin-left: 10px;"
               type="primary"
+              :disabled="contactBulkMove"
               icon="el-icon-copy-document"
               @click="toggleMove"
             >
@@ -247,6 +248,7 @@ export default class Contact extends Mixins(TableMixin) {
   private companyId = 0
   private contactBulkOpt = true
   private contactBulkTags = true
+  private contactBulkMove = true
 
   created() {
     this.getList()
@@ -273,6 +275,7 @@ export default class Contact extends Mixins(TableMixin) {
       this.inActiveContacts = this.multipleSelection.filter((value) => { return value.status === 'inactive' })
 
       this.contactBulkTags = !(uniq(map(this.multipleSelection, 'company_id')).length === 1)
+      this.contactBulkMove = this.contactBulkTags
       if (!isEmpty(this.activeContacts) && !isEmpty(this.inActiveContacts)) {
         this.contactBulkOpt = true
       } else if (!isEmpty(this.activeContacts) || !isEmpty(this.inActiveContacts)) {
@@ -281,6 +284,7 @@ export default class Contact extends Mixins(TableMixin) {
     } else {
       this.contactBulkOpt = true
       this.contactBulkTags = true
+      this.contactBulkMove = true
     }
   }
 
