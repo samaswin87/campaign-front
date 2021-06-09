@@ -11,9 +11,16 @@ export const defaultTagData: ITagData = {
   updatedAt: ''
 }
 
-export const getTags = (params: any) =>
+export const getTags = (id: number, params: any) =>
   request({
-    url: '/tags',
+    url: `companies/${id}/tags`,
+    method: 'get',
+    params
+  })
+
+export const getTagNames = (id: number, params: any) =>
+  request({
+    url: `companies/${id}/tags/names`,
     method: 'get',
     params
   })

@@ -103,6 +103,12 @@ export const getCompanies = (params: any) =>
     params
   })
 
+export const getCompanyNames = () =>
+  request({
+    url: '/companies/names',
+    method: 'get'
+  })
+
 export const getCompany = (id: number, params: any) =>
   request({
     url: `/companies/${id}`,

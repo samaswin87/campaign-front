@@ -14,7 +14,11 @@
                     class="form-container"
                     >
                         <el-form-item :label="$t('table.company')" label-position="right" prop="company">
-                            <el-select v-model="contactData.company" placeholder="Select a company" class="w-30-ratio">
+                            <el-select
+                                v-model="contactData.company"
+                                placeholder="Select a company"
+                                @change="changeCompany"
+                                class="w-30-ratio">
                                 <el-option
                                 v-for="item in companies"
                                 :key="item.id"
@@ -86,6 +90,8 @@
                             tag-placeholder="Add this as new tag"
                             placeholder="Search or add a tag"
                             :options="tags"
+                            label="name"
+                            track-by="id"
                             :multiple="true"
                             :clear-on-select="false"
                             :close-on-select="false"
@@ -126,11 +132,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultContactData } from '@/api/contacts'
-import { getCompanies } from '@/api/companies'
+import { getCompanyNames } from '@/api/companies'
 import { Form } from 'element-ui'
-import { getTags } from '@/api/tags'
+import { getTagNames } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
-import { map } from 'lodash'
+import { forEach } from 'lodash'
 
 @Component({
   name: 'ContactView',
@@ -139,7 +145,7 @@ import { map } from 'lodash'
 export default class extends Vue {
     private contactData = defaultContactData
     private companies :string[] = []
-    private tags :string[] = []
+    private tags :any[] = []
     private rules = {
       company: [
         { required: true, message: 'Please select one company', trigger: 'blur' }
@@ -162,22 +168,25 @@ export default class extends Vue {
 
     created() {
       this.fetchCompanies()
-      this.fetchTags()
     }
 
     private async fetchCompanies() {
       try {
-        const { data } = await getCompanies({ })
-        this.companies = map(data.items, 'name')
+        const { data } = await getCompanyNames()
+        this.companies = data
       } catch (err) {
         console.error(err)
       }
     }
 
-    private async fetchTags() {
+    private changeCompany(data: any) {
+      this.fetchTags(data)
+    }
+
+    private async fetchTags(id: number) {
       try {
-        // const { data } = await getTags({ })
-        // this.tags = map(data.items, 'name')
+        const { data } = await getTagNames(id, { })
+        this.tags = data
       } catch (err) {
         console.error(err)
       }
