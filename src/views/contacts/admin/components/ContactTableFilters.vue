@@ -79,7 +79,7 @@
         <el-button @click="close">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button @click="clearFilter" type="warning">
+        <el-button @click="clearFilter" type="warning" v-if="clear">
           {{ $t('table.clearFilter') }}
         </el-button>
         <el-button
@@ -108,6 +108,7 @@ export default class extends Vue {
 
     private tags:string[] = []
     private keywords:string[] = []
+    private clear = false
 
     private filterRecord = {
       status: '',
@@ -151,6 +152,7 @@ export default class extends Vue {
     private filterContact() {
       (this.$refs.contactFilterForm as Form).validate(async(valid) => {
         if (valid) {
+          this.clear = true
           this.filterrific.status_by = this.filterRecord.status
           if (!isEmpty(this.filterRecord.sortedBy) && !isEmpty(this.filterRecord.sortedOption)) {
             this.filterrific.sorted_by = this.filterRecord.sortedBy + '_' + this.filterRecord.sortedOption
@@ -210,6 +212,7 @@ export default class extends Vue {
         with_keywords: '',
         sorted_by: ''
       }
+      this.clear = false
       this.$emit('clearFilter')
       this.$emit('update:visible', false)
     }

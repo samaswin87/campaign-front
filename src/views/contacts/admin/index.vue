@@ -40,7 +40,10 @@
           </el-tooltip>
         </el-col>
         <el-col :span="8" class="float-right">
-            <TableSearchWithFilters @handleFilter="handleFilter" @handleSearchFilter="handleSearchFilter"/>
+            <TableSearchWithFilters
+            :filterIcon.sync="filterIcon"
+            @handleFilter="handleFilter"
+            @handleSearchFilter="handleSearchFilter"/>
         </el-col>
       </el-row>
     </div>
@@ -236,6 +239,7 @@ export default class Contact extends Mixins(TableMixin) {
   private moveLoading = false
   private tags: string[] = []
   private createRoute = 'ContactCreate'
+  private filterIcon = 'filter-solid'
   private importRoute = 'UploadContacts'
   private contactRow = defaultContactData
   private activeContacts:IContactData[] = []
@@ -250,6 +254,7 @@ export default class Contact extends Mixins(TableMixin) {
 
   private contactFiltered(data: any) {
     if (!isEmpty(data)) {
+      this.filterIcon = 'filter-clear'
       this.listQuery.filters = data
       this.getList()
     }
@@ -257,6 +262,7 @@ export default class Contact extends Mixins(TableMixin) {
 
   private clearFilter() {
     this.listQuery.filters = ''
+    this.filterIcon = 'filter-solid'
     this.getList()
   }
 

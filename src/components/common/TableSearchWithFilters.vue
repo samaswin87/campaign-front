@@ -26,18 +26,19 @@
           circle
           @click="handleFilter"
           >
-          <svg-icon name="filter-solid" />
+          <svg-icon :name="this.filterIcon" />
         </el-button>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   name: 'TableSearchWithFilters'
 })
 export default class extends Vue {
+  @Prop({ required: true }) private filterIcon!: string
   private searchKeyword = ''
 
   private handleSearchFilter() {
