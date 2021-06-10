@@ -140,6 +140,7 @@ export default class extends Vue {
     private id = -1
     private companies :string[] = []
     private tags :any[] = []
+    private isValid = true
 
     // Validation reference: https://programmer.help/blogs/three-ways-of-form-validation-in-element-ui.html
     private rules = {
@@ -158,12 +159,11 @@ export default class extends Vue {
         { required: true, message: 'Please input valid email', trigger: 'blur', pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ }
       ],
       phone: [
-        { required: true, message: 'Please input phone', trigger: 'blur' }
+        { validator: this.validatePhone, trigger: 'blur' }
       ]
     }
 
     created() {
-      console.log(this.contactData.country_code)
       const id = this.$route.params && this.$route.params.id
       if (id) {
         this.id = parseInt(id)
@@ -175,6 +175,17 @@ export default class extends Vue {
     private updateCountryCode(event) {
       this.contactData.country_code = event.countryCode
       this.contactData.country_extension = event.countryCallingCode
+      this.isValid = event.isValid
+    }
+
+    private validatePhone(rule, value, callback) {
+      if (value === '') {
+        callback(new Error('Please input the phone'))
+      } else if (!this.isValid) {
+        callback(new Error('Please enter valid phone number'))
+      } else {
+        callback()
+      }
     }
 
     private async fetchCompanies() {
