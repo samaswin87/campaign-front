@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { TagsViewModule } from '@/store/modules/tags-view'
+import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 
 @Component({
   name: 'AppMain'

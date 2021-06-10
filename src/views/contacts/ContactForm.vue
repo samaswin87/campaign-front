@@ -39,11 +39,7 @@
                           </el-form-item>
 
                           <el-form-item :label="$t('table.phone')" label-position="right" prop="phone">
-                              <el-input
-                              placeholder="Please add phone"
-                              v-model="contactData.phone"
-                              clearable>
-                              </el-input>
+                              <VuePhoneNumberInput v-model="contactData.phone" :default-country-code="contactData.countryCode" @update="updateCountryCode($event)"/>
                           </el-form-item>
 
                           <el-form-item :label="$t('table.tags')" label-position="right" prop="tags">
@@ -132,10 +128,11 @@ import { getTagNames } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
 import { map, isEmpty, filter, omit } from 'lodash'
 import { TagsViewModule } from '@/store/modules/tags-view'
+import VuePhoneNumberInput from 'vue-phone-number-input'
 
 @Component({
   name: 'ContactForm',
-  components: { Multiselect }
+  components: { Multiselect, VuePhoneNumberInput }
 })
 export default class extends Vue {
     @Prop({ required: true }) private title!: string
@@ -166,12 +163,18 @@ export default class extends Vue {
     }
 
     created() {
+      console.log(this.contactData.country_code)
       const id = this.$route.params && this.$route.params.id
       if (id) {
         this.id = parseInt(id)
         this.fetchContact(parseInt(id))
       }
       this.fetchCompanies()
+    }
+
+    private updateCountryCode(event) {
+      this.contactData.country_code = event.countryCode
+      this.contactData.country_extension = event.countryCallingCode
     }
 
     private async fetchCompanies() {
@@ -242,3 +245,13 @@ export default class extends Vue {
     }
 }
 </script>
+
+<style scoped>
+::v-deep .country-selector__label {
+  top: -6px !important;
+}
+
+::v-deep .input-tel__label {
+  top: -6px !important;
+}
+</style>
