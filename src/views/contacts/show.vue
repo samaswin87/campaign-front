@@ -7,142 +7,149 @@
                         <span>Contact</span>
                     </div>
                     <div>
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.status')}}:</label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span><el-tag type="success">{{contactData.status}}</el-tag></span></div>
-                            </el-col>
-                        </el-row>
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.company')}}:</label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.company}}</span></div>
-                            </el-col>
-                        </el-row>
+                        <el-row>
+                            <el-col :span="12">
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right mt-5-px">
+                                        <label>{{$t('table.status')}}:</label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px"><el-tag type="success">{{contactData.status}}</el-tag></span>
+                                    </el-col>
+                                </el-row>
 
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.firstName')}}: </label></div>
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6"  class="text-right">
+                                        <label>{{$t('table.company')}}:</label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.company_name}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right">
+                                        <label>{{$t('table.contact.email')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.email}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right">
+                                        <label>{{$t('table.phone')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.phone}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right">
+                                        <label>{{$t('table.tags')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">
+                                            <el-tag
+                                            v-for="item in contactData.tags"
+                                            class="tags"
+                                            :key="item"
+                                            >
+                                                {{ item }}
+                                            </el-tag>
+                                        </span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right">
+                                        <label>{{$t('table.contact.notes')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.notes}}</span>
+                                    </el-col>
+                                </el-row>
                             </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.firstName}}</span></div>
+                            <el-col :span="12">
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6"  class="text-right">
+                                        <label>{{$t('table.contact.firstName')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.first_name}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6"  class="text-right">
+                                        <label>{{$t('table.contact.lastName')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.last_name}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6"  class="text-right">
+                                        <label>{{$t('table.contact.middleName')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.middle_name}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right mt-1-px">
+                                        <label>{{$t('table.contact.gender')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">
+                                            <el-switch
+                                            v-model="contactData.gender"
+                                            active-text="Male"
+                                            disabled
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949"
+                                            inactive-text="Female">
+                                            </el-switch>
+                                        </span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right">
+                                        <label>{{$t('table.contact.noOfCampaigns')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">{{contactData.no_of_campaigns}}</span>
+                                    </el-col>
+                                </el-row>
+
+                                <el-row class="mb-10-px">
+                                    <el-col :span="6" class="text-right">
+                                        <label>{{$t('table.contact.keywords')}}: </label>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <span class="ml-10-px">
+                                            <el-tag
+                                            v-for="item in contactData.keywords"
+                                            class="tags"
+                                            :key="item"
+                                            >
+                                                {{ item }}
+                                            </el-tag>
+                                        </span>
+                                    </el-col>
+                                </el-row>
+
                             </el-col>
                         </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.lastName')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.lastName}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.middleName')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.middleName}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.gender')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.gender}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.email')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.email}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.tags')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-tag
-                                        v-for="item in contactData.tags"
-                                        class="tags"
-                                        :key="item"
-                                        >
-                                            {{ item }}
-                                        </el-tag>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.noOfCampaigns')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.noOfCampaigns}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.keywords')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content">
-                                    <span>
-                                        <el-tag
-                                        v-for="item in contactData.keywords"
-                                        class="tags"
-                                        :key="item"
-                                        >
-                                            {{ item }}
-                                        </el-tag>
-                                    </span>
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.phone')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.phone}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="10" class="content-label">
-                                <div class="grid-content"><label class="label-space">{{$t('table.contact.notes')}}: </label></div>
-                            </el-col>
-                            <el-col :span="10" class="content-vlaue">
-                                <div class="grid-content"><span>{{contactData.notes}}</span></div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row class="content-row">
-                            <el-col :span="12"  class="content-label">
-                                <div class="grid-content">
-                                    <router-link :to="'/contacts'">
-                                        <el-button type="primary" icon="el-icon-caret-left">
-                                            Back
-                                        </el-button>
-                                    </router-link>
-                                </div>
+                        <el-row class="mb-10-px">
+                            <el-col :span="12" class="text-right">
+                                <el-button type="primary" icon="el-icon-caret-left" @click="back">
+                                    Back
+                                </el-button>
                             </el-col>
                         </el-row>
                     </div>
@@ -155,6 +162,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { defaultContactData, getContact } from '@/api/contacts'
+import { filter } from 'lodash'
+import { TagsViewModule } from '@/store/modules/tags-view'
 
 @Component({
   name: 'ContactView'
@@ -169,29 +178,17 @@ export default class extends Vue {
 
     private async fetchData(id: number) {
       try {
-        const { data } = await getContact(id, { /* Your params here */ })
-        this.contactData = data.contact
+        const { data } = await getContact(id, {})
+        this.contactData = data
       } catch (err) {
         console.error(err)
       }
     }
+
+    private back() {
+      const view = filter(TagsViewModule.visitedViews, ['name', 'ContactView'])
+      TagsViewModule.delView(view[0])
+      this.$router.push({ path: '/contacts' })
+    }
 }
 </script>
-
-<style lang="scss" scoped>
-.content-label {
-    text-align: end;
-}
-
-.content-vlaue {
-    margin-left: 3%;
-}
-
-.content-row {
-    margin-bottom: 1%;
-}
-
-.tags {
-  margin-left: 6px;
-}
-</style>
