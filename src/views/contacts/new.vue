@@ -13,12 +13,14 @@
                     label-width="40%"
                     class="form-container"
                     >
-                        <el-form-item :label="$t('table.company')" label-position="right" prop="company">
+                      <el-row>
+                        <el-col :span="12">
+                          <el-form-item :label="$t('table.company')" label-position="right" prop="companyId">
                             <el-select
                                 v-model="contactData.companyId"
                                 placeholder="Select a company"
                                 @change="changeCompany"
-                                class="w-30-ratio">
+                                class="w-100-ratio">
                                 <el-option
                                 v-for="item in companies"
                                 :key="item.id"
@@ -26,67 +28,27 @@
                                 :value="item.id">
                                 </el-option>
                             </el-select>
-                        </el-form-item>
+                          </el-form-item>
 
-                        <el-form-item :label="$t('table.contact.firstName')" label-position="right" prop="firstName">
-                            <el-input
-                            placeholder="Please add first name"
-                            v-model="contactData.firstName"
-                            class="w-30-ratio"
-                            clearable>
-                            </el-input>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('table.contact.lastName')" label-position="right" prop="lastName">
-                            <el-input
-                            placeholder="Please add last name"
-                            v-model="contactData.lastName"
-                            class="w-30-ratio"
-                            clearable>
-                            </el-input>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('table.contact.middleName')" label-position="right" prop="middleName">
-                            <el-input
-                            placeholder="Please add middle name"
-                            v-model="contactData.middleName"
-                            class="w-30-ratio"
-                            clearable>
-                            </el-input>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('table.contact.email')" label-position="right" prop="email">
+                          <el-form-item :label="$t('table.contact.email')" label-position="right" prop="email">
                             <el-input
                             placeholder="Please add email"
                             v-model="contactData.email"
-                            class="w-30-ratio"
                             clearable>
                             </el-input>
-                        </el-form-item>
+                          </el-form-item>
 
-                        <el-form-item :label="$t('table.phone')" label-position="right" prop="phone">
-                            <el-input
-                            class="w-30-ratio"
-                            placeholder="Please add phone"
-                            v-model="contactData.phone"
-                            clearable>
-                            </el-input>
-                        </el-form-item>
+                          <el-form-item :label="$t('table.phone')" label-position="right" prop="phone">
+                              <el-input
+                              placeholder="Please add phone"
+                              v-model="contactData.phone"
+                              clearable>
+                              </el-input>
+                          </el-form-item>
 
-                        <el-form-item :label="$t('table.contact.gender')" label-position="right" prop="gender">
-                            <el-switch
-                            v-model="contactData.gender"
-                            active-text="Male"
-                            active-color="#13ce66"
-                            inactive-color="#ff4949"
-                            inactive-text="Female">
-                            </el-switch>
-                        </el-form-item>
-
-                        <el-form-item :label="$t('table.tags')" label-position="right" prop="tags">
+                          <el-form-item :label="$t('table.tags')" label-position="right" prop="tags">
                             <multiselect
                             v-model="contactData.tags"
-                            class="w-30-ratio"
                             tag-placeholder="Add this as new tag"
                             placeholder="Search or add a tag"
                             :options="tags"
@@ -97,29 +59,64 @@
                             @tag="addTag"
                             >
                             </multiselect>
-                        </el-form-item>
+                          </el-form-item>
 
-                        <el-form-item :label="$t('table.contact.notes')" label-position="right" prop="notes">
-                            <el-input
-                            class="w-30-ratio"
-                            type="textarea"
-                            :rows="2"
-                            placeholder="Please add notes"
-                            v-model="contactData.notes"
-                            clearable>
-                            </el-input>
-                        </el-form-item>
+                          <el-form-item :label="$t('table.contact.notes')" label-position="right" prop="notes">
+                              <el-input
+                              type="textarea"
+                              :rows="2"
+                              placeholder="Please add notes"
+                              v-model="contactData.notes"
+                              clearable>
+                              </el-input>
+                          </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                          <el-form-item :label="$t('table.contact.firstName')" label-position="right" prop="firstName">
+                              <el-input
+                              placeholder="Please add first name"
+                              v-model="contactData.firstName"
+                              clearable>
+                              </el-input>
+                          </el-form-item>
 
-                        <el-form-item size="large">
-                            <router-link :to="'/contacts'">
-                                <el-button class="ml-11-ratio mr-10-px">
-                                    Cancel
-                                </el-button>
-                            </router-link>
-                            <el-button type="primary" @click="submitForm()">
-                                Submit
+                          <el-form-item :label="$t('table.contact.lastName')" label-position="right" prop="lastName">
+                              <el-input
+                              placeholder="Please add last name"
+                              v-model="contactData.lastName"
+                              clearable>
+                              </el-input>
+                          </el-form-item>
+
+                          <el-form-item :label="$t('table.contact.middleName')" label-position="right" prop="middleName">
+                              <el-input
+                              placeholder="Please add middle name"
+                              v-model="contactData.middleName"
+                              clearable>
+                              </el-input>
+                          </el-form-item>
+
+                          <el-form-item :label="$t('table.contact.gender')" label-position="right" prop="gender">
+                              <el-switch
+                              v-model="contactData.gender"
+                              active-text="Male"
+                              active-color="#13ce66"
+                              inactive-color="#ff4949"
+                              inactive-text="Female">
+                              </el-switch>
+                          </el-form-item>
+                        </el-col>
+                      </el-row>
+                      <el-form-item size="large">
+                        <router-link :to="'/contacts'">
+                            <el-button class="ml-11-ratio mr-10-px">
+                                Cancel
                             </el-button>
-                        </el-form-item>
+                        </router-link>
+                        <el-button type="primary" @click="submitForm()">
+                            Submit
+                        </el-button>
+                      </el-form-item>
                     </el-form>
                 </el-card>
             </el-row>
@@ -139,7 +136,7 @@ import { map, isEmpty, filter } from 'lodash'
 import { TagsViewModule } from '@/store/modules/tags-view'
 
 @Component({
-  name: 'ContactView',
+  name: 'ContactCreate',
   components: { Multiselect }
 })
 export default class extends Vue {
