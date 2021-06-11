@@ -13,7 +13,7 @@
             <el-button
               style="margin-left: 10px;"
               type="danger"
-              :disabled="contactBulkOpt"
+              :disabled="bulkOpt"
               icon="el-icon-turn-off"
               @click="toggleStatus"
             >
@@ -23,7 +23,7 @@
             <el-button
               style="margin-left: 10px;"
               type="primary"
-              :disabled="contactBulkTags"
+              :disabled="bulkTags"
               icon="el-icon-price-tag"
               @click="toggleTags"
             >
@@ -33,7 +33,7 @@
             <el-button
               style="margin-left: 10px;"
               type="primary"
-              :disabled="contactBulkMove"
+              :disabled="bulkMove"
               icon="el-icon-copy-document"
               @click="toggleMove"
             >
@@ -234,21 +234,14 @@ import { isEmpty, map, uniq, flattenDeep, compact } from 'lodash'
   }
 })
 export default class Contact extends Mixins(TableMixin) {
-  private multipleSelection: IContactData[] = []
   private list: IContactData[] = []
   private tagsLoading = false
   private moveLoading = false
   private tags: string[] = []
   private createRoute = 'ContactCreate'
-  private filterIcon = 'filter-solid'
   private importRoute = 'UploadContacts'
   private contactRow = defaultContactData
-  private activeContacts:IContactData[] = []
-  private inActiveContacts:IContactData[] = []
   private companyId = 0
-  private contactBulkOpt = true
-  private contactBulkTags = true
-  private contactBulkMove = true
 
   created() {
     this.getList()
@@ -268,26 +261,6 @@ export default class Contact extends Mixins(TableMixin) {
     this.getList()
   }
 
-  private handleSelectionChange(value) {
-    this.multipleSelection = value
-    if (!isEmpty(this.multipleSelection)) {
-      this.activeContacts = this.multipleSelection.filter((value) => { return value.status === 'active' })
-      this.inActiveContacts = this.multipleSelection.filter((value) => { return value.status === 'inactive' })
-
-      this.contactBulkTags = !(uniq(map(this.multipleSelection, 'company_id')).length === 1)
-      this.contactBulkMove = this.contactBulkTags
-      if (!isEmpty(this.activeContacts) && !isEmpty(this.inActiveContacts)) {
-        this.contactBulkOpt = true
-      } else if (!isEmpty(this.activeContacts) || !isEmpty(this.inActiveContacts)) {
-        this.contactBulkOpt = false
-      }
-    } else {
-      this.contactBulkOpt = true
-      this.contactBulkTags = true
-      this.contactBulkMove = true
-    }
-  }
-
   private toggleTags() {
     this.tagsLoading = true
     this.tags = uniq(compact(flattenDeep(map(this.multipleSelection, 'tags'))))
@@ -305,8 +278,8 @@ export default class Contact extends Mixins(TableMixin) {
   private async toggleStatus() {
     if (!isEmpty(this.multipleSelection)) {
       const contactIds = map(this.multipleSelection, 'id')
-      let status = isEmpty(this.activeContacts) ? 'active' : 'inactive'
-      status = isEmpty(this.inActiveContacts) ? 'inactive' : 'active'
+      let status = isEmpty(this.activeRecords) ? 'active' : 'inactive'
+      status = isEmpty(this.inActiveRecords) ? 'inactive' : 'active'
       await updateStatuses({ contacts: contactIds, status: status })
     }
     this.getList()
@@ -353,14 +326,6 @@ export default class Contact extends Mixins(TableMixin) {
     }
 
     return 'el-icon-turn-off'
-  }
-
-  private handleModifyStatus(row: any, status: string) {
-    this.$message({
-      message: '操作成功',
-      type: 'success'
-    })
-    row.status = status
   }
 
   private handleActivation(row: any) {

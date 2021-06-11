@@ -9,7 +9,10 @@
           />
         </el-col>
         <el-col :span="8" class="float-right">
-          <TableSearchWithFilters @handleFilter="handleFilter" />
+          <TableSearchWithFilters
+            :filterIcon.sync="filterIcon"
+            @handleFilter="handleFilter"
+            @handleSearchFilter="handleSearchFilter" />
         </el-col>
       </el-row>
     </div>
@@ -23,20 +26,7 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
-      <el-table-column
-        :label="$t('table.id')"
-        prop="id"
-        sortable="custom"
-        align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
       <el-table-column
         :label="$t('table.name')"
         min-width="150px"
@@ -48,53 +38,53 @@
       </el-table-column>
       <el-table-column
         :label="$t('table.type')"
-        min-width="150px"
+        min-width="80px"
       >
         <template slot-scope="{row}">
-          <el-tag effect="dark" :type="row.type | campaignTypeFilter">
-            {{ row.type }}
+          <el-tag effect="dark" :type="row.group | campaignTypeFilter">
+            {{ row.group }}
           </el-tag>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.company')"
-        min-width="150px"
+        min-width="230px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.company }}</span>
+          >{{ row.company_name }}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.phone')"
-        min-width="150px"
+        min-width="110px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.phone }}</span>
+          >{{ row.operator }}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.campaign.scheduledOn')"
-        min-width="150px"
+        min-width="120px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.scheduledOn | parseTime }}</span>
+          >{{ row.scheduled_at | parseTime }}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.createdOn')"
-        min-width="150px"
+        min-width="80px"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.createdOn | parseDate }}</span>
+          >{{ row.created_on | parseDate }}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.status')"
-        min-width="150px"
+        min-width="60px"
       >
         <template slot-scope="{row}">
           <el-tag effect="dark" :type="row.status | statusFilter">
@@ -105,7 +95,7 @@
       <el-table-column
         :label="$t('table.actions')"
         align="center"
-        width="230"
+        width="130"
         class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
@@ -150,13 +140,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator'
-import { getCampaigns, defaultCampaignData } from '@/api/campaigns'
+import { Component, Mixins } from 'vue-property-decorator'
+import { getCampaigns } from '@/api/campaigns'
 import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
 import Pagination from '@/components/Pagination/index.vue'
 import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
+import TableMixin from '@/views/mixins/TableMixin'
+import { isEmpty } from 'lodash'
 
 @Component({
   name: 'CampaignTable',
@@ -167,38 +159,12 @@ import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.v
     TableSearchWithFilters
   }
 })
-
-export default class extends Vue {
-  @Ref('campaignTable') readonly campaignTable!: any;
-  private tableKey = 0
+export default class Campaign extends Mixins(TableMixin) {
   private list: ICampaignData[] = []
-  private total = 0
-  private listLoading = true
-  private filterLoading = false
   private dialogLoading = false
-  private listQuery = {
-    page: 1,
-    limit: 20,
-    sort: '+id'
-  }
-
   private createRoute = 'CampaignCreate'
   private importRoute = 'UploadCampaigns'
   private statusOptions = ['active', 'inactive']
-  private showReviewer = false
-  private dialogFormVisible = false
-  private dialogStatus = ''
-  private campaignRow = defaultCampaignData
-  private textMap = {
-    update: 'Edit',
-    create: 'Create'
-  }
-
-  private dialogPageviewsVisible = false
-  private pageviewsData = []
-
-  private downloadLoading = false
-  private tempCampaignData = defaultCampaignData
 
   created() {
     this.getList()
@@ -208,60 +174,30 @@ export default class extends Vue {
     console.log(data)
   }
 
-  private dialogVisiblity() {
-    return this.filterLoading
-  }
-
-  private viewCampaign(row: any) {
-    this.campaignRow = Object.assign({}, row)
-    this.dialogLoading = true
-  }
-
   private async getList() {
     this.listLoading = true
-    const { data } = await getCampaigns(this.listQuery)
-    this.list = data.items
-    this.total = data.total
-    // Just to simulate the time of the request
-    setTimeout(() => {
-      this.listLoading = false
-    }, 0.5 * 1000)
+    const { data, headers } = await getCampaigns(this.listQuery)
+    this.list = data
+    this.total = parseInt(headers.count)
+    this.listLoading = false
   }
 
   private handleFilter() {
     this.filterLoading = true
   }
 
-  private handleSearch() {
-    this.filterLoading = true
-  }
-
-  private handleModifyStatus(row: any, status: string) {
-    this.$message({
-      message: '操作成功',
-      type: 'success'
-    })
-    row.status = status
-  }
-
-  private sortChange(data: any) {
-    const { prop, order } = data
-    if (prop === 'id') {
-      this.sortByID(order)
-    }
-  }
-
-  private sortByID(order: string) {
-    if (order === 'ascending') {
-      this.listQuery.sort = '+id'
+  private async handleSearchFilter(searchData: string) {
+    if (!isEmpty(searchData)) {
+      this.listLoading = true
+      this.listQuery.searchparam = searchData
+      const { data, headers } = await getCampaigns(this.listQuery)
+      this.list = data
+      this.total = parseInt(headers.count)
+      this.listLoading = false
     } else {
-      this.listQuery.sort = '-id'
+      this.listQuery.searchparam = ''
+      this.getList()
     }
-  }
-
-  private getSortClass(key: string) {
-    const sort = this.listQuery.sort
-    return sort === `+${key}` ? 'ascending' : 'descending'
   }
 
   private handleDelete(row: any, index: number) {
@@ -284,14 +220,3 @@ export default class extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.float-right {
-  float: right;
-}
-
-.tags {
-  margin-left: 3px;
-  margin-bottom: 3px;
-}
-</style>

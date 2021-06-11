@@ -3,7 +3,7 @@ import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
 import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import Pagination from '@/components/Pagination/index.vue'
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-
+import { isEmpty, map, uniq } from 'lodash'
 @Component({
   name: 'TableMixin',
   components: {
@@ -14,39 +14,45 @@ import UploadExcelComponent from '@/components/UploadExcel/index.vue'
   }
 })
 export default class extends Vue {
+  public filterIcon = 'filter-solid'
+  public multipleSelection: any[] = []
   public tableKey = new Date().toString()
   public total = 0
   public listLoading = true
   public filterLoading = false
+  public bulkOpt = true
+  public bulkTags = true
+  public bulkMove = true
+  public activeRecords:any[] = []
+  public inActiveRecords:any[] = []
   public listQuery = {
     page: 1,
     limit: 20,
-    sort: 'asc',
     searchparam: '',
     filters: ''
   }
 
+  public handleSelectionChange(value) {
+    this.multipleSelection = value
+    if (!isEmpty(this.multipleSelection)) {
+      this.activeRecords = this.multipleSelection.filter((value) => { return value.status === 'active' })
+      this.inActiveRecords = this.multipleSelection.filter((value) => { return value.status === 'inactive' })
+
+      this.bulkTags = !(uniq(map(this.multipleSelection, 'company_id')).length === 1)
+      this.bulkMove = this.bulkTags
+      if (!isEmpty(this.activeRecords) && !isEmpty(this.inActiveRecords)) {
+        this.bulkOpt = true
+      } else if (!isEmpty(this.activeRecords) || !isEmpty(this.inActiveRecords)) {
+        this.bulkOpt = false
+      }
+    } else {
+      this.bulkOpt = true
+      this.bulkTags = true
+      this.bulkMove = true
+    }
+  }
+
   public forceRerender() {
     this.tableKey = new Date().toString()
-  }
-
-  public sortChange(data: any) {
-    const { prop, order } = data
-    if (prop === 'id') {
-      this.sortByID(order)
-    }
-  }
-
-  public sortByID(order: string) {
-    if (order === 'ascending') {
-      this.listQuery.sort = 'asc'
-    } else {
-      this.listQuery.sort = 'desc'
-    }
-  }
-
-  public getSortClass(key: string) {
-    const sort = this.listQuery.sort
-    return sort === `+${key}` ? 'ascending' : 'descending'
   }
 }

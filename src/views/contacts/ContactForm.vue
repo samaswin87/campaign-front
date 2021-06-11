@@ -173,8 +173,8 @@ export default class extends Vue {
     }
 
     private updateCountryCode(event) {
-      this.contactData.country_code = event.countryCode
-      this.contactData.country_extension = event.countryCallingCode
+      this.contactData.countryCode = event.countryCode
+      this.contactData.countryExtension = event.countryCallingCode
       this.isValid = event.isValid
     }
 
