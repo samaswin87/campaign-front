@@ -328,19 +328,13 @@ export default class Contact extends Mixins(TableMixin) {
     return 'el-icon-turn-off'
   }
 
-  private handleActivation(row: any) {
+  private async handleActivation(row: any) {
     this.$confirm('Are you sure?', 'Warning', {
       confirmButtonText: 'OK',
       cancelButtonText: 'Cancel',
       type: 'warning'
     }).then(() => {
-      const status = row.status === 'active' ? 'inactive' : 'active'
-      updateContact(row.id, { status: status })
-      this.$message({
-        type: 'success',
-        message: 'Contact opted out'
-      })
-      this.getList()
+      this.updateStatus(row)
     }).catch((err) => {
       console.log(err)
       this.$message({
@@ -348,6 +342,17 @@ export default class Contact extends Mixins(TableMixin) {
         message: 'Contact not opted out'
       })
     })
+  }
+
+  private async updateStatus(row: any) {
+    const status = row.status === 'active' ? 'inactive' : 'active'
+    const archivedAt = row.status === 'active' ? new Date() : ''
+    await updateContact(row.id, { status: status, archived_at: archivedAt })
+    this.$message({
+      type: 'success',
+      message: 'Contact opted out'
+    })
+    this.getList()
   }
 }
 </script>

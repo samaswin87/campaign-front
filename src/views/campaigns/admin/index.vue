@@ -164,7 +164,6 @@ export default class Campaign extends Mixins(TableMixin) {
   private dialogLoading = false
   private createRoute = 'CampaignCreate'
   private importRoute = 'UploadCampaigns'
-  private statusOptions = ['active', 'inactive']
 
   created() {
     this.getList()
