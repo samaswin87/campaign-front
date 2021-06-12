@@ -12,7 +12,7 @@ export const defaultCampaignData: ICampaignData = {
   company: '',
   body: '',
   noOfContacts: 1,
-  type: 'scheduled',
+  group: 'scheduled',
   recurringDays: [],
   recurringAt: '',
   phone: ''

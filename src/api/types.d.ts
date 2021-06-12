@@ -178,7 +178,7 @@ export interface ICampaignData {
   name: string
   body: string
   createdOn: string | number
-  type: string
+  group: string
   scheduledOn: string | number
   noOfContacts: number
   recurringAt: string | number
