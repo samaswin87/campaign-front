@@ -109,7 +109,7 @@
             <span>
               <el-tag
                 v-for="item in row.keywords"
-                class="tags"
+                class="mr-3-px"
                 :key="item"
               >
                 {{ item }}
@@ -126,7 +126,7 @@
             <span>
               <el-tag
                 v-for="item in row.tags"
-                class="tags"
+                class="mr-3-px"
                 :key="item"
               >
                 {{ item }}
@@ -356,14 +356,3 @@ export default class Contact extends Mixins(TableMixin) {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.float-right {
-  text-align: right
-}
-
-.tags {
-  margin-left: 3px;
-  margin-bottom: 3px;
-}
-</style>

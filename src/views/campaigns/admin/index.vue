@@ -135,6 +135,7 @@
     <CampaignTableFilters
       :visible.sync="filterLoading"
       @campaignFiltered="campaignFiltered"
+      @clearFilter="clearFilter"
     />
   </div>
 </template>
@@ -144,19 +145,13 @@ import { Component, Mixins } from 'vue-property-decorator'
 import { getCampaigns } from '@/api/campaigns'
 import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
-import Pagination from '@/components/Pagination/index.vue'
-import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
-import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import TableMixin from '@/views/mixins/TableMixin'
 import { isEmpty } from 'lodash'
 
 @Component({
   name: 'CampaignTable',
   components: {
-    Pagination,
-    CampaignTableFilters,
-    TableDefaultActions,
-    TableSearchWithFilters
+    CampaignTableFilters
   }
 })
 export default class Campaign extends Mixins(TableMixin) {
@@ -170,7 +165,17 @@ export default class Campaign extends Mixins(TableMixin) {
   }
 
   private campaignFiltered(data: any) {
-    console.log(data)
+    if (!isEmpty(data)) {
+      this.filterIcon = 'filter-clear'
+      this.listQuery.filters = data
+      this.getList()
+    }
+  }
+
+  private clearFilter() {
+    this.listQuery.filters = ''
+    this.filterIcon = 'filter-solid'
+    this.getList()
   }
 
   private async getList() {

@@ -126,7 +126,7 @@ export default class extends Vue {
     }
 
     private filterrific = {
-      status_by: '',
+      status_with: '',
       with_phone: '',
       with_email: '',
       with_tags: '',
@@ -153,7 +153,7 @@ export default class extends Vue {
       (this.$refs.contactFilterForm as Form).validate(async(valid) => {
         if (valid) {
           this.clear = true
-          this.filterrific.status_by = this.filterRecord.status
+          this.filterrific.status_with = this.filterRecord.status
           if (!isEmpty(this.filterRecord.sortedBy) && !isEmpty(this.filterRecord.sortedOption)) {
             this.filterrific.sorted_by = this.filterRecord.sortedBy + '_' + this.filterRecord.sortedOption
           }
@@ -205,7 +205,7 @@ export default class extends Vue {
       }
 
       this.filterrific = {
-        status_by: '',
+        status_with: '',
         with_phone: '',
         with_email: '',
         with_tags: '',
