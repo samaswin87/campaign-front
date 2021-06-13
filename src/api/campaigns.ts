@@ -4,18 +4,14 @@ import { ICampaignData } from './types'
 const BASE_API = 'campaigns/depositories'
 
 export const defaultCampaignData: ICampaignData = {
-  id: 0,
-  status: 'draft',
   name: '',
-  scheduledOn: '',
+  scheduledAt: '',
   createdOn: '',
-  company: '',
-  body: '',
-  noOfContacts: 1,
-  group: 'scheduled',
+  message: '',
+  noOfContacts: 0,
+  group: 'immediate',
   recurringDays: [],
-  recurringAt: '',
-  phone: ''
+  recurringAt: ''
 }
 
 export const getCampaigns = (params: any) =>

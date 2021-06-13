@@ -172,18 +172,14 @@ export interface ICampaignRecipientData {
 }
 
 export interface ICampaignData {
-  id: number
-  status: string
-  company: string
   name: string
-  body: string
+  message: string
   createdOn: string | number
   group: string
-  scheduledOn: string | number
+  scheduledAt: string | number
   noOfContacts: number
   recurringAt: string | number
   recurringDays: string[]
-  phone: string
 }
 
 export interface IRoleData {

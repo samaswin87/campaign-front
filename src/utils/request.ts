@@ -56,6 +56,15 @@ service.interceptors.response.use(
           removeKey()
           location.reload() // To prevent bugs from vue-router
         })
+      } else if (response.status === 409) {
+        MessageBox.confirm(
+          response.data,
+          'Error',
+          {
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+          }
+        )
       }
       return Promise.reject(new Error(response.statusText || 'Error'))
     } else {
@@ -65,11 +74,23 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    console.log(error.response)
+    if (error.response.status === 409) {
+      MessageBox.confirm(
+        error.response.data,
+        'Error',
+        {
+          cancelButtonText: 'Cancel',
+          type: 'error'
+        }
+      )
+    } else {
+      Message({
+        message: error.message,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
     return Promise.reject(error)
   }
 )

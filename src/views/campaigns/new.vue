@@ -9,11 +9,12 @@
                     <el-form
                     ref="campaignForm"
                     :model="campaignData"
+                    :rules="rules"
                     label-width="30%"
                     class="form-container">
-                        <el-form-item :label="$t('table.company')" label-position="right" prop="company">
+                        <el-form-item :label="$t('table.company')" label-position="right" prop="companyId">
                             <el-select
-                            v-model="campaignData.company"
+                            v-model="campaignData.companyId"
                             filterable
                             placeholder="Select a company"
                             class="w-50-ratio">
@@ -34,9 +35,9 @@
                             </el-input>
                         </el-form-item>
 
-                        <el-form-item label="Platform Number" label-position="right" prop="platform">
+                        <el-form-item label="Platform Number" label-position="right" prop="operatorId">
                              <el-select
-                            v-model="campaignData.phone"
+                            v-model="campaignData.operatorId"
                             filterable
                             placeholder="Select a platform number"
                             class="w-50-ratio">
@@ -49,7 +50,7 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item :label="$t('table.type')" label-position="right" prop="type">
+                        <el-form-item :label="$t('table.type')" label-position="right" prop="group">
                             <el-radio-group v-model="campaignData.group" @change="changeType">
                                 <el-radio-button v-for="name in groupNames" :label="name" :key="name">
                                     {{name | uppercaseFirstChar}}
@@ -57,9 +58,9 @@
                             </el-radio-group>
                         </el-form-item>
 
-                        <el-form-item :label="$t('table.campaign.scheduledOn')" label-position="right" prop="scheduled_on" v-if="scheduled">
+                        <el-form-item :label="$t('table.campaign.scheduledAt')" label-position="right" prop="scheduledAt" v-if="scheduled">
                             <el-date-picker
-                            v-model="campaignData.scheduledOn"
+                            v-model="campaignData.scheduledAt"
                             type="datetime"
                             format="yyyy-MM-dd HH:mm:ss"
                             placeholder="Select date and time"
@@ -68,7 +69,7 @@
                             />
                         </el-form-item>
 
-                        <el-form-item :label="$t('table.campaign.recurringDays')" label-position="right" prop="recurring_days" v-if="recurring">
+                        <el-form-item :label="$t('table.campaign.recurringDays')" label-position="right" prop="recurringDays" v-if="recurring">
                             <el-checkbox-group v-model="campaignData.recurringDays">
                                 <el-checkbox-button v-for="day in recurringDays" :label="day" :key="day">
                                     {{day}}
@@ -76,28 +77,31 @@
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item :label="$t('table.campaign.recurringAt')" label-position="right" prop="recurring_at" v-if="recurring">
-                            <el-date-picker
+                        <el-form-item :label="$t('table.campaign.recurringAt')" label-position="right" prop="recurringAt" v-if="recurring">
+                            <el-time-select
                             v-model="campaignData.recurringAt"
-                            type="datetime"
-                            format="yyyy-MM-dd HH:mm:ss"
-                            placeholder="Select date and time"
+                            :picker-options="{
+                                start: '00:00',
+                                step: '00:15',
+                                end: '24:00'
+                            }"
+                            placeholder="Select time"
                             class="w-50-ratio"
                             />
                         </el-form-item>
-                        <el-form-item :label="$t('table.body')" label-position="right" prop="body">
+                        <el-form-item :label="$t('table.body')" label-position="right" prop="message">
                             <el-input
                             type="textarea"
                             :rows="10"
                             placeholder="Message"
                             class="w-50-ratio"
-                            v-model="campaignData.body">
+                            v-model="campaignData.message">
                             </el-input>
                         </el-form-item>
 
                         <el-form-item class="float-right w-66-ratio" >
-                            <el-button>Cancel</el-button>
-                            <el-button type="primary">Submit</el-button>
+                            <el-button @click="close">Cancel</el-button>
+                            <el-button type="primary" @click="submitForm">Submit</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -108,10 +112,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { defaultCampaignData } from '@/api/campaigns'
+import { Form } from 'element-ui'
+import { createCampaign, defaultCampaignData } from '@/api/campaigns'
 import { getCompanyNames } from '@/api/companies'
 import { getNumbers } from '@/api/operators'
 import Multiselect from 'vue-multiselect'
+import { convertToHash } from '@/utils/json'
+import { isEmpty, filter } from 'lodash'
+import { TagsViewModule } from '@/store/modules/tags-view'
 
 @Component({
   name: 'CampaignCreate',
@@ -126,9 +134,58 @@ export default class extends Vue {
     private scheduled = false
     private recurring = false
 
+    private rules = {
+      companyId: [
+        { required: true, message: 'Please select a valid company', trigger: 'blur' }
+      ],
+      name: [
+        { required: true, message: 'Please input name', trigger: 'blur' },
+        { min: 3, message: 'Length should be more than 3', trigger: 'blur' }
+      ],
+      operatorId: [
+        { required: true, message: 'Please select a valid number', trigger: 'blur' }
+      ],
+      message: [
+        { required: true, message: 'Please add a message', trigger: 'blur' }
+      ],
+      recurringDays: [
+        { required: true, validator: this.validateRecurringDays, trigger: 'blur' }
+      ],
+      recurringAt: [
+        { required: true, validator: this.validateRecurringAt, trigger: 'blur' }
+      ],
+      scheduledAt: [
+        { required: true, validator: this.validateScheduledOn, trigger: 'blur' }
+      ]
+    }
+
     created() {
       this.fetchCompanies()
       this.fetchNumbers()
+    }
+
+    private validateRecurringDays(rule, value, callback) {
+      if (value.length === 0 && this.recurring) {
+        callback(new Error('Please select valid recurring days'))
+      } else {
+        callback()
+      }
+    }
+
+    private validateRecurringAt(rule, value, callback) {
+      if (value === '' && this.recurring) {
+        callback(new Error('Please select the time'))
+      } else {
+        callback()
+      }
+    }
+
+    private validateScheduledOn(rule, value, callback) {
+      if (value === '' && this.scheduled) {
+        callback(new Error('Please select the date & time'))
+      } else {
+        callback()
+      }
     }
 
     private async fetchCompanies() {
@@ -166,6 +223,25 @@ export default class extends Vue {
       disabledDate(time: Date) {
         return time.getTime() < Date.now() - 8.64e7
       }
+    }
+
+    private async submitForm() {
+      (this.$refs.campaignForm as Form).validate(async(valid) => {
+        if (valid) {
+          const data = await createCampaign({ depository: convertToHash(this.campaignData) })
+          console.log(data)
+          if (!isEmpty(data)) {
+            this.close()
+          }
+        }
+      })
+    }
+
+    private close() {
+      const name = 'CampaignCreate'
+      const view = filter(TagsViewModule.visitedViews, ['name', name])
+      TagsViewModule.delView(view[0])
+      this.$router.push({ path: '/campaigns' })
     }
 }
 </script>
