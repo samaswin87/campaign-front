@@ -339,7 +339,7 @@ export default class Contact extends Mixins(TableMixin) {
       console.log(err)
       this.$message({
         type: 'info',
-        message: 'Contact not opted out'
+        message: 'Contact not updated'
       })
     })
   }
@@ -350,7 +350,7 @@ export default class Contact extends Mixins(TableMixin) {
     await updateContact(row.id, { status: status, archived_at: archivedAt })
     this.$message({
       type: 'success',
-      message: 'Contact opted out'
+      message: 'Contact updated'
     })
     this.getList()
   }

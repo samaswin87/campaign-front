@@ -95,13 +95,14 @@
       <el-table-column
         :label="$t('table.actions')"
         align="center"
-        width="130"
+        width="140"
         class-name="fixed-width"
       >
-        <template slot-scope="{row, $index}">
+        <template slot-scope="{row}">
           <router-link :to="{name: 'CampaignView', params: {id: row.id}}">
             <el-button
               icon="el-icon-view"
+              class="mr-3-px"
               circle
             >
             </el-button>
@@ -109,6 +110,7 @@
           <router-link :to="{name: 'CampaignEdit', params: {id: row.id}}">
             <el-button
               icon="el-icon-edit-outline"
+              class="mr-3-px"
               circle
             >
             </el-button>
@@ -116,7 +118,8 @@
           <el-button
             v-if="row.status!=='deleted'"
             icon="el-icon-delete"
-            @click="handleDelete(row, $index)"
+            class="mr-3-px"
+            @click="handleActivation(row)"
             circle
           >
           </el-button>
@@ -142,7 +145,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { getCampaigns } from '@/api/campaigns'
+import { getCampaigns, updateCampaign } from '@/api/campaigns'
 import CampaignTableFilters from './components/CampaignTableFilters.vue'
 import { ICampaignData } from '@/api/types'
 import TableMixin from '@/views/mixins/TableMixin'
@@ -204,23 +207,31 @@ export default class Campaign extends Mixins(TableMixin) {
     }
   }
 
-  private handleDelete(row: any, index: number) {
+  private async handleActivation(row: any) {
     this.$confirm('Are you sure?', 'Warning', {
       confirmButtonText: 'OK',
       cancelButtonText: 'Cancel',
       type: 'warning'
     }).then(() => {
-      this.list.splice(index, 1)
-      this.$message({
-        type: 'success',
-        message: 'Delete completed'
-      })
-    }).catch(() => {
+      this.updateStatus(row)
+    }).catch((err) => {
+      console.log(err)
       this.$message({
         type: 'info',
-        message: 'Delete canceled'
+        message: 'Campaign not updated'
       })
     })
+  }
+
+  private async updateStatus(row: any) {
+    const status = row.status === 'active' ? 'inactive' : 'active'
+    const archivedAt = row.status === 'active' ? new Date() : ''
+    await updateCampaign(row.id, { status: status, archived_at: archivedAt })
+    this.$message({
+      type: 'success',
+      message: 'Campaign updated'
+    })
+    this.getList()
   }
 }
 </script>
