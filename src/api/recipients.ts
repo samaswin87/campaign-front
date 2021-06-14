@@ -11,9 +11,9 @@ export const defaultRecipientData: ICampaignRecipientData = {
   lastReplyAt: ''
 }
 
-export const getRecipients = (params: any) =>
+export const getRecipients = (depositoryId: number, params: any) =>
   request({
-    url: '/recipients',
+    url: `/campaigns/depositories/${depositoryId}/recipients`,
     method: 'get',
     params
   })

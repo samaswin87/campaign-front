@@ -217,7 +217,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { getContacts, updateContact, defaultContactData, updateStatuses, updateTags } from '@/api/contacts'
+import { getContacts, updateContact, updateStatuses, updateTags } from '@/api/contacts'
 import ContactTableFilters from './components/ContactTableFilters.vue'
 import TagsDialog from './components/TagsDialog.vue'
 import MoveDialog from './components/MoveDialog.vue'
@@ -240,7 +240,6 @@ export default class Contact extends Mixins(TableMixin) {
   private tags: string[] = []
   private createRoute = 'ContactCreate'
   private importRoute = 'UploadContacts'
-  private contactRow = defaultContactData
   private companyId = 0
 
   created() {
@@ -287,10 +286,6 @@ export default class Contact extends Mixins(TableMixin) {
 
   private toggleMove() {
     this.moveLoading = true
-  }
-
-  private viewContact(row: any) {
-    this.contactRow = Object.assign({}, row)
   }
 
   private async getList() {

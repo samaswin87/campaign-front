@@ -84,7 +84,7 @@
                             </el-col>
                             <el-col :span="18">
                                 <el-card class="box-card campaign-recipients">
-                                    <!-- <RecipientsTable /> -->
+                                    <recipients-table />
                                 </el-card>
                             </el-col>
                         </el-row>
@@ -159,6 +159,10 @@ export default class extends Vue {
     }
 
     private stateIcon(state: string) {
+      if (!state) {
+        return { icon: 'el-icon-video-play', type: 'info', content: 'Start/Publish campaign' }
+      }
+
       const stateMap: { [key: string]: any } = {
         draft: { icon: 'el-icon-video-play', type: 'info', content: 'Start/Publish campaign' },
         published: { icon: 'el-icon-video-play', type: 'success', content: 'Stop/Unpublish campaign' },
@@ -173,7 +177,8 @@ export default class extends Vue {
 
     private async changeState() {
       try {
-        const { data } = await updateCampaign(this.campaignData.id, {})
+        const { data } = await updateCampaign(this.campaignData.id, { state: true })
+        this.campaignData = convertToJSON(data)
       } catch (err) {
         console.error(err)
       }

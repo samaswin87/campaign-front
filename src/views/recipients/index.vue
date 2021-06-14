@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="filter-container">
+    <div class="filter-container w-90-ratio">
       <el-row>
         <el-col :span="14">
           <TableDefaultActions
@@ -9,7 +9,10 @@
           />
         </el-col>
         <el-col :span="10" class="float-right">
-          <TableSearchWithFilters @handleFilter="handleFilter" />
+          <TableSearchWithFilters
+          :filterIcon.sync="filterIcon"
+          @handleFilter="handleFilter"
+          @handleSearchFilter="handleSearchFilter" />
         </el-col>
       </el-row>
     </div>
@@ -22,15 +25,14 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
+      class="w-90-ratio"
     >
       <el-table-column
         :label="$t('table.phone')"
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.phone }}</span>
+          >{{ row.recipient }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -38,17 +40,7 @@
         min-width="130px"
       >
         <template slot-scope="{row}">
-          <span v-html="formatMoustache(row.data)"
-          ></span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('table.recipient.lastReplyAt')"
-        min-width="80px"
-      >
-        <template slot-scope="{row}">
-          <span
-          >{{ row.lastReplyAt | parseTime }}</span>
+          <span v-html="formatMoustache(row.data)"></span>
         </template>
       </el-table-column>
       <el-table-column
@@ -59,7 +51,7 @@
 
             <span>
               <el-tag
-                v-for="(item, index) in restrictedTags(row.tags)"
+                v-for="(item, index) in row.tags"
                 class="tags"
                 size="mini"
                 :key="item"
@@ -119,71 +111,33 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { getRecipients, defaultRecipientData } from '@/api/recipients'
+import { Component, Mixins } from 'vue-property-decorator'
+import { getRecipients } from '@/api/recipients'
 import { ICampaignRecipientData } from '@/api/types'
-import Pagination from '@/components/Pagination/index.vue'
-import TableDefaultActions from '@/components/common/TableDefaultActions.vue'
-import TableSearchWithFilters from '@/components/common/TableSearchWithFilters.vue'
 import RecipientTableFilters from './components/RecipientTableFilters.vue'
+import TableMixin from '@/views/mixins/TableMixin'
+import { isEmpty } from 'lodash'
 
 @Component({
   name: 'RecipientsTable',
   components: {
-    Pagination,
-    TableDefaultActions,
-    TableSearchWithFilters,
     RecipientTableFilters
   }
 })
 
-export default class extends Vue {
-  private multipleSelection = []
-  private tableKey = 0
+export default class Recipient extends Mixins(TableMixin) {
   private list: ICampaignRecipientData[] = []
-  private total = 0
-  private listLoading = true
-  private filterLoading = false
-  private dialogLoading = false
   private createRoute = 'RecipientCreate'
+  private depositoryId = -1
   private importRoute = 'UploadRecipients'
-  private listQuery = {
-    page: 1,
-    limit: 20,
-    sort: '+id'
-  }
-
-  private statusOptions = ['active', 'inactive']
-  private showReviewer = false
-  private dialogFormVisible = false
-  private dialogStatus = ''
-  private campaignRow = defaultRecipientData
-  private textMap = {
-    update: 'Edit',
-    create: 'Create'
-  }
-
-  private dialogPageviewsVisible = false
-  private pageviewsData = []
-
-  private downloadLoading = false
-  private tempCampaignData = defaultRecipientData
 
   created() {
+    this.depositoryId = parseInt(this.$route.params && this.$route.params.id)
     this.getList()
   }
 
   private campaignFiltered(data: any) {
     console.log(data)
-  }
-
-  private dialogVisiblity() {
-    return this.filterLoading
-  }
-
-  private viewCampaign(row: any) {
-    this.campaignRow = Object.assign({}, row)
-    this.dialogLoading = true
   }
 
   private formatMoustache(jsonData: any) {
@@ -196,50 +150,28 @@ export default class extends Vue {
 
   private async getList() {
     this.listLoading = true
-    const { data } = await getRecipients(this.listQuery)
-    this.list = data.items
-    this.total = data.total
-    // Just to simulate the time of the request
-    setTimeout(() => {
+    const { headers, data } = await getRecipients(this.depositoryId, this.listQuery)
+    this.list = data
+    this.total = parseInt(headers.count)
+    this.listLoading = false
+  }
+
+  private async handleSearchFilter(searchData: string) {
+    if (!isEmpty(searchData)) {
+      this.listLoading = true
+      this.listQuery.searchparam = searchData
+      const { data, headers } = await getRecipients(this.depositoryId, this.listQuery)
+      this.list = data
+      this.total = parseInt(headers.count)
       this.listLoading = false
-    }, 0.5 * 1000)
+    } else {
+      this.listQuery.searchparam = ''
+      this.getList()
+    }
   }
 
   private handleFilter() {
     this.filterLoading = true
-  }
-
-  private handleModifyStatus(row: any, status: string) {
-    this.$message({
-      message: '操作成功',
-      type: 'success'
-    })
-    row.status = status
-  }
-
-  private sortChange(data: any) {
-    const { prop, order } = data
-    if (prop === 'id') {
-      this.sortByID(order)
-    }
-  }
-
-  private sortByID(order: string) {
-    if (order === 'ascending') {
-      this.listQuery.sort = '+id'
-    } else {
-      this.listQuery.sort = '-id'
-    }
-    this.handleFilter()
-  }
-
-  private getSortClass(key: string) {
-    const sort = this.listQuery.sort
-    return sort === `+${key}` ? 'ascending' : 'descending'
-  }
-
-  private restrictedTags(tags: string[]) {
-    return tags.filter((tag, index) => index < 3)
   }
 
   private handleDelete(row: any, index: number) {
@@ -262,14 +194,3 @@ export default class extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.float-right {
-  float: right;
-}
-
-.tags {
-  margin-left: 3px;
-  margin-bottom: 3px;
-}
-</style>
