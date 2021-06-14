@@ -29,6 +29,7 @@
     >
       <el-table-column
         :label="$t('table.phone')"
+        min-width="50px"
       >
         <template slot-scope="{row}">
           <span
@@ -41,6 +42,16 @@
       >
         <template slot-scope="{row}">
           <span v-html="formatMoustache(row.data)"></span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="State"
+        min-width="40px"
+      >
+        <template slot-scope="{row}">
+          <el-tag size="mini" effect="dark" :type="row.state | statusFilter">
+            {{ row.state | uppercaseFirstChar }}
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -63,7 +74,7 @@
         </el-table-column>
       <el-table-column
         :label="$t('table.status')"
-        min-width="80px"
+        min-width="40px"
       >
         <template slot-scope="{row}">
           <el-tag size="mini" effect="dark" :type="row.status | statusFilter">
@@ -75,13 +86,13 @@
         :label="$t('table.actions')"
         align="center"
         width="130"
-        class-name="fixed-width"
       >
         <template slot-scope="{row, $index}">
           <router-link :to="{name: 'RecipientChat', params: {campaignId: 1}, query: {recipientId: row.id}}">
             <el-button
               icon="el-icon-chat-round"
               circle
+              class="mr-3-px"
             >
             </el-button>
           </router-link>

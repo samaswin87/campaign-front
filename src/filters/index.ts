@@ -14,7 +14,9 @@ export const statusFilter = (status: string) => {
     deleted: 'danger',
     scheduled: 'warning',
     active: 'success',
-    inactive: 'danger'
+    inactive: 'danger',
+    delivered: 'success',
+    received: 'warning'
   }
   return statusMap[status]
 }
