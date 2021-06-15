@@ -41,7 +41,7 @@
             </multiselect>
         </el-form-item>
         <el-form-item label="Phone Number">
-            <el-radio-group v-model="filterRecord.phoneOption" size="small" class="mb-10-px" required>
+            <el-radio-group v-model="filterRecord.phoneOption" size="small" class="mb-10-px">
               <el-radio-button label="equal">In Equal</el-radio-button>
               <el-radio-button label="not_equal">Is Not Equal</el-radio-button>
               <el-radio-button label="start_with">Strat With</el-radio-button>
@@ -140,7 +140,7 @@ export default class extends Vue {
     }
 
     private async fetchTags() {
-      const { data } = await getTags({})
+      const { data } = await getTags()
       this.tags = data
     }
 

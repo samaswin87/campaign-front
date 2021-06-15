@@ -109,6 +109,8 @@
 
     <RecipientTableFilters
       :visible.sync="filterLoading"
+      @recipientFiltered="recipientFiltered"
+      @clearFilter="clearFilter"
     />
 
     <pagination
@@ -147,8 +149,18 @@ export default class Recipient extends Mixins(TableMixin) {
     this.getList()
   }
 
-  private campaignFiltered(data: any) {
-    console.log(data)
+  private recipientFiltered(data: any) {
+    if (!isEmpty(data)) {
+      this.filterIcon = 'filter-clear'
+      this.listQuery.filters = data
+      this.getList()
+    }
+  }
+
+  private clearFilter() {
+    this.listQuery.filters = ''
+    this.filterIcon = 'filter-solid'
+    this.getList()
   }
 
   private formatMoustache(jsonData: any) {

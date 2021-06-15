@@ -30,11 +30,10 @@ export const getContact = (id: number, params: any) =>
     params
   })
 
-export const getTags = (params: any) =>
+export const getTags = () =>
   request({
     url: `${BASE_URL}/tags`,
-    method: 'get',
-    params
+    method: 'get'
   })
 
 export const getKeywords = (params: any) =>
