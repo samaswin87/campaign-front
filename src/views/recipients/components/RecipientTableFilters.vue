@@ -129,19 +129,19 @@ export default class extends Vue {
           this.clear = true
           this.filterrific.status_with = this.filterRecord.status
           if (!isEmpty(this.filterRecord.phoneOption) && !isEmpty(this.filterRecord.phoneNumber)) {
-            this.filterrific.with_phone = this.filterRecord.phoneOption + '_eq_' + this.filterRecord.phoneNumber
+            this.filterrific.with_phone = this.filterRecord.phoneOption + ',' + this.filterRecord.phoneNumber
           }
 
           if (!isEmpty(this.filterRecord.templateKey) && !isEmpty(this.filterRecord.templateValue)) {
-            this.filterrific.with_data = this.filterRecord.templateKey + '_b_' + this.filterRecord.templateValue
+            this.filterrific.with_data = this.filterRecord.templateKey + ',' + this.filterRecord.templateValue
+          }
+
+          if (!isEmpty(this.filterRecord.templateKeys)) {
+            this.filterrific.with_data_keys = this.filterRecord.templateKeys.join(',')
           }
 
           if (!isEmpty(this.filterRecord.tagNames)) {
-            this.filterrific.with_data_keys = this.filterRecord.templateKeys.join('_b_')
-          }
-
-          if (!isEmpty(this.filterRecord.tagNames)) {
-            this.filterrific.with_tags = this.filterRecord.tagNames.join('_')
+            this.filterrific.with_tags = this.filterRecord.tagNames.join(',')
           }
           this.$emit('recipientFiltered', this.filterrific)
         }

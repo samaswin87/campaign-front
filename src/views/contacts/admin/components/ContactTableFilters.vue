@@ -155,23 +155,23 @@ export default class extends Vue {
           this.clear = true
           this.filterrific.status_with = this.filterRecord.status
           if (!isEmpty(this.filterRecord.sortedBy) && !isEmpty(this.filterRecord.sortedOption)) {
-            this.filterrific.sorted_by = this.filterRecord.sortedBy + '_' + this.filterRecord.sortedOption
+            this.filterrific.sorted_by = this.filterRecord.sortedBy + ',' + this.filterRecord.sortedOption
           }
 
           if (!isEmpty(this.filterRecord.phoneOption) && !isEmpty(this.filterRecord.phoneNumber)) {
-            this.filterrific.with_phone = this.filterRecord.phoneOption + '_eq_' + this.filterRecord.phoneNumber
+            this.filterrific.with_phone = this.filterRecord.phoneOption + ',' + this.filterRecord.phoneNumber
           }
 
           if (!isEmpty(this.filterRecord.emailOption) && !isEmpty(this.filterRecord.email)) {
-            this.filterrific.with_email = this.filterRecord.emailOption + '_eq_' + this.filterRecord.email
+            this.filterrific.with_email = this.filterRecord.emailOption + ',' + this.filterRecord.email
           }
 
           if (!isEmpty(this.filterRecord.tagNames)) {
-            this.filterrific.with_tags = this.filterRecord.tagNames.join('_')
+            this.filterrific.with_tags = this.filterRecord.tagNames.join(',')
           }
 
           if (!isEmpty(this.filterRecord.keywords)) {
-            this.filterrific.with_keywords = this.filterRecord.keywords.join('_')
+            this.filterrific.with_keywords = this.filterRecord.keywords.join(',')
           }
 
           this.$emit('contactFiltered', this.filterrific)
