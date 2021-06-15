@@ -168,6 +168,8 @@ export default class extends Vue {
       if (id) {
         this.id = parseInt(id)
         this.fetchContact(parseInt(id))
+      } else {
+        this.contactData = defaultContactData
       }
       this.fetchCompanies()
     }

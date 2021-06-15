@@ -1,5 +1,5 @@
 <template>
-    <contact-form :title=title></contact-form>
+    <contact-form :title="title"></contact-form>
 </template>
 
 <script lang="ts">
