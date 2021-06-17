@@ -58,7 +58,7 @@
                             </el-radio-group>
                         </el-form-item>
 
-                        <el-form-item :label="$t('table.campaign.scheduledAt')" label-position="right" prop="scheduledAt" v-if="scheduled">
+                        <el-form-item :label="$t('table.campaign.scheduledOn')" label-position="right" prop="scheduledAt" v-if="scheduled">
                             <el-date-picker
                             v-model="campaignData.scheduledAt"
                             type="datetime"
@@ -77,7 +77,7 @@
                             </el-checkbox-group>
                         </el-form-item>
 
-                        <el-form-item :label="$t('table.campaign.recurringAt')" label-position="right" prop="recurringAt" v-if="recurring">
+                        <el-form-item :label="$t('table.campaign.recurringAt')" label-position="right" prop="recurringAt" v-if="recurring" >
                             <el-time-select
                             v-model="campaignData.recurringAt"
                             :picker-options="{
@@ -86,7 +86,7 @@
                                 end: '24:00'
                             }"
                             placeholder="Select time"
-                            class="w-50-ratio"
+                            class="w-50-ratio-i"
                             />
                         </el-form-item>
                         <el-form-item :label="$t('table.body')" label-position="right" prop="message">
@@ -113,12 +113,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { Form } from 'element-ui'
-import { createCampaign, defaultCampaignData } from '@/api/campaigns'
+import { createCampaign, updateCampaign, defaultCampaignData, getCampaign } from '@/api/campaigns'
 import { getCompanyNames } from '@/api/companies'
 import { getNumbers } from '@/api/operators'
 import Multiselect from 'vue-multiselect'
-import { convertToHash } from '@/utils/json'
-import { isEmpty, filter } from 'lodash'
+import { convertToHash, convertToJSON } from '@/utils/json'
+import { isEmpty, filter, omit } from 'lodash'
 import { TagsViewModule } from '@/store/modules/tags-view'
 
 @Component({
@@ -127,7 +127,7 @@ import { TagsViewModule } from '@/store/modules/tags-view'
 })
 export default class extends Vue {
     @Prop({ required: true }) private title!: string
-    private campaignData = defaultCampaignData
+    private campaignData:any = defaultCampaignData
     private recurringDays :string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     private groupNames :string[] = ['immediate', 'recurring', 'scheduled']
     private companies :string[] = []
@@ -163,8 +163,21 @@ export default class extends Vue {
 
     created() {
       const id = this.$route.params && this.$route.params.id
-      this.campaignData = defaultCampaignData
-      console.log(defaultCampaignData)
+      if (id) {
+        this.id = parseInt(id)
+        this.fetchCampaign()
+      } else {
+        this.campaignData = {
+          name: '',
+          scheduledAt: '',
+          createdOn: '',
+          message: '',
+          noOfContacts: 0,
+          group: 'immediate',
+          recurringDays: [],
+          recurringAt: ''
+        }
+      }
       this.fetchCompanies()
       this.fetchNumbers()
     }
@@ -202,6 +215,16 @@ export default class extends Vue {
       }
     }
 
+    private async fetchCampaign() {
+      try {
+        const { data } = await getCampaign(this.id, {})
+        this.campaignData = convertToJSON(data)
+        this.changeType(data.group)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
     private async fetchNumbers() {
       try {
         const { data } = await getNumbers()
@@ -232,8 +255,15 @@ export default class extends Vue {
 
     private async submitForm() {
       (this.$refs.campaignForm as Form).validate(async(valid) => {
+        let data = this.campaignData
         if (valid) {
-          const data = await createCampaign({ depository: convertToHash(this.campaignData) })
+          if (this.title === 'New Campaign') {
+            data = await createCampaign({ depository: convertToHash(this.campaignData) })
+          } else if (this.id > 0) {
+            const depository = omit(convertToHash(this.campaignData), ['id', 'archived_at', 'state', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at', 'company_name', 'no_of_contacts', 'published_at', 'unpublished_at', 'operator', 'created_on'])
+            data = await updateCampaign(this.id, { depository: depository })
+          }
+
           if (!isEmpty(data)) {
             this.close()
           }
