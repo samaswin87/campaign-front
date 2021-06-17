@@ -5,6 +5,7 @@
         <el-col :span="14">
           <TableDefaultActions
             :createRoute="createRoute"
+            :createParams="createParams"
             :importRoute="importRoute"
           />
         </el-col>
@@ -88,7 +89,7 @@
         width="130"
       >
         <template slot-scope="{row}">
-          <router-link :to="{name: 'RecipientChat', params: {campaignId: 1}, query: {recipientId: row.id}}">
+          <router-link :to="{name: 'RecipientChat', params: {campaignId: depositoryId}, query: {recipientId: row.id}}">
             <el-button
               icon="el-icon-chat-round"
               circle
@@ -143,9 +144,13 @@ export default class Recipient extends Mixins(TableMixin) {
   private createRoute = 'RecipientCreate'
   private depositoryId = -1
   private importRoute = 'UploadRecipients'
+  private createParams = {}
 
   created() {
     this.depositoryId = parseInt(this.$route.params && this.$route.params.id)
+    this.createParams = {
+      campaignId: this.depositoryId
+    }
     this.getList()
   }
 

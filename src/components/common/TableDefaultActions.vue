@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link :to="{name: this.createRoute}">
+        <router-link :to="{name: this.createRoute, params: createParams}">
             <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="bottom">
                 <el-button
                 style="margin-left: 10px;"
@@ -41,5 +41,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class extends Vue {
     @Prop({ required: true }) private createRoute!: string
     @Prop({ required: true }) private importRoute!: string
+    @Prop({ required: false, default: {} }) private createParams!: string
 }
 </script>

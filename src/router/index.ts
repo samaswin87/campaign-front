@@ -222,7 +222,7 @@ export const constantRoutes: RouteConfig[] = [
         }
       },
       {
-        path: '/new',
+        path: '/campaigns/:campaignId/recipients/new',
         component: () => import('@/views/recipients/new.vue'),
         name: 'RecipientCreate',
         meta: {
