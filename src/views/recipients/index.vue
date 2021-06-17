@@ -87,7 +87,7 @@
         align="center"
         width="130"
       >
-        <template slot-scope="{row, $index}">
+        <template slot-scope="{row}">
           <router-link :to="{name: 'RecipientChat', params: {campaignId: 1}, query: {recipientId: row.id}}">
             <el-button
               icon="el-icon-chat-round"
@@ -97,9 +97,9 @@
             </el-button>
           </router-link>
           <el-button
-            v-if="row.status!=='deleted'"
-            icon="el-icon-delete"
-            @click="handleDelete(row, $index)"
+            :icon="row.status === 'active' ? 'el-icon-circle-close' : 'el-icon-circle-check'"
+            :type="row.status === 'active' ? 'danger' : 'success'"
+            @click="handleDelete(row)"
             circle
           >
           </el-button>
@@ -125,7 +125,7 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import { getRecipients } from '@/api/recipients'
+import { getRecipients, updateRecipient } from '@/api/recipients'
 import { ICampaignRecipientData } from '@/api/types'
 import RecipientTableFilters from './components/RecipientTableFilters.vue'
 import TableMixin from '@/views/mixins/TableMixin'
@@ -197,23 +197,34 @@ export default class Recipient extends Mixins(TableMixin) {
     this.filterLoading = true
   }
 
-  private handleDelete(row: any, index: number) {
+  private handleDelete(row: any) {
     this.$confirm('Are you sure?', 'Warning', {
       confirmButtonText: 'OK',
       cancelButtonText: 'Cancel',
       type: 'warning'
     }).then(() => {
-      this.list.splice(index, 1)
+      this.updateStatus(row)
       this.$message({
         type: 'success',
-        message: 'Delete completed'
+        message: 'Recipient status updated'
       })
     }).catch(() => {
       this.$message({
         type: 'info',
-        message: 'Delete canceled'
+        message: 'Recipient status not updated'
       })
     })
+  }
+
+  private async updateStatus(row: any) {
+    const status = row.status === 'active' ? 'inactive' : 'active'
+    const archivedAt = row.status === 'active' ? new Date() : ''
+    await updateRecipient(row.id, this.depositoryId, { status: status, archived_at: archivedAt })
+    this.$message({
+      type: 'success',
+      message: 'Contact updated'
+    })
+    this.getList()
   }
 }
 </script>
