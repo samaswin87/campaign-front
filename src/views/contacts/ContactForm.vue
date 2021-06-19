@@ -121,6 +121,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { defaultContactData, createContact, getContact, updateContact } from '@/api/contacts'
+import { createRecipient } from '@/api/recipients'
 import { getCompanyNames } from '@/api/companies'
 import { Form } from 'element-ui'
 import { convertToHash, convertToJSON } from '@/utils/json'
@@ -136,6 +137,8 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
 })
 export default class extends Vue {
     @Prop({ required: true }) private title!: string
+    @Prop({ default: false }) private campaign!: boolean
+    @Prop({ default: false }) private redirect!: string
     private contactData: any = defaultContactData
     private id = -1
     private companies :string[] = []
@@ -233,6 +236,11 @@ export default class extends Vue {
           let data = this.contactData
           if (this.title === 'New Contact') {
             data = await createContact({ recipient: convertToHash(this.contactData) })
+
+            if (this.campaign) {
+              const id = this.$route.params && this.$route.params.campaignId
+              data = await createRecipient(parseInt(id), { recipient: { recipient_id: data.data.id } })
+            }
           } else if (this.id > 0) {
             const recipient = omit(convertToHash(this.contactData), ['id', 'archived_at', 'keywords', 'custom_fields', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at', 'company_name'])
             data = await updateContact(this.id, { recipient: recipient })
@@ -246,10 +254,13 @@ export default class extends Vue {
     }
 
     private close() {
-      const name = (this.title === 'New Contact') ? 'ContactCreate' : 'ContactEdit'
+      let name = (this.title === 'New Contact') ? 'ContactCreate' : 'ContactEdit'
+      if (this.campaign) {
+        name = 'RecipientCreate'
+      }
       const view = filter(TagsViewModule.visitedViews, ['name', name])
       TagsViewModule.delView(view[0])
-      this.$router.push({ path: '/contacts' })
+      this.$router.push({ path: this.redirect })
     }
 
     addTag(newTag: string) {

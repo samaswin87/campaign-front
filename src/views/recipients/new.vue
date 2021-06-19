@@ -1,5 +1,5 @@
 <template>
-    <ContactNew />
+    <contact-new :campaign="true" :redirect="redirect"/>
 </template>
 
 <script lang="ts">
@@ -11,5 +11,11 @@ import ContactNew from '@/views/contacts/new.vue'
   components: { ContactNew }
 })
 export default class extends Vue {
+  private redirect = ''
+
+  created() {
+    const id = this.$route.params && this.$route.params.campaignId
+    this.redirect = '/campaigns/' + id + '/show'
+  }
 }
 </script>
