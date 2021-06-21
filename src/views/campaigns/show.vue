@@ -21,7 +21,9 @@
                                                 </el-button>
                                             </el-tooltip>
                                             <el-tooltip class="item" effect="dark" content="Edit" placement="bottom">
+                                              <router-link :to="{name: 'CampaignEdit', params: {id: campaignData.id}}">
                                                 <el-button type="info" size="mini" icon="el-icon-edit-outline" class="float-right"></el-button>
+                                              </router-link>
                                             </el-tooltip>
                                         </div>
                                         <div>
@@ -76,8 +78,7 @@
                                             <i class="el-icon-message mr-10-px"></i>
                                             <span>Message</span>
                                         </div>
-                                        <div>
-                                            {{campaignData.message}}
+                                        <div v-html="messageDisplay()">
                                         </div>
                                     </el-card>
                                 </el-row>
@@ -123,6 +124,10 @@ export default class extends Vue {
       } catch (err) {
         console.error(err)
       }
+    }
+
+    private messageDisplay() {
+      return this.campaignData.message.replace('{', "<span class='red'>{").replace('}', '}</span>')
     }
 
     private typeIcon(type: string) {
