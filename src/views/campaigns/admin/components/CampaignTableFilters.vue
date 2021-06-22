@@ -120,7 +120,7 @@ export default class extends Vue {
     }
 
     private async fetchTags() {
-      const { data } = await getTags({})
+      const { data } = await getTags()
       this.tags = data
     }
 

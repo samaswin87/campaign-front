@@ -74,7 +74,6 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    console.log(error.response)
     if (error.response.status === 409) {
       MessageBox.confirm(
         error.response.data,

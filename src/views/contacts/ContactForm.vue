@@ -103,6 +103,32 @@
                           </el-form-item>
                         </el-col>
                       </el-row>
+                      <el-row align="middle">
+                        <el-col :span="24">
+                          <fieldset class="mx-25-ratio mb-10-px">
+                            <legend><el-button type="primary" @click="addField" icon="el-icon-circle-plus-outline" circle></el-button> Custom fields</legend>
+                            <el-form-item label-width="20%" :label="'Custom Field ' + (index + 1)" label-position="right" v-for="(field, index) in fields" :key="field.key">
+                              <el-col :span="10" class="mr-10-px">
+                                <el-input
+                                placeholder="Please add label name"
+                                v-model="field.label"
+                                clearable>
+                                </el-input>
+                              </el-col>
+                              <el-col :span="10">
+                                <el-input
+                                placeholder="Please add value"
+                                v-model="field.value"
+                                clearable>
+                                </el-input>
+                              </el-col>
+                              <el-col :span="2" class="ml-10-px">
+                                <el-button type="primary" class="el-icon-delete" circle @click.prevent="removeField(field)"></el-button>
+                              </el-col>
+                            </el-form-item>
+                          </fieldset>
+                        </el-col>
+                      </el-row>
                       <el-form-item size="large">
                         <el-button class="ml-11-ratio mr-10-px" @click="close">
                             Cancel
@@ -130,10 +156,11 @@ import Multiselect from 'vue-multiselect'
 import { map, isEmpty, filter, omit } from 'lodash'
 import { TagsViewModule } from '@/store/modules/tags-view'
 import VuePhoneNumberInput from 'vue-phone-number-input'
+import CustomField from './CustomField.vue'
 
 @Component({
   name: 'ContactForm',
-  components: { Multiselect, VuePhoneNumberInput }
+  components: { Multiselect, VuePhoneNumberInput, CustomField }
 })
 export default class extends Vue {
     @Prop({ required: true }) private title!: string
@@ -144,6 +171,13 @@ export default class extends Vue {
     private companies :string[] = []
     private tags :any[] = []
     private isValid = true
+
+    private fields = [{
+      key: 1,
+      value: '',
+      label: ''
+    }
+    ]
 
     // Validation reference: https://programmer.help/blogs/three-ways-of-form-validation-in-element-ui.html
     private rules = {
@@ -175,6 +209,21 @@ export default class extends Vue {
         this.contactData = defaultContactData
       }
       this.fetchCompanies()
+    }
+
+    private addField() {
+      this.fields.push({
+        key: this.fields.length + 1,
+        value: '',
+        label: ''
+      })
+    }
+
+    private removeField(field) {
+      var index = this.fields.indexOf(field)
+      if (index !== -1) {
+        this.fields.splice(index, 1)
+      }
     }
 
     private updateCountryCode(event) {
