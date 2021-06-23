@@ -95,15 +95,17 @@
                           <el-form-item :label="$t('table.contact.gender')" label-position="right" prop="gender">
                               <el-switch
                               v-model="contactData.gender"
+                              active-value='male'
                               active-text="Male"
                               active-color="#13ce66"
+                              inactive-value='female'
                               inactive-color="#ff4949"
                               inactive-text="Female">
                               </el-switch>
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row align="middle">
+                      <el-row align="middle" v-if="this.campaign">
                         <el-col :span="24">
                           <fieldset class="mx-25-ratio mb-10-px">
                             <legend><el-button type="primary" @click="addField" icon="el-icon-circle-plus-outline" circle></el-button> Custom fields</legend>
@@ -153,14 +155,13 @@ import { Form } from 'element-ui'
 import { convertToHash, convertToJSON } from '@/utils/json'
 import { getTagNames } from '@/api/tags'
 import Multiselect from 'vue-multiselect'
-import { map, isEmpty, filter, omit } from 'lodash'
+import { map, isEmpty, filter, omit, snakeCase } from 'lodash'
 import { TagsViewModule } from '@/store/modules/tags-view'
 import VuePhoneNumberInput from 'vue-phone-number-input'
-import CustomField from './CustomField.vue'
 
 @Component({
   name: 'ContactForm',
-  components: { Multiselect, VuePhoneNumberInput, CustomField }
+  components: { Multiselect, VuePhoneNumberInput }
 })
 export default class extends Vue {
     @Prop({ required: true }) private title!: string
@@ -172,12 +173,7 @@ export default class extends Vue {
     private tags :any[] = []
     private isValid = true
 
-    private fields = [{
-      key: 1,
-      value: '',
-      label: ''
-    }
-    ]
+    private fields :any[] = []
 
     // Validation reference: https://programmer.help/blogs/three-ways-of-form-validation-in-element-ui.html
     private rules = {
@@ -281,6 +277,13 @@ export default class extends Vue {
 
     private async submitForm() {
       (this.$refs.contactForm as Form).validate(async(valid) => {
+        const customFields = {}
+        this.fields.forEach(field => {
+          if (!isEmpty(field.label) && !isEmpty(field.value)) {
+            customFields[snakeCase(field.label)] = field.value
+          }
+        })
+        this.contactData.customFields = customFields
         if (valid) {
           let data = this.contactData
           if (this.title === 'New Contact') {
@@ -288,7 +291,7 @@ export default class extends Vue {
 
             if (this.campaign) {
               const id = this.$route.params && this.$route.params.campaignId
-              data = await createRecipient(parseInt(id), { recipient: { recipient_id: data.data.id } })
+              data = await createRecipient(parseInt(id), { recipient: { recipient_id: data.data.id, data: customFields } })
             }
           } else if (this.id > 0) {
             const recipient = omit(convertToHash(this.contactData), ['id', 'archived_at', 'keywords', 'custom_fields', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at', 'company_name'])

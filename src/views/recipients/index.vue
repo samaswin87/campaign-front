@@ -34,7 +34,7 @@
       >
         <template slot-scope="{row}">
           <span
-          >{{ row.recipient }}</span>
+          >{{ row.platform_recipient.phone }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -42,7 +42,15 @@
         min-width="130px"
       >
         <template slot-scope="{row}">
-          <span v-html="formatMoustache(row.data)"></span>
+          <span v-for="(recipient, index) in moustacheJson(row.platform_recipient)" :key="index">
+            <el-tag
+              type="danger"
+              size="mini"
+              class="mb-3-px"
+              effect="plain">
+              {{ recipient[0] }}
+            </el-tag> - {{ recipient[1] }} <br>
+          </span>
         </template>
       </el-table-column>
       <el-table-column
@@ -63,7 +71,7 @@
 
             <span>
               <el-tag
-                v-for="(item, index) in row.tags"
+                v-for="(item, index) in row.platform_recipient.tags"
                 class="tags"
                 size="mini"
                 :key="item"
@@ -168,12 +176,19 @@ export default class Recipient extends Mixins(TableMixin) {
     this.getList()
   }
 
-  private formatMoustache(jsonData: any) {
-    let formatedMoustache = ''
-    Object.keys(jsonData).map((key) => {
-      formatedMoustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span> - ' + jsonData[key] + ' </br>'
+  private moustacheJson(recipient: any) {
+    const moustacheKeys :any [] = []
+    moustacheKeys.push(['first_name', recipient.first_name])
+    moustacheKeys.push(['last_name', recipient.last_name])
+    if (recipient.middle_name) {
+      moustacheKeys.push(['middle_name', recipient.middle_name])
+    }
+    moustacheKeys.push(['gender', recipient.gender ? 'Female' : 'Male'])
+
+    Object.keys(recipient.custom_fields).map((key) => {
+      moustacheKeys.push([key, recipient.custom_fields[key]])
     })
-    return formatedMoustache
+    return moustacheKeys
   }
 
   private async getList() {

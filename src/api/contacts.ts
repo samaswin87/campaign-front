@@ -13,7 +13,7 @@ export const defaultContactData: IContactData = {
   noOfCampaigns: 0,
   phone: '',
   notes: '',
-  gender: true
+  gender: 'male'
 }
 
 export const getContacts = (params: any) =>

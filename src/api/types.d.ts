@@ -65,7 +65,7 @@ export interface IContactData {
   noOfCampaigns: number
   phone: string
   notes: string
-  gender: boolean
+  gender: string
 }
 
 export interface IWorkflowFinalResponseData {
