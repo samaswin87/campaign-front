@@ -3,8 +3,9 @@
         <router-link :to="{name: this.createRoute, params: createParams}">
             <el-tooltip class="item" effect="dark" :content="$t('table.add')" placement="bottom">
                 <el-button
-                style="margin-left: 10px;"
+                class="ml-10-px"
                 type="primary"
+                size="mini"
                 icon="el-icon-circle-plus-outline"
                 >
                 </el-button>
@@ -12,8 +13,9 @@
         </router-link>
         <el-tooltip class="item" effect="dark" :content="$t('table.export')" placement="bottom">
         <el-button
-            style="margin-left: 10px;"
+            class="ml-10-px"
             type="primary"
+            size="mini"
             icon="el-icon-upload"
         >
         </el-button>
@@ -21,8 +23,9 @@
         <router-link :to="{name: this.importRoute}">
             <el-tooltip class="item" effect="dark" :content="$t('table.import')" placement="bottom">
             <el-button
-                style="margin-left: 10px;"
+                class="ml-10-px"
                 type="primary"
+                size="mini"
                 icon="el-icon-download"
             >
             </el-button>

@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 import { ICampaignConversationsData } from './types'
 
+const BASE_API = 'campaigns/depositories'
+
 export const defaultConversationData: ICampaignConversationsData = {
   id: 0,
   type: 'draft',
@@ -10,9 +12,8 @@ export const defaultConversationData: ICampaignConversationsData = {
   date: ''
 }
 
-export const getConversations = (params: any) =>
+export const getConversations = (id: number, campaignId: number) =>
   request({
-    url: '/conversations',
-    method: 'get',
-    params
+    url: BASE_API + `/${campaignId}/recipients/${id}/communications`,
+    method: 'get'
   })

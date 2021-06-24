@@ -2,12 +2,24 @@
   <div>
     <div class="filter-container w-90-ratio">
       <el-row>
-        <el-col :span="14">
+        <el-col :span="9">
           <TableDefaultActions
             :createRoute="createRoute"
             :createParams="createParams"
             :importRoute="importRoute"
           />
+        </el-col>
+        <el-col :span="2">
+        <router-link :to="{name: 'RecipientChat', params: {campaignId: depositoryId}}">
+          <el-tooltip class="item" effect="dark" content="All Conversations" placement="bottom">
+            <el-button
+              size="mini"
+              type="primary"
+            >
+            <svg-icon name="messages" />
+            </el-button>
+          </el-tooltip>
+        </router-link>
         </el-col>
         <el-col :span="10" class="float-right">
           <TableSearchWithFilters
@@ -178,15 +190,15 @@ export default class Recipient extends Mixins(TableMixin) {
 
   private moustacheJson(recipient: any) {
     const moustacheKeys :any [] = []
-    moustacheKeys.push(['first_name', recipient.first_name])
-    moustacheKeys.push(['last_name', recipient.last_name])
+    moustacheKeys.push(['{first_name}', recipient.first_name])
+    moustacheKeys.push(['{last_name}', recipient.last_name])
     if (recipient.middle_name) {
-      moustacheKeys.push(['middle_name', recipient.middle_name])
+      moustacheKeys.push(['{middle_name}', recipient.middle_name])
     }
-    moustacheKeys.push(['gender', recipient.gender ? 'Female' : 'Male'])
+    moustacheKeys.push(['{gender}', recipient.gender ? 'Female' : 'Male'])
 
     Object.keys(recipient.custom_fields).map((key) => {
-      moustacheKeys.push([key, recipient.custom_fields[key]])
+      moustacheKeys.push(['{' + key + '}', recipient.custom_fields[key]])
     })
     return moustacheKeys
   }

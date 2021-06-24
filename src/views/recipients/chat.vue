@@ -3,57 +3,52 @@
     <div class="chat-container">
       <el-row>
         <el-card class="box-card">
-          <div slot="header" class="clearfix">
+          <div slot="header">
               <span>Conversations</span>
           </div>
           <el-col
           :span="6"
           :xs="24"
           >
-            <el-card class="margin-bottom" :body-style="{padding: '10px'}">
+            <el-card>
               <div
                 slot="header"
-                class="clearfix"
               >
-                <el-input
-                  placeholder="Search contact"
-                  v-model="searchContact"
-                  clearable>
-                  <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                </el-input>
+                <span><i class="el-icon-setting mr-10-px"></i>{{ recipient.phone }}</span>
               </div>
-              <el-table
-                ref="chatTable"
-                :key="0"
-                :data="tableData"
-                height="650"
-                border
-                fit
-                highlight-current-row
-                @row-click="handleRowClick"
-                :row-style="{'background-color': '#f5f7fa !important', height: '100px'}"
-              >
-                <el-table-column
-                  label="Recipients"
-                  header-align="center"
-                  style="backgrond-color: green; height: 320px"
-                  align="left"
+              <el-card class="mb-3-px">
+                <div
+                  slot="header"
                 >
-                  <template slot-scope="scope">
-                    <div class="contact-block">
-                      <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" class="img-circle"></el-avatar>
-                      <span class="time"><i class="el-icon-time"></i>{{scope.row.lastReplyAt | parseTime }}</span>
-                      <span class="name text-muted">{{scope.row.name}}</span>
-                      <span class="contact"><i class="el-icon-phone"></i>{{scope.row.contact}}</span>
-                      <span v-if="showId" class="id">{{scope.row.id}}</span>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
+                  <svg-icon name="moustache" class="moustache-icon" width="30" height="17"></svg-icon>
+                  Templates
+                </div>
+                <span v-for="(template, index) in moustacheJson(recipient)" :key="index">
+                  <el-tag
+                    type="danger"
+                    size="mini"
+                    class="mb-3-px"
+                    effect="plain">
+                    {{ template[0] }}
+                  </el-tag> - {{ template[1] }} <br>
+                </span>
+              </el-card>
+              <el-input
+                placeholder="Tags"
+                class="mb-3-px"
+                v-model="recipient.tags"
+                clearable>
+              </el-input>
+              <el-input
+                placeholder="Notes"
+                v-model="recipient.notes"
+                type="textarea"
+                clearable>
+              </el-input>
             </el-card>
           </el-col>
           <el-col
-            :span="12"
+            :span="15"
             :xs="24"
           >
             <el-card class="margin-bottom">
@@ -62,14 +57,10 @@
                 class="clearfix"
               >
                 <span><i class="el-icon-chat-line-square"></i>Messages</span>
-                <span class="float-right">
-                  <el-button type="primary" icon="el-icon-caret-left"></el-button>
-                  <el-button type="primary" icon="el-icon-caret-right"></el-button>
-                </span>
               </div>
               <el-timeline class="scroll fixed-height">
                 <el-timeline-item
-                  v-for="(activity, index) in getMessages()"
+                  v-for="(activity, index) in messages"
                   :key="index"
                   placement="top"
                   :icon="chatStyle(activity.type).icon"
@@ -92,39 +83,6 @@
                 <el-button icon="el-icon-s-promotion" type="primary" @click="handleIconClick($event)" class="float-right margin-bottom-10">Send</el-button>
             </el-card>
           </el-col>
-          <el-col
-            :span="6"
-            :xs="24"
-          >
-            <el-card class="margin-bottom">
-              <div
-                slot="header"
-                class="clearfix"
-              >
-                <span><i class="el-icon-setting"></i>Settings</span>
-              </div>
-              <el-card class="margin-bottom">
-                <div
-                  slot="header"
-                  class="clearfix"
-                >
-                  <span class="moustache"><svg-icon name="moustache" class="moustache-icon" width="30" height="30"/><span class="moustache-title">Templates</span></span>
-                </div>
-                <span v-html="formatMoustache(selectedTemplate)"></span>
-              </el-card>
-              <el-input
-                placeholder="Tags"
-                v-model="searchContact"
-                clearable>
-              </el-input>
-              <el-input
-                placeholder="Notes"
-                v-model="searchContact"
-                type="textarea"
-                clearable>
-              </el-input>
-            </el-card>
-          </el-col>
         </el-card>
       </el-row>
     </div>
@@ -132,10 +90,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch, Vue, Ref } from 'vue-property-decorator'
-import faker from 'faker'
+import { Component, Vue } from 'vue-property-decorator'
 import { getConversations } from '@/api/conversations'
-import { getContact } from '@/api/contacts'
+import { getRecipient } from '@/api/recipients'
 import { ICampaignConversationsData } from '@/api/types'
 
 @Component({
@@ -143,54 +100,46 @@ import { ICampaignConversationsData } from '@/api/types'
   components: { }
 })
 export default class extends Vue {
-  private listItems: ICampaignConversationsData[] = []
-  private selectedContact = ''
-  private selectedTemplate = {}
-  private status = false
-  private showId = false
-  private searchContact = ''
-  private campaignId = 1
-  private contactId = 1
+  private messages: ICampaignConversationsData[] = []
+  private recipient = ''
+  private campaignId = -1
+  private recipientId = -1
   private message= ''
-  @Ref() readonly chatTable!: any
-  private listQuery = {
-    page: 1,
-    limit: 20,
-    sort: '+id'
-  }
-
-  private tableData:any[] = []
 
   created() {
-    this.list()
+    const campaignId = this.$route.params && this.$route.params.campaignId
+    const recipientId = this.$route.query && this.$route.query.recipientId
+    this.campaignId = parseInt(campaignId)
+    if (typeof recipientId === 'string') {
+      this.recipientId = parseInt(recipientId)
+      this.getPlatform()
+    }
     this.getList()
   }
 
-  @Watch('tableData')
-  selectFirstRow() {
-    this.$nextTick(function() {
-      this.chatTable.setCurrentRow(this.tableData[0])
+  private moustacheJson(recipient: any) {
+    const moustacheKeys :any [] = []
+    moustacheKeys.push(['{first_name}', recipient.first_name])
+    moustacheKeys.push(['{last_name}', recipient.last_name])
+    if (recipient.middle_name) {
+      moustacheKeys.push(['{middle_name}', recipient.middle_name])
+    }
+    moustacheKeys.push(['{gender}', recipient.gender ? 'Female' : 'Male'])
+
+    Object.keys(recipient.custom_fields).map((key) => {
+      moustacheKeys.push(['{' + key + '}', recipient.custom_fields[key]])
     })
+    return moustacheKeys
+  }
+
+  private async getPlatform() {
+    const { data } = await getRecipient(this.recipientId, this.campaignId, {})
+    this.recipient = data
   }
 
   private async getList() {
-    const { data } = await getConversations(this.listQuery)
-    this.listItems = data.items
-  }
-
-  private getMessages() {
-    return this.listItems.filter((record) => record.campaignId === this.campaignId && record.contactId === this.contactId)
-  }
-
-  private list() {
-    for (let i = 0; i < 100; i++) {
-      this.tableData.push({
-        contact: faker.phone.phoneNumberFormat(2),
-        name: faker.name.findName(),
-        lastReplyAt: faker.date.past().getTime(),
-        id: i
-      })
-    }
+    const { data } = await getConversations(this.recipientId, this.campaignId)
+    this.messages = data
   }
 
   private chatStyle(type: string) {
@@ -201,36 +150,10 @@ export default class extends Vue {
     }
     return styleMap[type]
   }
-
-  private handleIconClick() {
-    console.log('send')
-  }
-
-  private async getContactDeatils(contactId: number) {
-    const { data } = await getContact(contactId, {})
-    this.selectedContact = data.contact
-  }
-
-  private handleRowClick(row:any) {
-    this.getContactDeatils(row.id)
-    this.selectedTemplate = { firstName: 'test' }
-  }
-
-  private formatMoustache(jsonData: any) {
-    let formatedMoustache = ''
-    Object.keys(jsonData).map((key) => {
-      formatedMoustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span>' + ' </br>'
-    })
-    return formatedMoustache
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-.float-right {
-  float: right;
-}
-
 .scroll {
   overflow: auto
 }
@@ -256,10 +179,6 @@ export default class extends Vue {
 
 .moustache-icon {
   fill: #2C87F0
-}
-
-.moustache-title {
-  padding-top: 5px;
 }
 
 .contact-block {
@@ -301,14 +220,6 @@ export default class extends Vue {
 
   .fixed-height {
     height: 490px;
-  }
-
-  .margin-bottom {
-    margin-bottom: 20px
-  }
-
-  .margin-bottom-10 {
-    margin-bottom: 10px
   }
 
   ::v-deep textarea {
