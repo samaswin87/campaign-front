@@ -14,7 +14,7 @@
               <div
                 slot="header"
               >
-                <span><i class="el-icon-setting mr-10-px"></i>{{ recipient.phone }}</span>
+                <span><i class="el-icon-phone mr-10-px"></i>{{ recipient.phone }}</span>
               </div>
               <el-card class="mb-3-px">
                 <div
@@ -23,7 +23,7 @@
                   <svg-icon name="moustache" class="moustache-icon" width="30" height="17"></svg-icon>
                   Templates
                 </div>
-                <span v-for="(template, index) in moustacheJson(recipient)" :key="index">
+                <span v-for="(template, index) in moustacheJson()" :key="index">
                   <el-tag
                     type="danger"
                     size="mini"
@@ -33,12 +33,21 @@
                   </el-tag> - {{ template[1] }} <br>
                 </span>
               </el-card>
-              <el-input
-                placeholder="Tags"
-                class="mb-3-px"
+              <el-select
                 v-model="recipient.tags"
-                clearable>
-              </el-input>
+                multiple
+                filterable
+                allow-create
+                class="mb-3-px w-100-ratio"
+                default-first-option
+                placeholder="Choose tags">
+                <el-option
+                  v-for="item in recipient.tags"
+                  :key="item"
+                  :label="item"
+                  :value="item">
+                </el-option>
+              </el-select>
               <el-input
                 placeholder="Notes"
                 v-model="recipient.notes"
@@ -56,19 +65,19 @@
                 slot="header"
                 class="clearfix"
               >
-                <span><i class="el-icon-chat-line-square"></i>Messages</span>
+                <span><i class="el-icon-chat-line-square"></i> Messages</span>
               </div>
               <el-timeline class="scroll fixed-height">
                 <el-timeline-item
-                  v-for="(activity, index) in messages"
+                  v-for="(message, index) in messages"
                   :key="index"
                   placement="top"
-                  :icon="chatStyle(activity.type).icon"
-                  :type="chatStyle(activity.type).type"
+                  :icon="chatStyle(message.delivery).icon"
+                  :type="chatStyle(message.delivery).type"
                   size="large"
-                  :timestamp="activity.date | parseTime">
-                  <el-card class="border-radius" :body-style="{'background-color': chatStyle(activity.type).color}">
-                    {{activity.message}}
+                  :timestamp="message.created_at | parseTime">
+                  <el-card class="border-radius" :body-style="{'background-color': chatStyle(message.delivery).color}">
+                    {{message.message}}
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
@@ -101,7 +110,7 @@ import { ICampaignConversationsData } from '@/api/types'
 })
 export default class extends Vue {
   private messages: ICampaignConversationsData[] = []
-  private recipient = ''
+  private recipient: any = {}
   private campaignId = -1
   private recipientId = -1
   private message= ''
@@ -110,25 +119,30 @@ export default class extends Vue {
     const campaignId = this.$route.params && this.$route.params.campaignId
     const recipientId = this.$route.query && this.$route.query.recipientId
     this.campaignId = parseInt(campaignId)
-    if (typeof recipientId === 'string') {
+    if (typeof recipientId === 'number' || typeof recipientId === 'string') {
       this.recipientId = parseInt(recipientId)
       this.getPlatform()
     }
     this.getList()
   }
 
-  private moustacheJson(recipient: any) {
+  private moustacheJson() {
     const moustacheKeys :any [] = []
-    moustacheKeys.push(['{first_name}', recipient.first_name])
-    moustacheKeys.push(['{last_name}', recipient.last_name])
-    if (recipient.middle_name) {
-      moustacheKeys.push(['{middle_name}', recipient.middle_name])
+    if (!this.recipient) {
+      return moustacheKeys
     }
-    moustacheKeys.push(['{gender}', recipient.gender ? 'Female' : 'Male'])
+    moustacheKeys.push(['{first_name}', this.recipient.first_name])
+    moustacheKeys.push(['{last_name}', this.recipient.last_name])
+    if (this.recipient.middle_name) {
+      moustacheKeys.push(['{middle_name}', this.recipient.middle_name])
+    }
 
-    Object.keys(recipient.custom_fields).map((key) => {
-      moustacheKeys.push(['{' + key + '}', recipient.custom_fields[key]])
-    })
+    moustacheKeys.push(['{gender}', this.recipient.gender ? 'Female' : 'Male'])
+    if (this.recipient.custom_fields) {
+      Object.keys(this.recipient.custom_fields).map((key) => {
+        moustacheKeys.push(['{' + key + '}', this.recipient.custom_fields[key]])
+      })
+    }
     return moustacheKeys
   }
 
@@ -145,8 +159,8 @@ export default class extends Vue {
   private chatStyle(type: string) {
     const styleMap: { [key: string]: any } = {
       draft: { type: 'info', icon: 'el-icon-loading', color: '#c0c4cc' },
-      sent: { type: 'success', icon: 'el-icon-s-promotion', color: '#65a783' },
-      reply: { type: 'primary', icon: 'el-icon-message', color: '#80bcf5' }
+      outbound: { type: 'success', icon: 'el-icon-s-promotion', color: '#65a783' },
+      inbound: { type: 'primary', icon: 'el-icon-message', color: '#80bcf5' }
     }
     return styleMap[type]
   }
