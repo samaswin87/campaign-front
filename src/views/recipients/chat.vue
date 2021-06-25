@@ -20,6 +20,15 @@
                 <div
                   slot="header"
                 >
+                  <i class="el-icon-message"></i>
+                  Draft Message
+                </div>
+                <span class="new-line" v-html="messageDisplay()"></span>
+              </el-card>
+              <el-card class="mb-3-px">
+                <div
+                  slot="header"
+                >
                   <svg-icon name="moustache" class="moustache-icon" width="30" height="17"></svg-icon>
                   Templates
                 </div>
@@ -77,6 +86,9 @@
                   size="large"
                   :timestamp="message.created_at | parseTime">
                   <el-card class="border-radius" :body-style="{'background-color': chatStyle(message.delivery).color}">
+                    <el-tooltip v-if="message.delivery === 'draft'" class="item" effect="light" content="Resend" placement="right">
+                      <i class="mr-5-px el-icon-s-promotion icon-resend"></i>
+                    </el-tooltip>
                     {{message.message}}
                   </el-card>
                 </el-timeline-item>
@@ -102,6 +114,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { getConversations } from '@/api/conversations'
 import { getRecipient } from '@/api/recipients'
+import { getCampaign } from '@/api/campaigns'
 import { ICampaignConversationsData } from '@/api/types'
 
 @Component({
@@ -111,6 +124,7 @@ import { ICampaignConversationsData } from '@/api/types'
 export default class extends Vue {
   private messages: ICampaignConversationsData[] = []
   private recipient: any = {}
+  private campaign: any = {}
   private campaignId = -1
   private recipientId = -1
   private message= ''
@@ -121,9 +135,14 @@ export default class extends Vue {
     this.campaignId = parseInt(campaignId)
     if (typeof recipientId === 'number' || typeof recipientId === 'string') {
       this.recipientId = parseInt(recipientId)
-      this.getPlatform()
+      this.getContact()
     }
     this.getList()
+    this.getDepository()
+  }
+
+  private messageDisplay() {
+    return this.campaign.message.replaceAll('{', "<span class='el-tag el-tag--danger el-tag--plain el-tag--mini'>{").replaceAll('}', '}</span>')
   }
 
   private moustacheJson() {
@@ -146,9 +165,14 @@ export default class extends Vue {
     return moustacheKeys
   }
 
-  private async getPlatform() {
+  private async getContact() {
     const { data } = await getRecipient(this.recipientId, this.campaignId, {})
     this.recipient = data
+  }
+
+  private async getDepository() {
+    const { data } = await getCampaign(this.campaignId, {})
+    this.campaign = data
   }
 
   private async getList() {
@@ -187,6 +211,9 @@ export default class extends Vue {
   height: 34px;
 }
 
+.new-line {
+  white-space: pre-line;
+}
 .moustache {
   display: flex;
 }
@@ -235,6 +262,11 @@ export default class extends Vue {
   .fixed-height {
     height: 490px;
   }
+
+.icon-resend {
+  font-size: 20px;
+  cursor: pointer;
+}
 
   ::v-deep textarea {
     min-height: 33px;
