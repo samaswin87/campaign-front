@@ -175,6 +175,7 @@ export default class extends Vue {
   private async getDepository() {
     const { data } = await getCampaign(this.campaignId, {})
     this.campaign = data
+    console.log(this.messages)
     if (this.messages.length === 0) {
       let message = this.campaign.message
       let moustache = true
@@ -188,6 +189,8 @@ export default class extends Vue {
         }
       }
       this.message = message
+    } else {
+      this.message = ''
     }
   }
 
@@ -207,10 +210,24 @@ export default class extends Vue {
 
   private async handleClick() {
     if (!isEmpty(this.message)) {
-      const { data } = await addConversation(this.recipientId, this.campaignId, { message: this.message })
+      const { data } = await addConversation(this.recipientId, this.campaignId, { message: this.convertMessage(this.message) })
       this.messages.push(data)
       this.message = ''
     }
+  }
+
+  private convertMessage(message: string) {
+    let moustache = true
+    const moustacheKeys = this.moustacheJson()
+    while (moustache) {
+      const matches = message.match(/\{(.*?)\}/)
+      if (matches) {
+        message = message.replace(matches[0], moustacheKeys[matches[0]])
+      } else {
+        moustache = false
+      }
+    }
+    return message
   }
 }
 </script>
