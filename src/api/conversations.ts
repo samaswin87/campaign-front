@@ -17,3 +17,10 @@ export const getConversations = (id: number, campaignId: number) =>
     url: BASE_API + `/${campaignId}/recipients/${id}/communications`,
     method: 'get'
   })
+
+export const addConversation = (id: number, campaignId: number, data: any) =>
+  request({
+    url: BASE_API + `/${campaignId}/recipients/${id}/communications`,
+    method: 'post',
+    data
+  })

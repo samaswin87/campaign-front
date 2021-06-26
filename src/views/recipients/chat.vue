@@ -32,14 +32,14 @@
                   <svg-icon name="moustache" class="moustache-icon" width="30" height="17"></svg-icon>
                   Templates
                 </div>
-                <span v-for="(template, index) in moustacheJson()" :key="index">
+                <span v-for="[key, value] of Object.entries(moustacheJson())" :key="key">
                   <el-tag
                     type="danger"
                     size="mini"
                     class="mb-3-px"
                     effect="plain">
-                    {{ template[0] }}
-                  </el-tag> - {{ template[1] }} <br>
+                    {{ key }}
+                  </el-tag> - {{ value }} <br>
                 </span>
               </el-card>
               <el-select
@@ -78,18 +78,18 @@
               </div>
               <el-timeline class="scroll fixed-height">
                 <el-timeline-item
-                  v-for="(message, index) in messages"
+                  v-for="(item, index) in messages"
                   :key="index"
                   placement="top"
-                  :icon="chatStyle(message.delivery).icon"
-                  :type="chatStyle(message.delivery).type"
+                  :icon="chatStyle(item.delivery).icon"
+                  :type="chatStyle(item.delivery).type"
                   size="large"
-                  :timestamp="message.created_at | parseTime">
-                  <el-card class="border-radius" :body-style="{'background-color': chatStyle(message.delivery).color}">
-                    <el-tooltip v-if="message.delivery === 'draft'" class="item" effect="light" content="Resend" placement="right">
+                  :timestamp="item.created_at | parseTime">
+                  <el-card class="border-radius" :body-style="{'background-color': chatStyle(item.delivery).color}">
+                    <el-tooltip v-if="item.delivery === 'draft'" class="item" effect="light" content="Resend" placement="right">
                       <i class="mr-5-px el-icon-s-promotion icon-resend"></i>
                     </el-tooltip>
-                    {{message.message}}
+                    {{item.message}}
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
@@ -101,7 +101,7 @@
                   show-word-limit
                   clearable>
                 </el-input>
-                <el-button icon="el-icon-s-promotion" type="primary" @click="handleIconClick($event)" class="float-right margin-bottom-10">Send</el-button>
+                <el-button icon="el-icon-s-promotion" type="primary" @click="handleClick()" class="float-right margin-bottom-10">Send</el-button>
             </el-card>
           </el-col>
         </el-card>
@@ -112,22 +112,22 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { getConversations } from '@/api/conversations'
+import { getConversations, addConversation } from '@/api/conversations'
 import { getRecipient } from '@/api/recipients'
 import { getCampaign } from '@/api/campaigns'
-import { ICampaignConversationsData } from '@/api/types'
+import { isEmpty } from 'lodash'
 
 @Component({
   name: 'Chat',
   components: { }
 })
 export default class extends Vue {
-  private messages: ICampaignConversationsData[] = []
+  private messages: any[] = []
   private recipient: any = {}
   private campaign: any = {}
   private campaignId = -1
   private recipientId = -1
-  private message= ''
+  private message = ''
 
   created() {
     const campaignId = this.$route.params && this.$route.params.campaignId
@@ -142,24 +142,26 @@ export default class extends Vue {
   }
 
   private messageDisplay() {
-    return this.campaign.message.replaceAll('{', "<span class='el-tag el-tag--danger el-tag--plain el-tag--mini'>{").replaceAll('}', '}</span>')
+    if (this.campaign.message) {
+      return this.campaign.message.replaceAll('{', "<span class='el-tag el-tag--danger el-tag--plain el-tag--mini'>{").replaceAll('}', '}</span>')
+    }
   }
 
   private moustacheJson() {
-    const moustacheKeys :any [] = []
+    const moustacheKeys :any = {}
     if (!this.recipient) {
       return moustacheKeys
     }
-    moustacheKeys.push(['{first_name}', this.recipient.first_name])
-    moustacheKeys.push(['{last_name}', this.recipient.last_name])
+    moustacheKeys['{first_name}'] = this.recipient.first_name
+    moustacheKeys['{last_name}'] = this.recipient.last_name
     if (this.recipient.middle_name) {
-      moustacheKeys.push(['{middle_name}', this.recipient.middle_name])
+      moustacheKeys['{middle_name}'] = this.recipient.middle_name
     }
 
-    moustacheKeys.push(['{gender}', this.recipient.gender ? 'Female' : 'Male'])
+    moustacheKeys['{gender}'] = this.recipient.gender ? 'Female' : 'Male'
     if (this.recipient.custom_fields) {
       Object.keys(this.recipient.custom_fields).map((key) => {
-        moustacheKeys.push(['{' + key + '}', this.recipient.custom_fields[key]])
+        moustacheKeys['{' + key + '}'] = this.recipient.custom_fields[key]
       })
     }
     return moustacheKeys
@@ -173,6 +175,20 @@ export default class extends Vue {
   private async getDepository() {
     const { data } = await getCampaign(this.campaignId, {})
     this.campaign = data
+    if (this.messages.length === 0) {
+      let message = this.campaign.message
+      let moustache = true
+      const moustacheKeys = this.moustacheJson()
+      while (moustache) {
+        const matches = message.match(/\{(.*?)\}/)
+        if (matches) {
+          message = message.replace(matches[0], moustacheKeys[matches[0]])
+        } else {
+          moustache = false
+        }
+      }
+      this.message = message
+    }
   }
 
   private async getList() {
@@ -187,6 +203,14 @@ export default class extends Vue {
       inbound: { type: 'primary', icon: 'el-icon-message', color: '#80bcf5' }
     }
     return styleMap[type]
+  }
+
+  private async handleClick() {
+    if (!isEmpty(this.message)) {
+      const { data } = await addConversation(this.recipientId, this.campaignId, { message: this.message })
+      this.messages.push(data)
+      this.message = ''
+    }
   }
 }
 </script>
@@ -222,57 +246,24 @@ export default class extends Vue {
   fill: #2C87F0
 }
 
-.contact-block {
-  .contact,
-  .name {
-    display: block;
-    margin-left: 50px;
-    padding: 2px 0;
-  }
+.border-radius {
+  border-radius: 22px
+}
 
-  .time {
-    display: block;
-    float: right;
-  }
-
-  .contact {
-    font-size: 16px;
-    color: #000;
-  }
-
-  :after {
-    clear: both;
-  }
-
-  .img-circle {
-    float: left;
-    margin-right: 10px
-  }
-
-  span {
-    font-weight: 500;
-    font-size: 12px;
-  }
-  }
-
-  .border-radius {
-    border-radius: 22px
-  }
-
-  .fixed-height {
-    height: 490px;
-  }
+.fixed-height {
+  height: 490px;
+}
 
 .icon-resend {
   font-size: 20px;
   cursor: pointer;
 }
 
-  ::v-deep textarea {
-    min-height: 33px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 111px;
-  }
+::v-deep textarea {
+  min-height: 33px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 111px;
+}
 
 </style>
