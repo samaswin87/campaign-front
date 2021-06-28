@@ -78,7 +78,7 @@
                                             <i class="el-icon-message mr-10-px"></i>
                                             <span>Message</span>
                                         </div>
-                                        <div v-html="messageDisplay()">
+                                        <div class="new-line" v-html="messageDisplay()">
                                         </div>
                                     </el-card>
                                 </el-row>

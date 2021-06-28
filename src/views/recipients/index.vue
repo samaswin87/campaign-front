@@ -109,7 +109,7 @@
         width="130"
       >
         <template slot-scope="{row}">
-          <router-link :to="{name: 'RecipientChat', params: {campaignId: depositoryId}, query: {recipientId: row.id}}">
+          <router-link :to="{name: 'RecipientChat', params: {campaignId: depositoryId, recipientId: row.id}}">
             <el-button
               icon="el-icon-chat-round"
               circle

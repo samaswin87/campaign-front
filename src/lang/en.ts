@@ -12,6 +12,7 @@ export default {
     menu: 'Menu',
     recipient: 'Recipient',
     conversations: 'Conversations',
+    conversation: 'Conversation',
     uploadContacts: 'Import Contacts',
     uploadCampaigns: 'Import Campaigns',
     uploadWorkflows: 'Import Workflows',

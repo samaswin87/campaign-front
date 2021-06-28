@@ -232,12 +232,12 @@ export const constantRoutes: RouteConfig[] = [
         }
       },
       {
-        path: '/campaign/:campaignId/recipients/chat',
+        path: '/campaign/:campaignId/recipients/:recipientId/chat',
         component: () => import('@/views/recipients/chat.vue'),
         name: 'RecipientChat',
         meta: {
           noCache: true,
-          title: 'conversations',
+          title: 'conversation',
           hidden: true
         }
       },

@@ -4,10 +4,10 @@
       <el-row>
         <el-card class="box-card">
           <div slot="header">
-              <span>Conversations</span>
+              <span>Conversation</span>
           </div>
           <el-col
-          :span="6"
+          :span="8"
           :xs="24"
           >
             <el-card>
@@ -20,6 +20,14 @@
                 <div
                   slot="header"
                 >
+                  <router-link :to="{name: 'CampaignEdit', params: {id: campaignId}}">
+                    <el-button
+                      icon="el-icon-edit-outline"
+                      type="info"
+                      class="float-right p-3-px"
+                    >
+                    </el-button>
+                  </router-link>
                   <i class="el-icon-message"></i>
                   Draft Message
                 </div>
@@ -31,6 +39,14 @@
                 >
                   <svg-icon name="moustache" class="moustache-icon" width="30" height="17"></svg-icon>
                   Templates
+                  <router-link :to="{name: 'ContactEdit', params: {id: recipient.id}}">
+                    <el-button
+                      icon="el-icon-edit-outline"
+                      type="info"
+                      class="float-right p-3-px"
+                    >
+                    </el-button>
+                  </router-link>
                 </div>
                 <span v-for="[key, value] of Object.entries(moustacheJson())" :key="key">
                   <el-tag
@@ -66,7 +82,7 @@
             </el-card>
           </el-col>
           <el-col
-            :span="15"
+            :span="14"
             :xs="24"
           >
             <el-card class="margin-bottom">
@@ -118,7 +134,7 @@ import { getCampaign } from '@/api/campaigns'
 import { isEmpty } from 'lodash'
 
 @Component({
-  name: 'Chat',
+  name: 'RecipientChat',
   components: { }
 })
 export default class extends Vue {
@@ -131,14 +147,16 @@ export default class extends Vue {
 
   created() {
     const campaignId = this.$route.params && this.$route.params.campaignId
-    const recipientId = this.$route.query && this.$route.query.recipientId
-    this.campaignId = parseInt(campaignId)
-    if (typeof recipientId === 'number' || typeof recipientId === 'string') {
+    const recipientId = this.$route.params && this.$route.params.recipientId
+    if (parseInt(campaignId) > 0) {
+      this.campaignId = parseInt(campaignId)
+    }
+
+    if ((typeof recipientId === 'number' || typeof recipientId === 'string') && parseInt(recipientId) > 0) {
       this.recipientId = parseInt(recipientId)
       this.getContact()
     }
     this.getList()
-    this.getDepository()
   }
 
   private messageDisplay() {
@@ -175,20 +193,8 @@ export default class extends Vue {
   private async getDepository() {
     const { data } = await getCampaign(this.campaignId, {})
     this.campaign = data
-    console.log(this.messages)
     if (this.messages.length === 0) {
-      let message = this.campaign.message
-      let moustache = true
-      const moustacheKeys = this.moustacheJson()
-      while (moustache) {
-        const matches = message.match(/\{(.*?)\}/)
-        if (matches) {
-          message = message.replace(matches[0], moustacheKeys[matches[0]])
-        } else {
-          moustache = false
-        }
-      }
-      this.message = message
+      this.message = this.convertMessage(this.campaign.message)
     } else {
       this.message = ''
     }
@@ -196,6 +202,7 @@ export default class extends Vue {
 
   private async getList() {
     const { data } = await getConversations(this.recipientId, this.campaignId)
+    this.getDepository()
     this.messages = data
   }
 
@@ -211,7 +218,7 @@ export default class extends Vue {
   private async handleClick() {
     if (!isEmpty(this.message)) {
       const { data } = await addConversation(this.recipientId, this.campaignId, { message: this.convertMessage(this.message) })
-      this.messages.push(data)
+      this.messages.unshift(data)
       this.message = ''
     }
   }
@@ -237,26 +244,10 @@ export default class extends Vue {
   overflow: auto
 }
 
- /* is used to set the current page element global table. The background color when a line is selected*/
-::v-deep .el-table__body tr.current-row>td{
-  background-color: rgb(206 237 245) !important;
-}
-
-::v-deep .el-table--enable-row-hover  .el-table__body tr:hover>td {
-  background-color: rgb(206 237 245);
-}
-
 ::v-deep .el-timeline-item__node--large {
   left: -12px;
   width: 33px;
   height: 34px;
-}
-
-.new-line {
-  white-space: pre-line;
-}
-.moustache {
-  display: flex;
 }
 
 .moustache-icon {
