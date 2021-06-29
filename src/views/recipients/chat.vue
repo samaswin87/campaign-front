@@ -77,6 +77,7 @@
               <el-input
                 placeholder="Notes"
                 v-model="recipient.notes"
+                @blur="updateNote"
                 type="textarea"
                 clearable>
               </el-input>
@@ -130,7 +131,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { getConversations, addConversation } from '@/api/conversations'
-import { updateTags } from '@/api/contacts'
+import { updateTags, updateContact } from '@/api/contacts'
 import { getRecipient } from '@/api/recipients'
 import { getTagNames } from '@/api/tags'
 import { getCampaign } from '@/api/campaigns'
@@ -266,6 +267,12 @@ export default class extends Vue {
       this.existingTags = this.existingTags.filter(tag => !removedTags.includes(tag))
     } else {
       this.existingTags = this.existingTags.concat(addedTags)
+    }
+  }
+
+  private async updateNote() {
+    if (!isEmpty(this.recipient.notes)) {
+      await updateContact(this.recipient.id, { notes: this.recipient.notes })
     }
   }
 }
