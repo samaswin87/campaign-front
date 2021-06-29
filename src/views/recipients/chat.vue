@@ -98,15 +98,13 @@
                 <el-timeline-item
                   v-for="(item, index) in messages"
                   :key="index"
+                  ref="timelineMessage"
                   placement="top"
                   :icon="chatStyle(item.delivery).icon"
                   :type="chatStyle(item.delivery).type"
                   size="large"
                   :timestamp="item.created_at | parseTime">
                   <el-card class="border-radius" :body-style="{'background-color': chatStyle(item.delivery).color}">
-                    <el-tooltip v-if="item.delivery === 'draft'" class="item" effect="light" content="Resend" placement="right">
-                      <i class="mr-5-px el-icon-s-promotion icon-resend"></i>
-                    </el-tooltip>
                     {{item.message}}
                   </el-card>
                 </el-timeline-item>
@@ -119,7 +117,7 @@
                   show-word-limit
                   clearable>
                 </el-input>
-                <el-button icon="el-icon-s-promotion" type="primary" @click="handleClick()" class="float-right margin-bottom-10">Send</el-button>
+                <el-button icon="el-icon-s-promotion" type="primary" @click="sendMessage()" class="float-right margin-bottom-10">Send</el-button>
             </el-card>
           </el-col>
         </el-card>
@@ -224,7 +222,7 @@ export default class extends Vue {
     return styleMap[type]
   }
 
-  private async handleClick() {
+  private async sendMessage() {
     if (!isEmpty(this.message)) {
       const { data } = await addConversation(this.recipientId, this.campaignId, { message: this.convertMessage(this.message) })
       this.messages.unshift(data)
