@@ -263,7 +263,7 @@ export default class extends Vue {
 
     private async fetchTags(id: number) {
       try {
-        const { data } = await getTagNames(id, { })
+        const { data } = await getTagNames(id)
         this.tags = map(data, 'name')
       } catch (err) {
         console.error(err)

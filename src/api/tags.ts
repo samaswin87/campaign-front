@@ -18,11 +18,10 @@ export const getTags = (id: number, params: any) =>
     params
   })
 
-export const getTagNames = (id: number, params: any) =>
+export const getTagNames = (id: number) =>
   request({
     url: `companies/${id}/tags/names`,
-    method: 'get',
-    params
+    method: 'get'
   })
 
 export const getTagsByCompany = (id: number, params: any) =>

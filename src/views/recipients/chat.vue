@@ -61,13 +61,14 @@
               <el-select
                 v-model="recipient.tags"
                 multiple
+                @change="addTag"
                 filterable
                 allow-create
                 class="mb-3-px w-100-ratio"
                 default-first-option
                 placeholder="Choose tags">
                 <el-option
-                  v-for="item in recipient.tags"
+                  v-for="item in tags"
                   :key="item"
                   :label="item"
                   :value="item">
@@ -129,9 +130,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { getConversations, addConversation } from '@/api/conversations'
+import { updateTags } from '@/api/contacts'
 import { getRecipient } from '@/api/recipients'
+import { getTagNames } from '@/api/tags'
 import { getCampaign } from '@/api/campaigns'
-import { isEmpty } from 'lodash'
+import { isEmpty, map, difference } from 'lodash'
+import { UserModule } from '@/store/modules/user'
 
 @Component({
   name: 'RecipientChat',
@@ -144,6 +148,8 @@ export default class extends Vue {
   private campaignId = -1
   private recipientId = -1
   private message = ''
+  private tags :any[] = []
+  private existingTags :any[] = []
 
   created() {
     const campaignId = this.$route.params && this.$route.params.campaignId
@@ -157,6 +163,7 @@ export default class extends Vue {
       this.getContact()
     }
     this.getList()
+    this.fetchTags(UserModule.companyId)
   }
 
   private messageDisplay() {
@@ -188,6 +195,7 @@ export default class extends Vue {
   private async getContact() {
     const { data } = await getRecipient(this.recipientId, this.campaignId, {})
     this.recipient = data
+    this.existingTags = data.tags
   }
 
   private async getDepository() {
@@ -235,6 +243,30 @@ export default class extends Vue {
       }
     }
     return message
+  }
+
+  private async fetchTags(id: number) {
+    try {
+      const { data } = await getTagNames(id)
+      this.tags = map(data, 'name')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async addTag(newTags: any) {
+    const addedTags = difference(newTags, this.existingTags)
+    let removedTags :any[] = []
+    if (addedTags.length === 0) {
+      removedTags = difference(this.existingTags, newTags)
+    }
+
+    await updateTags({ tags: { added: addedTags, removed: removedTags }, contacts: [this.recipient.id] })
+    if (addedTags.length === 0) {
+      this.existingTags = this.existingTags.filter(tag => !removedTags.includes(tag))
+    } else {
+      this.existingTags = this.existingTags.concat(addedTags)
+    }
   }
 }
 </script>
