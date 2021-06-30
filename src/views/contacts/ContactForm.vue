@@ -105,7 +105,7 @@
                           </el-form-item>
                         </el-col>
                       </el-row>
-                      <el-row align="middle" v-if="this.campaign">
+                      <el-row align="middle">
                         <el-col :span="24">
                           <fieldset class="mx-25-ratio mb-10-px">
                             <legend><el-button type="primary" @click="addField" icon="el-icon-circle-plus-outline" circle></el-button> Custom fields</legend>
@@ -166,7 +166,7 @@ import VuePhoneNumberInput from 'vue-phone-number-input'
 export default class extends Vue {
     @Prop({ required: true }) private title!: string
     @Prop({ default: false }) private campaign!: boolean
-    @Prop({ default: false }) private redirect!: string
+    @Prop({ default: '/contacts' }) private redirect!: string
     private contactData: any = defaultContactData
     private id = -1
     private companies :string[] = []
@@ -252,6 +252,13 @@ export default class extends Vue {
         const { data } = await getContact(id, {})
         this.contactData = convertToJSON(data)
         this.fetchTags(data.company_id)
+        for (const [index, [key, value]] of Object.entries(Object.entries(this.contactData.customFields))) {
+          this.fields.push({
+            key: index,
+            value: value,
+            label: key
+          })
+        }
       } catch (err) {
         console.error(err)
       }
@@ -294,7 +301,7 @@ export default class extends Vue {
               data = await createRecipient(parseInt(id), { recipient: { recipient_id: data.data.id, data: customFields } })
             }
           } else if (this.id > 0) {
-            const recipient = omit(convertToHash(this.contactData), ['id', 'archived_at', 'keywords', 'custom_fields', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at', 'company_name'])
+            const recipient = omit(convertToHash(this.contactData), ['id', 'archived_at', 'keywords', 'created_by_id', 'updated_by_id', 'created_at', 'updated_at', 'company_name'])
             data = await updateContact(this.id, { recipient: recipient })
           }
 
