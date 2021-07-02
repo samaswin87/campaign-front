@@ -10,7 +10,7 @@
           />
         </el-col>
         <el-col :span="2">
-        <router-link :to="{name: 'RecipientChat', params: {campaignId: depositoryId}}">
+        <router-link :to="{name: 'RecipientChats', params: {campaignId: depositoryId}}">
           <el-tooltip class="item" effect="dark" content="All Conversations" placement="bottom">
             <el-button
               size="mini"

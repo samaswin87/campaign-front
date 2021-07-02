@@ -41,11 +41,14 @@
                 >
                   <template slot-scope="scope">
                     <div class="contact-block">
-                      <el-avatar :size="50" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" class="img-circle"></el-avatar>
-                      <span class="time"><i class="el-icon-time"></i>{{scope.row.lastReplyAt | parseTime }}</span>
-                      <span class="name text-muted">{{scope.row.name}}</span>
-                      <span class="contact"><i class="el-icon-phone"></i>{{scope.row.contact}}</span>
-                      <span v-if="showId" class="id">{{scope.row.id}}</span>
+                      <img src="/img/common/contact.png" class="w-13-ratio mt-10-ratio b-r-50-p" />
+                      <span class="ml-10-px mt-0-px text-muted p-absolute w-100-ratio">
+                        {{scope.row.platform_recipient.first_name}} {{scope.row.platform_recipient.last_name}}
+                        <div class="ml-15-ratio d-initial"><i class="el-icon-time"></i>{{scope.row.created_at | parseTime }}</div>
+                      </span>
+
+                      <span class="ml-10-px d-block"><i class="el-icon-phone"></i>{{scope.row.platform_recipient.phone}}</span>
+                      <span v-if="false" class="id">{{scope.row.id}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -63,21 +66,22 @@
               >
                 <span><i class="el-icon-chat-line-square"></i>Messages</span>
                 <span class="float-right">
-                  <el-button type="primary" icon="el-icon-caret-left"></el-button>
-                  <el-button type="primary" icon="el-icon-caret-right"></el-button>
+                  <el-button type="primary" icon="el-icon-caret-left" circle></el-button>
+                  <el-button type="primary" icon="el-icon-caret-right" circle></el-button>
                 </span>
               </div>
               <el-timeline class="scroll fixed-height">
                 <el-timeline-item
-                  v-for="(activity, index) in listItems"
+                  v-for="(item, index) in messages"
                   :key="index"
+                  ref="timelineMessage"
                   placement="top"
-                  :icon="chatStyle(activity.type).icon"
-                  :type="chatStyle(activity.type).type"
+                  :icon="getStyle(item.delivery).icon"
+                  :type="getStyle(item.delivery).type"
                   size="large"
-                  :timestamp="activity.date | parseTime">
-                  <el-card class="border-radius" :body-style="{'background-color': chatStyle(activity.type).color}">
-                    {{activity.message}}
+                  :timestamp="item.created_at | parseTime">
+                  <el-card class="border-radius" :body-style="{'background-color': getStyle(item.delivery).color}">
+                    {{item.message}}
                   </el-card>
                 </el-timeline-item>
               </el-timeline>
@@ -110,7 +114,15 @@
                 >
                   <span class="moustache"><svg-icon name="moustache" class="moustache-icon" width="30" height="30"/><span class="moustache-title">Templates</span></span>
                 </div>
-                <span v-html="formatMoustache(selectedTemplate)"></span>
+                <span v-for="[key, value] of Object.entries(getMoustacheJson(recipient))" :key="key">
+                  <el-tag
+                    type="danger"
+                    size="mini"
+                    class="mb-3-px"
+                    effect="plain">
+                    {{ key }}
+                  </el-tag> - {{ value }} <br>
+                </span>
               </el-card>
               <el-input
                 placeholder="Tags"
@@ -133,9 +145,10 @@
 
 <script lang="ts">
 import { Component, Watch, Vue, Ref } from 'vue-property-decorator'
-import faker from 'faker'
 import { getConversations } from '@/api/conversations'
+import { chatStyle, moustacheJson } from './components/chat-utils'
 import { getContact } from '@/api/contacts'
+import { getRecipients } from '@/api/recipients'
 import { ICampaignConversationsData } from '@/api/types'
 
 @Component({
@@ -145,6 +158,7 @@ import { ICampaignConversationsData } from '@/api/types'
 export default class extends Vue {
   private listItems: ICampaignConversationsData[] = []
   private selectedContact = ''
+  private recipient: any = {}
   private selectedTemplate = {}
   private status = false
   private showId = false
@@ -159,12 +173,9 @@ export default class extends Vue {
 
   created() {
     const campaignId = this.$route.params && this.$route.params.campaignId
-    const recipientId = this.$route.query && this.$route.query.recipientId
     this.campaignId = parseInt(campaignId)
-    if (typeof recipientId === 'string') {
-      this.recipientId = parseInt(recipientId)
-    }
     this.getList()
+    this.getContacts()
   }
 
   @Watch('tableData')
@@ -175,17 +186,21 @@ export default class extends Vue {
   }
 
   private async getList() {
-    const { data } = await getConversations(this.recipientId, this.campaignId)
+    const { data } = await getConversations(1, this.campaignId)
     this.listItems = data
   }
 
-  private chatStyle(type: string) {
-    const styleMap: { [key: string]: any } = {
-      draft: { type: 'info', icon: 'el-icon-loading', color: '#c0c4cc' },
-      sent: { type: 'success', icon: 'el-icon-s-promotion', color: '#65a783' },
-      reply: { type: 'primary', icon: 'el-icon-message', color: '#80bcf5' }
-    }
-    return styleMap[type]
+  private async getContacts() {
+    const { data } = await getRecipients(this.campaignId, { limit: 'all' })
+    this.tableData = data
+  }
+
+  private getStyle(type: string) {
+    return chatStyle(type)
+  }
+
+  private getMoustacheJson(recipient: string) {
+    return moustacheJson(recipient)
   }
 
   private handleIconClick() {
@@ -200,14 +215,6 @@ export default class extends Vue {
   private handleRowClick(row:any) {
     this.getContactDeatils(row.id)
     this.selectedTemplate = { firstName: 'test' }
-  }
-
-  private formatMoustache(jsonData: any) {
-    let formatedMoustache = ''
-    Object.keys(jsonData).map((key) => {
-      formatedMoustache += '<span class="tags el-tag el-tag--danger el-tag--mini el-tag--plain el-tag--light">{{' + key + ' }}</span>' + ' </br>'
-    })
-    return formatedMoustache
   }
 }
 </script>
@@ -245,12 +252,6 @@ export default class extends Vue {
 }
 
 .contact-block {
-  .contact,
-  .name {
-    display: block;
-    margin-left: 50px;
-    padding: 2px 0;
-  }
 
   .time {
     display: block;
