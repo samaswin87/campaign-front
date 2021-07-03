@@ -242,7 +242,7 @@ export const constantRoutes: RouteConfig[] = [
         }
       },
       {
-        path: '/campaign/:campaignId/recipients//chat',
+        path: '/campaign/:campaignId/recipients/chats',
         component: () => import('@/views/recipients/chats.vue'),
         name: 'RecipientChats',
         meta: {

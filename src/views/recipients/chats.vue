@@ -7,7 +7,7 @@
               <span>Conversations</span>
           </div>
           <el-col
-          :span="6"
+          :span="5"
           :xs="24"
           >
             <el-card class="margin-bottom" :body-style="{padding: '10px'}">
@@ -31,25 +31,24 @@
                 fit
                 highlight-current-row
                 @row-click="handleRowClick"
-                :row-style="{'background-color': '#f5f7fa !important', height: '100px'}"
+                cell-class-name="c-pointer b-r-10"
               >
                 <el-table-column
                   label="Recipients"
                   header-align="center"
-                  style="backgrond-color: green; height: 320px"
                   align="left"
                 >
                   <template slot-scope="scope">
-                    <div class="contact-block">
-                      <img src="/img/common/contact.png" class="w-13-ratio mt-10-ratio b-r-50-p" />
-                      <span class="ml-10-px mt-0-px text-muted p-absolute w-100-ratio">
-                        {{scope.row.platform_recipient.first_name}} {{scope.row.platform_recipient.last_name}}
-                        <div class="ml-15-ratio d-initial"><i class="el-icon-time"></i>{{scope.row.created_at | parseTime }}</div>
-                      </span>
-
-                      <span class="ml-10-px d-block"><i class="el-icon-phone"></i>{{scope.row.platform_recipient.phone}}</span>
+                      <div>
+                        <i class="el-icon-user mr-10-px"></i>{{scope.row.platform_recipient.first_name}} {{scope.row.platform_recipient.last_name}}
+                      </div>
+                      <div>
+                        <i class="el-icon-phone mr-10-px"></i>{{scope.row.platform_recipient.phone}}
+                      </div>
+                      <div>
+                        <i class="el-icon-time mr-10-px"></i>{{scope.row.created_at | parseTime }}
+                      </div>
                       <span v-if="false" class="id">{{scope.row.id}}</span>
-                    </div>
                   </template>
                 </el-table-column>
               </el-table>
@@ -157,18 +156,16 @@ import { ICampaignConversationsData } from '@/api/types'
 })
 export default class extends Vue {
   private listItems: ICampaignConversationsData[] = []
-  private selectedContact = ''
   private recipient: any = {}
-  private selectedTemplate = {}
   private status = false
   private showId = false
   private searchContact = ''
   private campaignId = -1
   private recipientId = -1
   private contactId = 1
-  private message= ''
+  private message = ''
   @Ref() readonly chatTable!: any
-
+  private messages:any[] = []
   private tableData:any[] = []
 
   created() {
@@ -193,6 +190,13 @@ export default class extends Vue {
   private async getContacts() {
     const { data } = await getRecipients(this.campaignId, { limit: 'all' })
     this.tableData = data
+    this.recipientId = this.tableData[0].id
+    this.getMessages()
+  }
+
+  private async getMessages() {
+    const { data } = await getConversations(this.recipientId, this.campaignId)
+    this.messages = data
   }
 
   private getStyle(type: string) {
@@ -209,12 +213,12 @@ export default class extends Vue {
 
   private async getContactDeatils(contactId: number) {
     const { data } = await getContact(contactId, {})
-    this.selectedContact = data.contact
+    this.recipientId = contactId
+    this.getMessages()
   }
 
   private handleRowClick(row:any) {
     this.getContactDeatils(row.id)
-    this.selectedTemplate = { firstName: 'test' }
   }
 }
 </script>
@@ -226,11 +230,11 @@ export default class extends Vue {
 
  /* is used to set the current page element global table. The background color when a line is selected*/
 ::v-deep .el-table__body tr.current-row>td{
-  background-color: rgb(206 237 245) !important;
+  background-color: #dcdfe6 !important;
 }
 
 ::v-deep .el-table--enable-row-hover  .el-table__body tr:hover>td {
-  background-color: rgb(206 237 245);
+  background-color: #dcdfe6;
 }
 
 ::v-deep .el-timeline-item__node--large {
@@ -239,58 +243,15 @@ export default class extends Vue {
   height: 34px;
 }
 
-.moustache {
-  display: flex;
+.fixed-height {
+  height: 490px;
 }
 
-.moustache-icon {
-  fill: #2C87F0
+::v-deep textarea {
+  min-height: 33px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 111px;
 }
-
-.moustache-title {
-  padding-top: 5px;
-}
-
-.contact-block {
-
-  .time {
-    display: block;
-    float: right;
-  }
-
-  .contact {
-    font-size: 16px;
-    color: #000;
-  }
-
-  :after {
-    clear: both;
-  }
-
-  .img-circle {
-    float: left;
-    margin-right: 10px
-  }
-
-  span {
-    font-weight: 500;
-    font-size: 12px;
-  }
-  }
-
-  .border-radius {
-    border-radius: 22px
-  }
-
-  .fixed-height {
-    height: 490px;
-  }
-
-  ::v-deep textarea {
-    min-height: 33px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 111px;
-  }
 
 </style>
